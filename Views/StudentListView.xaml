@@ -11,39 +11,59 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <!-- Search Bar -->
-        <Border Grid.Row="0" Margin="0,5,0,15" Background="{DynamicResource AltRowBg}" CornerRadius="8" Padding="15,8">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="🔍" VerticalAlignment="Center" Margin="0,0,10,0" Opacity="0.5"/>
-                <TextBox Grid.Column="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
-                         Background="Transparent" BorderThickness="0" VerticalAlignment="Center"
-                         FontSize="13" Foreground="{DynamicResource TextMain}">
-                    <TextBox.Resources>
-                        <VisualBrush x:Key="HintBrush" TileMode="None" Opacity="0.5" Stretch="None" AlignmentX="Left">
-                            <VisualBrush.Visual>
-                                <TextBlock Text="Öğrenci adı veya numarası ile ara..."/>
-                            </VisualBrush.Visual>
-                        </VisualBrush>
-                    </TextBox.Resources>
-                    <TextBox.Style>
-                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-                            <Style.Triggers>
-                                <Trigger Property="Text" Value="{x:Null}">
-                                    <Setter Property="Background" Value="{StaticResource HintBrush}"/>
-                                </Trigger>
-                                <Trigger Property="Text" Value="">
-                                    <Setter Property="Background" Value="{StaticResource HintBrush}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
-            </Grid>
-        </Border>
+        <!-- Search Bar and Quick Filter Pills -->
+        <Grid Grid.Row="0" Margin="0,5,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Search Bar -->
+            <Border Grid.Column="0" Background="{DynamicResource AltRowBg}" CornerRadius="10" Padding="15,8" Margin="0,0,12,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="🔍" VerticalAlignment="Center" Margin="0,0,10,0" Opacity="0.5"/>
+                    <TextBox Grid.Column="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                             Background="Transparent" BorderThickness="0" VerticalAlignment="Center"
+                             FontSize="13" Foreground="{DynamicResource TextMain}">
+                        <TextBox.Resources>
+                            <VisualBrush x:Key="HintBrush" TileMode="None" Opacity="0.5" Stretch="None" AlignmentX="Left">
+                                <VisualBrush.Visual>
+                                    <TextBlock Text="Öğrenci adı veya numarası ile ara..."/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </TextBox.Resources>
+                        <TextBox.Style>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="{x:Null}">
+                                        <Setter Property="Background" Value="{StaticResource HintBrush}"/>
+                                    </Trigger>
+                                    <Trigger Property="Text" Value="">
+                                        <Setter Property="Background" Value="{StaticResource HintBrush}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                </Grid>
+            </Border>
+
+            <!-- Quick Filter Pills -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Content="Tümü" Command="{Binding SetQuickFilterCommand}" CommandParameter="All"
+                        Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,6,0" FontSize="11" FontWeight="SemiBold"/>
+                <Button Content="🟢 Geçenler" Command="{Binding SetQuickFilterCommand}" CommandParameter="Passed"
+                        Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,6,0" FontSize="11" FontWeight="SemiBold"/>
+                <Button Content="🟡 Şartlı" Command="{Binding SetQuickFilterCommand}" CommandParameter="Conditional"
+                        Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,6,0" FontSize="11" FontWeight="SemiBold"/>
+                <Button Content="🔴 Kalanlar" Command="{Binding SetQuickFilterCommand}" CommandParameter="Failed"
+                        Style="{StaticResource OutlineButton}" Padding="10,6" FontSize="11" FontWeight="SemiBold"/>
+            </StackPanel>
+        </Grid>
 
         <DataGrid Grid.Row="1" ItemsSource="{Binding StudentsView}" RowHeight="{Binding GridRowHeight}"
                   Visibility="{Binding Students.Count, Converter={StaticResource DataToVisConverter}}"
@@ -124,9 +144,30 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="D" Binding="{Binding CorrectCount}" SortMemberPath="CorrectCount" Width="50"/>
-                <DataGridTextColumn Header="Y" Binding="{Binding IncorrectCount}" SortMemberPath="IncorrectCount" Width="50"/>
-                <DataGridTextColumn Header="B" Binding="{Binding EmptyCount}" SortMemberPath="EmptyCount" Width="50"/>
+                <DataGridTextColumn Header="D" Binding="{Binding CorrectCount}" SortMemberPath="CorrectCount" Width="45"/>
+                <DataGridTextColumn Header="Y" Binding="{Binding IncorrectCount}" SortMemberPath="IncorrectCount" Width="45"/>
+                <DataGridTextColumn Header="B" Binding="{Binding EmptyCount}" SortMemberPath="EmptyCount" Width="45"/>
+                
+                <DataGridTextColumn Header="NET" Binding="{Binding NetCount, StringFormat={}{0:N2}}" SortMemberPath="NetCount" Width="60">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="PUAN" Binding="{Binding Score, StringFormat={}{0:N2}}" SortMemberPath="Score" Width="65">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="Foreground" Value="#2563EB"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
                 <DataGridTextColumn Header="SIRA" Binding="{Binding Rank}" SortMemberPath="Rank" Width="50">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
@@ -136,14 +177,143 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="NET PUAN" Binding="{Binding Score, StringFormat={}{0:N2}}" SortMemberPath="Score" Width="110">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="FontWeight" Value="Bold"/>
-                            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+
+                <!-- HARF NOTU ROZETİ -->
+                <DataGridTemplateColumn Header="HARF" SortMemberPath="LetterGrade" Width="65">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border CornerRadius="6" Padding="6,2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="#F1F5F9"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding LetterGrade}" Value="AA">
+                                                <Setter Property="Background" Value="#DCFCE7"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding LetterGrade}" Value="BA">
+                                                <Setter Property="Background" Value="#DCFCE7"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding LetterGrade}" Value="BB">
+                                                <Setter Property="Background" Value="#E0E7FF"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding LetterGrade}" Value="CB">
+                                                <Setter Property="Background" Value="#E0E7FF"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding LetterGrade}" Value="CC">
+                                                <Setter Property="Background" Value="#FEF3C7"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding LetterGrade}" Value="DC">
+                                                <Setter Property="Background" Value="#FFEDD5"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding LetterGrade}" Value="DD">
+                                                <Setter Property="Background" Value="#FFEDD5"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding LetterGrade}" Value="FD">
+                                                <Setter Property="Background" Value="#FEE2E2"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding LetterGrade}" Value="FF">
+                                                <Setter Property="Background" Value="#FEE2E2"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <TextBlock Text="{Binding LetterGrade}" FontWeight="Bold" FontSize="11">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="#475569"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding LetterGrade}" Value="AA">
+                                                    <Setter Property="Foreground" Value="#15803D"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding LetterGrade}" Value="BA">
+                                                    <Setter Property="Foreground" Value="#15803D"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding LetterGrade}" Value="BB">
+                                                    <Setter Property="Foreground" Value="#4338CA"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding LetterGrade}" Value="CB">
+                                                    <Setter Property="Foreground" Value="#4338CA"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding LetterGrade}" Value="CC">
+                                                    <Setter Property="Foreground" Value="#B45309"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding LetterGrade}" Value="DC">
+                                                    <Setter Property="Foreground" Value="#C2410C"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding LetterGrade}" Value="DD">
+                                                    <Setter Property="Foreground" Value="#C2410C"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding LetterGrade}" Value="FD">
+                                                    <Setter Property="Foreground" Value="#B91C1C"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding LetterGrade}" Value="FF">
+                                                    <Setter Property="Foreground" Value="#B91C1C"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!-- DURUM ROZETİ -->
+                <DataGridTemplateColumn Header="DURUM" SortMemberPath="Status" Width="90">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border CornerRadius="8" Padding="6,2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="#F1F5F9"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="Geçti">
+                                                <Setter Property="Background" Value="#DCFCE7"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}" Value="Şartlı Geçti">
+                                                <Setter Property="Background" Value="#FEF3C7"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}" Value="Kaldı">
+                                                <Setter Property="Background" Value="#FEE2E2"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <TextBlock Text="{Binding Status}" FontSize="10" FontWeight="SemiBold">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="#64748B"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Status}" Value="Geçti">
+                                                    <Setter Property="Foreground" Value="#166534"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="Şartlı Geçti">
+                                                    <Setter Property="Foreground" Value="#92400E"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="Kaldı">
+                                                    <Setter Property="Foreground" Value="#991B1B"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!-- DETAY / İŞLEM -->
+                <DataGridTemplateColumn Header="DETAY" Width="55">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="👁️" ToolTip="Öğrenci Detayı / Düzenle"
+                                    Command="{Binding DataContext.OpenStudentDetailCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"
+                                    Background="Transparent" BorderThickness="0" Cursor="Hand" FontSize="13"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" Padding="4,2"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 

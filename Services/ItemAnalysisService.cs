@@ -59,6 +59,125 @@ namespace OptikFormApp.Services
             CopySuspicion          // Kopya şüphesi
         }
 
+        public enum DistractorQuality
+        {
+            CorrectAnswer,          // Doğru Seçenek
+            GoodDistractor,         // İyi Çeldirici (Alt grup daha fazla işaretlemiş)
+            WeakDistractor,         // Zayıf Çeldirici (Çok az kişi işaretlemiş, <%5)
+            MisleadingDistractor    // Ters Çeldirici ⚠️ (Üst grup alt gruptan daha çok düşmüş)
+        }
+
+        public record DistractorOptionStats(
+            string Option,               // A, B, C, D, E, Boş
+            bool IsCorrect,              // Doğru cevap mı
+            int TopCount,                // Üst %27'deki sayısı
+            double TopPercent,           // Üst %27'deki oranı (%)
+            int BottomCount,             // Alt %27'deki sayısı
+            double BottomPercent,        // Alt %27'deki oranı (%)
+            int TotalCount,              // Genel sayısı
+            double TotalPercent,         // Genel oranı (%)
+            DistractorQuality Quality,   // Çeldirici kalitesi
+            string EvaluationMessage     // Açıklama rozeti
+        );
+
+        public record QuestionDistractorStats(
+            int QuestionNumber,
+            string CorrectAnswer,
+            List<DistractorOptionStats> Options,
+            bool HasMisleadingDistractor // Ters çeldirici uyarısı var mı
+        );
+
+        /// <summary>
+        /// Üst %27 ve Alt %27 başarı grupları bazında her sorunun seçenek (çeldirici) analizini yapar.
+        /// </summary>
+        public List<QuestionDistractorStats> AnalyzeDistractors(
+            List<StudentResult> students, 
+            string[] answerKey, 
+            int questionCount)
+        {
+            var results = new List<QuestionDistractorStats>();
+            if (students.Count == 0 || questionCount == 0) return results;
+
+            var sorted = students.OrderByDescending(s => s.Score).ToList();
+            int groupSize = (int)Math.Ceiling(sorted.Count * 0.27);
+            if (groupSize < 1) groupSize = 1;
+
+            var topGroup = sorted.Take(groupSize).ToList();
+            var bottomGroup = sorted.Skip(Math.Max(0, sorted.Count - groupSize)).ToList();
+
+            for (int q = 0; q < questionCount; q++)
+            {
+                string correctAnswer = (answerKey != null && q < answerKey.Length) ? (answerKey[q]?.ToUpper() ?? "") : "";
+                var options = new[] { "A", "B", "C", "D", "E", "Boş" };
+                var optionStatsList = new List<DistractorOptionStats>();
+                bool hasMisleading = false;
+
+                foreach (var opt in options)
+                {
+                    int topCount = topGroup.Count(s => GetStudentAnswer(s, q) == opt);
+                    int bottomCount = bottomGroup.Count(s => GetStudentAnswer(s, q) == opt);
+                    int totalCount = students.Count(s => GetStudentAnswer(s, q) == opt);
+
+                    double topPct = topGroup.Count > 0 ? (double)topCount / topGroup.Count * 100 : 0;
+                    double bottomPct = bottomGroup.Count > 0 ? (double)bottomCount / bottomGroup.Count * 100 : 0;
+                    double totalPct = students.Count > 0 ? (double)totalCount / students.Count * 100 : 0;
+
+                    bool isCorrect = opt == correctAnswer;
+                    DistractorQuality quality;
+                    string message;
+
+                    if (isCorrect)
+                    {
+                        quality = DistractorQuality.CorrectAnswer;
+                        message = "✓ Doğru Seçenek";
+                    }
+                    else if (topPct > bottomPct + 5.0 && topCount >= 2)
+                    {
+                        quality = DistractorQuality.MisleadingDistractor;
+                        message = "⚠️ Ters Çeldirici (Başarılı öğrenciler daha çok yanılmış)";
+                        hasMisleading = true;
+                    }
+                    else if (totalPct < 5.0)
+                    {
+                        quality = DistractorQuality.WeakDistractor;
+                        message = "⚪ Zayıf Çeldirici (Yetersiz çekim)";
+                    }
+                    else
+                    {
+                        quality = DistractorQuality.GoodDistractor;
+                        message = "✅ İyi Çeldirici (Alt grubu çekmiş)";
+                    }
+
+                    optionStatsList.Add(new DistractorOptionStats(
+                        opt,
+                        isCorrect,
+                        topCount,
+                        Math.Round(topPct, 1),
+                        bottomCount,
+                        Math.Round(bottomPct, 1),
+                        totalCount,
+                        Math.Round(totalPct, 1),
+                        quality,
+                        message
+                    ));
+                }
+
+                results.Add(new QuestionDistractorStats(q + 1, correctAnswer, optionStatsList, hasMisleading));
+            }
+
+            return results;
+        }
+
+        private static string GetStudentAnswer(StudentResult student, int questionIndex)
+        {
+            if (student.Answers == null || questionIndex >= student.Answers.Count)
+                return "Boş";
+            string ans = student.Answers[questionIndex]?.Trim().ToUpper() ?? "";
+            if (string.IsNullOrEmpty(ans) || ans == "-" || ans == " ")
+                return "Boş";
+            return ans;
+        }
+
         /// <summary>
         /// Tüm sorular için item analizi hesapla
         /// </summary>
@@ -98,10 +217,18 @@ namespace OptikFormApp.Services
                     continue;
 
                 string answer = student.Answers[questionIndex]?.ToString().ToUpper() ?? "";
-                string correctAnswer = answerKey[questionIndex]?.ToUpper() ?? "";
-
-                bool isCorrect = answer == correctAnswer && !string.IsNullOrEmpty(answer);
                 bool isEmpty = string.IsNullOrEmpty(answer) || answer == " ";
+                bool isCorrect;
+
+                if (student.QuestionResults != null && questionIndex < student.QuestionResults.Count)
+                {
+                    isCorrect = student.QuestionResults[questionIndex];
+                }
+                else
+                {
+                    string correctAnswer = (answerKey != null && questionIndex < answerKey.Length) ? (answerKey[questionIndex]?.ToUpper() ?? "") : "";
+                    isCorrect = answer == correctAnswer && !isEmpty;
+                }
 
                 if (isCorrect) correct++;
                 else if (isEmpty) empty++;

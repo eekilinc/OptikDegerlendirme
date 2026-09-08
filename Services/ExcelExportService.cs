@@ -20,10 +20,15 @@ namespace OptikFormApp.Services
                 ws1.Cell(1, 5).Value = "Doğru";
                 ws1.Cell(1, 6).Value = "Yanlış";
                 ws1.Cell(1, 7).Value = "Boş";
-                ws1.Cell(1, 8).Value = "Puan";
-                ws1.Cell(1, 9).Value = "Öğrenci Cevapları";
+                ws1.Cell(1, 8).Value = "Net";
+                ws1.Cell(1, 9).Value = "Puan";
+                ws1.Cell(1, 10).Value = "Harf Notu";
+                ws1.Cell(1, 11).Value = "Katsayı";
+                ws1.Cell(1, 12).Value = "Durum";
+                ws1.Cell(1, 13).Value = "T-Skor";
+                ws1.Cell(1, 14).Value = "Öğrenci Cevapları";
 
-                var headerRange1 = ws1.Range("A1:I1");
+                var headerRange1 = ws1.Range("A1:N1");
                 headerRange1.Style.Font.Bold = true;
                 headerRange1.Style.Fill.BackgroundColor = XLColor.AirForceBlue;
                 headerRange1.Style.Font.FontColor = XLColor.White;
@@ -38,9 +43,17 @@ namespace OptikFormApp.Services
                     ws1.Cell(row, 5).Value = student.CorrectCount;
                     ws1.Cell(row, 6).Value = student.IncorrectCount;
                     ws1.Cell(row, 7).Value = student.EmptyCount;
-                    ws1.Cell(row, 8).Value = student.Score;
+                    ws1.Cell(row, 8).Value = student.NetCount;
                     ws1.Cell(row, 8).Style.NumberFormat.Format = "0.00";
-                    ws1.Cell(row, 9).Value = student.RawAnswers;
+                    ws1.Cell(row, 9).Value = student.Score;
+                    ws1.Cell(row, 9).Style.NumberFormat.Format = "0.00";
+                    ws1.Cell(row, 10).Value = student.LetterGrade;
+                    ws1.Cell(row, 11).Value = student.GradePoint;
+                    ws1.Cell(row, 11).Style.NumberFormat.Format = "0.00";
+                    ws1.Cell(row, 12).Value = student.Status;
+                    ws1.Cell(row, 13).Value = student.TScore;
+                    ws1.Cell(row, 13).Style.NumberFormat.Format = "0.00";
+                    ws1.Cell(row, 14).Value = student.RawAnswers;
                     row++;
                 }
                 ws1.Columns().AdjustToContents();

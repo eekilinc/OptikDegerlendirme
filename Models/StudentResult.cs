@@ -18,6 +18,12 @@ namespace OptikFormApp.Models
         private double _netCount;
         private double _score;
         private int _rank;
+        private string _letterGrade = string.Empty;
+        private double _gradePoint;
+        private string _status = string.Empty;
+        private double _zScore;
+        private double _tScore;
+        private double _percentile;
 
         public int RowNumber { get => _rowNumber; set { _rowNumber = value; OnPropertyChanged(); } }
         public string FullName { get => _fullName; set { _fullName = value; OnPropertyChanged(); } }
@@ -33,6 +39,13 @@ namespace OptikFormApp.Models
         public double NetCount { get => _netCount; set { _netCount = value; OnPropertyChanged(); } }
         public double Score { get => _score; set { _score = value; OnPropertyChanged(); } }
         public int Rank { get => _rank; set { _rank = value; OnPropertyChanged(); } }
+
+        public string LetterGrade { get => _letterGrade; set { _letterGrade = value; OnPropertyChanged(); } }
+        public double GradePoint { get => _gradePoint; set { _gradePoint = value; OnPropertyChanged(); } }
+        public string Status { get => _status; set { _status = value; OnPropertyChanged(); } }
+        public double ZScore { get => _zScore; set { _zScore = value; OnPropertyChanged(); } }
+        public double TScore { get => _tScore; set { _tScore = value; OnPropertyChanged(); } }
+        public double Percentile { get => _percentile; set { _percentile = value; OnPropertyChanged(); } }
         
         public List<string> Answers { get; set; } = new List<string>();
         public List<bool> QuestionResults { get; set; } = new List<bool>();

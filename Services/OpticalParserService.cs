@@ -169,7 +169,13 @@ namespace OptikFormApp.Services
             return true;
         }
 
-        public void EvaluateStudents(List<StudentResult> students, List<AnswerKeyModel> keys, List<QuestionSetting> settings, double wrongDeductionFactor = 0.25)
+        public void EvaluateStudents(
+            List<StudentResult> students, 
+            List<AnswerKeyModel> keys, 
+            List<QuestionSetting> settings, 
+            double wrongDeductionFactor = 0.25,
+            double netCoefficient = 1.0,
+            double baseScore = 0.0)
         {
             // Build lookup dictionaries for O(1) access
             var keyLookup = new Dictionary<string, AnswerKeyModel>();
@@ -181,6 +187,8 @@ namespace OptikFormApp.Services
                 foreach (var s in settings)
                     settingsLookup[(s.BookletName, s.QuestionNumber)] = s;
 
+            bool hasCustomPoints = settings != null && settings.Any(s => s.PointValue > 0);
+
             foreach (var student in students)
             {
                 if (!keyLookup.TryGetValue(student.BookletType, out var key) || string.IsNullOrEmpty(key.Answers)) continue;
@@ -190,13 +198,24 @@ namespace OptikFormApp.Services
                 int correct = 0;
                 int wrong = 0;
                 int empty = 0;
+                int totalQuestions = key.Answers.Length;
+                int excludedQuestions = 0;
 
-                for (int i = 0; i < key.Answers.Length; i++)
+                double weightedEarnedPoints = 0.0;
+                double originalTotalPoints = 0.0;
+                double remainingTotalPoints = 0.0;
+
+                for (int i = 0; i < totalQuestions; i++)
                 {
                     bool isCorrect = false;
                     bool isEmpty = false;
+                    bool isExcluded = false;
                     char displayChar = '_';
-                    
+
+                    settingsLookup.TryGetValue((key.BookletName, i + 1), out var qSetting);
+                    double questionPoint = qSetting != null && qSetting.PointValue > 0 ? qSetting.PointValue : netCoefficient;
+                    originalTotalPoints += questionPoint;
+
                     if (i < student.Answers.Count)
                     {
                         var stdAns = student.Answers[i].Trim().ToUpper();
@@ -204,12 +223,24 @@ namespace OptikFormApp.Services
                         var stdChar = stdAns.Length > 0 ? stdAns[0] : ' ';
                         displayChar = stdChar == ' ' ? '_' : stdChar;
 
-                        settingsLookup.TryGetValue((key.BookletName, i + 1), out var qSetting);
-
                         if (qSetting != null && qSetting.IsCancelled)
                         {
-                            isCorrect = true;
-                            correct++;
+                            if (qSetting.CancelMode == CancellationMode.DistributeToRemaining)
+                            {
+                                isExcluded = true;
+                                excludedQuestions++;
+                            }
+                            else if (qSetting.CancelMode == CancellationMode.MarkAsEmpty)
+                            {
+                                isEmpty = true;
+                                empty++;
+                            }
+                            else // FullCredit (varsayılan)
+                            {
+                                isCorrect = true;
+                                correct++;
+                                weightedEarnedPoints += questionPoint;
+                            }
                         }
                         else if (string.IsNullOrEmpty(stdAns) || stdAns == " " || stdAns == "-")
                         {
@@ -220,37 +251,82 @@ namespace OptikFormApp.Services
                         {
                             isCorrect = true;
                             correct++;
+                            weightedEarnedPoints += questionPoint;
                         }
                         else if (stdAns == keyAns)
                         {
                             isCorrect = true;
                             correct++;
+                            weightedEarnedPoints += questionPoint;
                         }
                         else
                         {
                             wrong++;
+                            weightedEarnedPoints -= (questionPoint * wrongDeductionFactor);
                         }
                     }
                     else
                     {
-                        isEmpty = true;
-                        empty++;
+                        if (qSetting != null && qSetting.IsCancelled && qSetting.CancelMode == CancellationMode.DistributeToRemaining)
+                        {
+                            isExcluded = true;
+                            excludedQuestions++;
+                        }
+                        else if (qSetting != null && qSetting.IsCancelled && qSetting.CancelMode == CancellationMode.FullCredit)
+                        {
+                            isCorrect = true;
+                            correct++;
+                            weightedEarnedPoints += questionPoint;
+                        }
+                        else
+                        {
+                            isEmpty = true;
+                            empty++;
+                        }
                     }
+
+                    if (!isExcluded)
+                    {
+                        remainingTotalPoints += questionPoint;
+                    }
+
                     student.QuestionResults.Add(isCorrect || isEmpty ? isCorrect : false);
-                    var state = isCorrect ? AnswerState.Correct : (isEmpty ? AnswerState.Empty : AnswerState.Incorrect);
+                    var state = isExcluded ? AnswerState.Empty : (isCorrect ? AnswerState.Correct : (isEmpty ? AnswerState.Empty : AnswerState.Incorrect));
                     student.ColoredAnswers.Add(new AnswerItem { Character = displayChar, State = state, QuestionNumber = i + 1 });
                 }
 
                 student.CorrectCount = correct;
                 student.IncorrectCount = wrong;
                 student.EmptyCount = empty;
-                
-                double net = correct - (wrong * wrongDeductionFactor);
-                student.NetCount = Math.Max(0, net);
-                // Score will be calculated in ViewModel based on custom coefficients
+
+                if (hasCustomPoints)
+                {
+                    // Ağırlıklı soru puanlama
+                    double finalPoints = weightedEarnedPoints;
+                    if (excludedQuestions > 0 && remainingTotalPoints > 0 && originalTotalPoints > remainingTotalPoints)
+                    {
+                        double scale = originalTotalPoints / remainingTotalPoints;
+                        finalPoints *= scale;
+                    }
+                    student.Score = Math.Round(Math.Max(0, finalPoints) + baseScore, 2);
+                    student.NetCount = Math.Round(Math.Max(0, correct - (wrong * wrongDeductionFactor)), 2);
+                }
+                else
+                {
+                    // Standart net katsayı formülü
+                    double net = correct - (wrong * wrongDeductionFactor);
+                    int validQuestions = totalQuestions - excludedQuestions;
+                    if (excludedQuestions > 0 && validQuestions > 0)
+                    {
+                        double scale = (double)totalQuestions / validQuestions;
+                        net *= scale;
+                    }
+                    student.NetCount = Math.Round(Math.Max(0, net), 2);
+                    student.Score = Math.Round((student.NetCount * netCoefficient) + baseScore, 2);
+                }
             }
 
-            // Assign Rank
+            // Assign Rank (Score descending, NetCount descending)
             var ranked = students.OrderByDescending(s => s.Score).ThenByDescending(s => s.NetCount).ToList();
             int currentRank = 1;
             for (int i = 0; i < ranked.Count; i++)

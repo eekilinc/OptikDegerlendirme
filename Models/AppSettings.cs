@@ -21,4 +21,6 @@ public class AppSettings
     public int ThemeIndex { get; set; } = 0;
     public int LayoutIndex { get; set; } = 0;
     public int FontSize { get; set; } = 12;
+    public int GradingModeIndex { get; set; } = 0;
+    public double RelativeThreshold { get; set; } = 20.0;
 }

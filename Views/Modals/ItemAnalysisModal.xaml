@@ -7,8 +7,8 @@
              mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="1000">
     <Grid Visibility="{Binding IsItemAnalysisOpen, Converter={StaticResource BoolToVis}}"
           Background="#CC000000">
-        <Border Width="950" 
-                Height="650"
+        <Border Width="1020" 
+                Height="680"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 CornerRadius="24"
@@ -235,245 +235,513 @@
                         </StackPanel>
                     </Border>
                 </Grid>
+                               <!-- Content Area: TabControl -->
+                <TabControl Grid.Row="2" Background="Transparent" BorderThickness="0" Margin="0,0,0,8">
+                    <TabControl.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" Padding="18,8" Margin="0,0,8,0" CornerRadius="10,10,0,0" BorderThickness="0,0,0,3" BorderBrush="Transparent" Background="Transparent" Cursor="Hand">
+                                            <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="BorderBrush" Value="#F59E0B"/>
+                                                <Setter TargetName="Border" Property="Background" Value="#15F59E0B"/>
+                                                <Setter Property="TextElement.Foreground" Value="#D97706"/>
+                                                <Setter Property="TextElement.FontWeight" Value="Bold"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="False">
+                                                <Setter Property="TextElement.Foreground" Value="#64748B"/>
+                                                <Setter Property="TextElement.FontWeight" Value="SemiBold"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="TextElement.Foreground" Value="#D97706"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabControl.Resources>
 
-                <!-- Content Area -->
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="320"/>
-                    </Grid.ColumnDefinitions>
+                    <!-- TAB 1: Soru İstatistikleri & Anomaliler -->
+                    <TabItem Header="📋 Madde Analizi &amp; Anomaliler">
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="320"/>
+                            </Grid.ColumnDefinitions>
 
-                    <!-- Question Stats DataGrid -->
-                    <Border Grid.Column="0" 
-                            CornerRadius="16" 
-                            Padding="16"
-                            Margin="0,0,16,0"
-                            BorderThickness="1">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="#F1F5F9"/>
-                                <Setter Property="BorderBrush" Value="#E2E8F0"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                        <Setter Property="Background" Value="#334155"/>
-                                        <Setter Property="BorderBrush" Value="#475569"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <DataGrid ItemsSource="{Binding QuestionStats}"
-                                  AutoGenerateColumns="False"
-                                  IsReadOnly="True"
-                                  GridLinesVisibility="None"
-                                  HeadersVisibility="Column"
-                                  Background="Transparent"
-                                  BorderThickness="0">
-                            <DataGrid.ColumnHeaderStyle>
-                                <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Foreground" Value="#64748B"/>
-                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                    <Setter Property="Padding" Value="8,4"/>
-                                    <Setter Property="BorderThickness" Value="0"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                            <Setter Property="Foreground" Value="#94A3B8"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGrid.ColumnHeaderStyle>
-                            <DataGrid.RowStyle>
-                                <Style TargetType="DataGridRow">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Foreground" Value="#1E293B"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsProblematic}" Value="True">
-                                            <Setter Property="Background" Value="#30EF4444"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                            <Setter Property="Foreground" Value="#F8FAFC"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGrid.RowStyle>
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Soru" 
-                                                    Binding="{Binding QuestionNumber}" 
-                                                    Width="50"/>
-                                <DataGridTextColumn Header="Zorluk" 
-                                                    Binding="{Binding Difficulty, StringFormat={}{0:P0}}" 
-                                                    Width="70"/>
-                                <DataGridTextColumn Header="Ayırt." 
-                                                    Binding="{Binding Discrimination, StringFormat={}{0:F2}}" 
-                                                    Width="70"/>
-                                <DataGridTextColumn Header="Doğru" 
-                                                    Binding="{Binding CorrectRate, StringFormat={}{0:P0}}" 
-                                                    Width="70"/>
-                                <DataGridTextColumn Header="Boş" 
-                                                    Binding="{Binding EmptyRate, StringFormat={}{0:P0}}" 
-                                                    Width="60"/>
-                                <DataGridTextColumn Header="PB Korel." 
-                                                    Binding="{Binding PointBiserialCorrelation, StringFormat={}{0:F2}}" 
-                                                    Width="80"/>
-                                <DataGridTextColumn Header="Durum" 
-                                                    Binding="{Binding Recommendation}" 
-                                                    Width="150"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </Border>
-
-                    <!-- Anomalies Panel -->
-                    <Border Grid.Column="1" 
-                            CornerRadius="16" 
-                            Padding="16"
-                            BorderThickness="1">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="#FEF2F2"/>
-                                <Setter Property="BorderBrush" Value="#FECACA"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                        <Setter Property="Background" Value="#450A0A"/>
-                                        <Setter Property="BorderBrush" Value="#7F1D1D"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            
-                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,14">
-                                <Border Width="32" 
-                                        Height="32" 
-                                        CornerRadius="8"
-                                        Background="#EF4444"
-                                        Margin="0,0,10,0">
-                                    <TextBlock Text="⚠️" 
-                                               FontSize="16" 
-                                               HorizontalAlignment="Center" 
-                                               VerticalAlignment="Center"/>
-                                </Border>
-                                <TextBlock Text="Tespit Edilen Anomaliler" 
-                                           FontSize="15" 
-                                           FontWeight="SemiBold"
-                                           VerticalAlignment="Center">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="#991B1B"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Foreground" Value="#FCA5A5"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </StackPanel>
-                            
-                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                                <ItemsControl ItemsSource="{Binding Anomalies}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border CornerRadius="12" 
-                                                    Padding="14" 
-                                                    Margin="0,0,0,10"
-                                                    BorderThickness="1">
-                                                <Border.Style>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="Background" Value="White"/>
-                                                        <Setter Property="BorderBrush" Value="#FECACA"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
-                                                                <Setter Property="Background" Value="#7F1D1D"/>
-                                                                <Setter Property="BorderBrush" Value="#991B1B"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Border.Style>
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                    </Grid.RowDefinitions>
-                                                    
-                                                    <TextBlock Grid.Row="0" 
-                                                               Text="{Binding FullName}" 
-                                                               FontWeight="SemiBold" 
-                                                               FontSize="14">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="TextBlock">
-                                                                <Setter Property="Foreground" Value="#1E293B"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
-                                                                        <Setter Property="Foreground" Value="#F8FAFC"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBlock.Style>
-                                                    </TextBlock>
-                                                    <TextBlock Grid.Row="1" 
-                                                               Text="{Binding StudentId}" 
-                                                               FontSize="12" 
-                                                               Margin="0,4">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="TextBlock">
-                                                                <Setter Property="Foreground" Value="#64748B"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
-                                                                        <Setter Property="Foreground" Value="#94A3B8"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBlock.Style>
-                                                    </TextBlock>
-                                                    <TextBlock Grid.Row="2" 
-                                                               Text="{Binding Description}" 
-                                                               FontSize="12" 
-                                                               TextWrapping="Wrap">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="TextBlock">
-                                                                <Setter Property="Foreground" Value="#EF4444"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
-                                                                        <Setter Property="Foreground" Value="#FCA5A5"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBlock.Style>
-                                                    </TextBlock>
-                                                </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </ScrollViewer>
-                            
-                            <TextBlock Grid.Row="1" 
-                                       Text="Anomali tespit edilmedi" 
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       FontSize="14">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#94A3B8"/>
+                            <!-- Question Stats DataGrid -->
+                            <Border Grid.Column="0" 
+                                    CornerRadius="16" 
+                                    Padding="16"
+                                    Margin="0,0,16,0"
+                                    BorderThickness="1">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="#F1F5F9"/>
+                                        <Setter Property="BorderBrush" Value="#E2E8F0"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="#64748B"/>
+                                                <Setter Property="Background" Value="#334155"/>
+                                                <Setter Property="BorderBrush" Value="#475569"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </TextBlock.Style>
-                                <TextBlock.Visibility>
-                                    <Binding Path="Anomalies.Count" Converter="{StaticResource CountToVisConverter}"/>
-                                </TextBlock.Visibility>
-                            </TextBlock>
+                                </Border.Style>
+                                <DataGrid ItemsSource="{Binding QuestionStats}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          GridLinesVisibility="None"
+                                          HeadersVisibility="Column"
+                                          Background="Transparent"
+                                          BorderThickness="0">
+                                    <DataGrid.ColumnHeaderStyle>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Foreground" Value="#64748B"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                            <Setter Property="Padding" Value="8,4"/>
+                                            <Setter Property="BorderThickness" Value="0"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                                    <Setter Property="Foreground" Value="#94A3B8"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.ColumnHeaderStyle>
+                                    <DataGrid.RowStyle>
+                                        <Style TargetType="DataGridRow">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Foreground" Value="#1E293B"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsProblematic}" Value="True">
+                                                    <Setter Property="Background" Value="#30EF4444"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                                    <Setter Property="Foreground" Value="#F8FAFC"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.RowStyle>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Soru" 
+                                                            Binding="{Binding QuestionNumber}" 
+                                                            Width="50"/>
+                                        <DataGridTextColumn Header="Zorluk" 
+                                                            Binding="{Binding Difficulty, StringFormat={}{0:P0}}" 
+                                                            Width="70"/>
+                                        <DataGridTextColumn Header="Ayırt." 
+                                                            Binding="{Binding Discrimination, StringFormat={}{0:F2}}" 
+                                                            Width="70"/>
+                                        <DataGridTextColumn Header="Doğru" 
+                                                            Binding="{Binding CorrectRate, StringFormat={}{0:P0}}" 
+                                                            Width="70"/>
+                                        <DataGridTextColumn Header="Boş" 
+                                                            Binding="{Binding EmptyRate, StringFormat={}{0:P0}}" 
+                                                            Width="60"/>
+                                        <DataGridTextColumn Header="PB Korel." 
+                                                            Binding="{Binding PointBiserialCorrelation, StringFormat={}{0:F2}}" 
+                                                            Width="80"/>
+                                        <DataGridTextColumn Header="Durum" 
+                                                            Binding="{Binding Recommendation}" 
+                                                            Width="150"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Border>
+
+                            <!-- Anomalies Panel -->
+                            <Border Grid.Column="1" 
+                                    CornerRadius="16" 
+                                    Padding="16"
+                                    BorderThickness="1">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="#FEF2F2"/>
+                                        <Setter Property="BorderBrush" Value="#FECACA"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
+                                                <Setter Property="Background" Value="#450A0A"/>
+                                                <Setter Property="BorderBrush" Value="#7F1D1D"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,14">
+                                        <Border Width="32" 
+                                                Height="32" 
+                                                CornerRadius="8"
+                                                Background="#EF4444"
+                                                Margin="0,0,10,0">
+                                            <TextBlock Text="⚠️" 
+                                                       FontSize="16" 
+                                                       HorizontalAlignment="Center" 
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock Text="Tespit Edilen Anomaliler" 
+                                                   FontSize="15" 
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="#991B1B"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
+                                                            <Setter Property="Foreground" Value="#FCA5A5"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    
+                                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                        <ItemsControl ItemsSource="{Binding Anomalies}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border CornerRadius="12" 
+                                                            Padding="14" 
+                                                            Margin="0,0,0,10"
+                                                            BorderThickness="1">
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="Background" Value="White"/>
+                                                                <Setter Property="BorderBrush" Value="#FECACA"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
+                                                                        <Setter Property="Background" Value="#7F1D1D"/>
+                                                                        <Setter Property="BorderBrush" Value="#991B1B"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto"/>
+                                                                <RowDefinition Height="Auto"/>
+                                                                <RowDefinition Height="Auto"/>
+                                                            </Grid.RowDefinitions>
+                                                            
+                                                            <TextBlock Grid.Row="0" 
+                                                                       Text="{Binding FullName}" 
+                                                                       FontWeight="SemiBold" 
+                                                                       FontSize="14">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Setter Property="Foreground" Value="#1E293B"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
+                                                                                <Setter Property="Foreground" Value="#F8FAFC"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+                                                            <TextBlock Grid.Row="1" 
+                                                                       Text="{Binding StudentId}" 
+                                                                       FontSize="12" 
+                                                                       Margin="0,4">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Setter Property="Foreground" Value="#64748B"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
+                                                                                <Setter Property="Foreground" Value="#94A3B8"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+                                                            <TextBlock Grid.Row="2" 
+                                                                       Text="{Binding Description}" 
+                                                                       FontSize="12" 
+                                                                       TextWrapping="Wrap">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Setter Property="Foreground" Value="#EF4444"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
+                                                                                <Setter Property="Foreground" Value="#FCA5A5"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                    
+                                    <TextBlock Grid.Row="1" 
+                                               Text="Anomali tespit edilmedi. Tüm sorular normal görünüyor." 
+                                               HorizontalAlignment="Center" 
+                                               VerticalAlignment="Center"
+                                               FontSize="13">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="#94A3B8"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
+                                                        <Setter Property="Foreground" Value="#64748B"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                        <TextBlock.Visibility>
+                                            <Binding Path="Anomalies.Count" Converter="{StaticResource CountToVisConverter}"/>
+                                        </TextBlock.Visibility>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
                         </Grid>
-                    </Border>
-                </Grid>
+                    </TabItem>
+
+                    <!-- TAB 2: Çeldirici & Seçenek Analizi -->
+                    <TabItem Header="🎯 Çeldirici Analizi (Üst/Alt %27)">
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="260"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Question List -->
+                            <Border Grid.Column="0" 
+                                    CornerRadius="16" 
+                                    Padding="12"
+                                    Margin="0,0,14,0"
+                                    BorderThickness="1">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="#F1F5F9"/>
+                                        <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
+                                                <Setter Property="Background" Value="#334155"/>
+                                                <Setter Property="BorderBrush" Value="#475569"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="Soru Listesi" FontWeight="Bold" FontSize="13" Foreground="#475569" Margin="6,0,0,8"/>
+                                    <ListBox Grid.Row="1" 
+                                             ItemsSource="{Binding DistractorStats}"
+                                             SelectedItem="{Binding SelectedDistractorQuestion}"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border CornerRadius="8" Padding="10,6" Margin="0,2" BorderThickness="1" BorderBrush="#CBD5E1">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="White"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding HasMisleadingDistractor}" Value="True">
+                                                                    <Setter Property="Background" Value="#FEF2F2"/>
+                                                                    <Setter Property="BorderBrush" Value="#FCA5A5"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                                                    <Setter Property="Background" Value="#1E293B"/>
+                                                                    <Setter Property="BorderBrush" Value="#475569"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Grid.Column="0">
+                                                            <TextBlock FontWeight="Bold" FontSize="13" Foreground="#1E293B">
+                                                                <Run Text="Soru "/>
+                                                                <Run Text="{Binding QuestionNumber}"/>
+                                                            </TextBlock>
+                                                            <TextBlock FontSize="11" Foreground="#64748B">
+                                                                <Run Text="Doğru: "/>
+                                                                <Run Text="{Binding CorrectAnswer}" FontWeight="Bold"/>
+                                                            </TextBlock>
+                                                        </StackPanel>
+                                                        <Border Grid.Column="1" 
+                                                                Visibility="{Binding HasMisleadingDistractor, Converter={StaticResource BoolToVis}}"
+                                                                Background="#EF4444" 
+                                                                CornerRadius="6" 
+                                                                Padding="6,2" 
+                                                                VerticalAlignment="Center">
+                                                            <TextBlock Text="⚠️ Ters Çeldirici" FontSize="10" FontWeight="Bold" Foreground="White"/>
+                                                        </Border>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
+                            </Border>
+
+                            <!-- Option Breakdown Detail Table -->
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Header info for selected question -->
+                                <Border Grid.Row="0" CornerRadius="12" Padding="14,10" Margin="0,0,0,10" Background="#FFFBEB" BorderBrush="#FDE68A" BorderThickness="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                            <TextBlock Text="🎯 " FontSize="16" VerticalAlignment="Center"/>
+                                            <TextBlock FontWeight="Bold" FontSize="15" Foreground="#B45309" VerticalAlignment="Center">
+                                                <Run Text="Soru "/>
+                                                <Run Text="{Binding SelectedDistractorQuestion.QuestionNumber}"/>
+                                                <Run Text=" — Seçenek ve Çeldirici Dağılımı"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <Border Grid.Column="1" Background="#F59E0B" CornerRadius="8" Padding="10,4">
+                                            <TextBlock Foreground="White" FontWeight="Bold" FontSize="12">
+                                                <Run Text="Doğru Yanıt: "/>
+                                                <Run Text="{Binding SelectedDistractorQuestion.CorrectAnswer}"/>
+                                            </TextBlock>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+
+                                <!-- DataGrid for Options -->
+                                <Border Grid.Row="1" CornerRadius="14" Padding="8" BorderThickness="1">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="White"/>
+                                            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
+                                                    <Setter Property="Background" Value="#1E293B"/>
+                                                    <Setter Property="BorderBrush" Value="#334155"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <DataGrid ItemsSource="{Binding SelectedDistractorQuestion.Options}"
+                                              AutoGenerateColumns="False"
+                                              IsReadOnly="True"
+                                              GridLinesVisibility="Horizontal"
+                                              HeadersVisibility="Column"
+                                              Background="Transparent"
+                                              BorderThickness="0">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Seçenek" Binding="{Binding Option}" FontWeight="Bold" Width="60"/>
+                                            <DataGridTemplateColumn Header="Tür" Width="90">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Border CornerRadius="6" Padding="6,2" HorizontalAlignment="Left">
+                                                            <Border.Style>
+                                                                <Style TargetType="Border">
+                                                                    <Setter Property="Background" Value="#F1F5F9"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsCorrect}" Value="True">
+                                                                            <Setter Property="Background" Value="#DCFCE7"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Border.Style>
+                                                            <TextBlock FontSize="11" FontWeight="Bold">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Setter Property="Text" Value="Çeldirici"/>
+                                                                        <Setter Property="Foreground" Value="#64748B"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding IsCorrect}" Value="True">
+                                                                                <Setter Property="Text" Value="✅ Doğru"/>
+                                                                                <Setter Property="Foreground" Value="#15803D"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTextColumn Header="Üst %27 (Kişi)" Width="85" Binding="{Binding TopCount, StringFormat={}{0} kişi}"/>
+                                            <DataGridTextColumn Header="Üst %27 (%)" Width="85" Binding="{Binding TopPercent, StringFormat={}{0:F1}%}"/>
+                                            <DataGridTextColumn Header="Alt %27 (Kişi)" Width="85" Binding="{Binding BottomCount, StringFormat={}{0} kişi}"/>
+                                            <DataGridTextColumn Header="Alt %27 (%)" Width="85" Binding="{Binding BottomPercent, StringFormat={}{0:F1}%}"/>
+                                            <DataGridTextColumn Header="Toplam" Width="65" Binding="{Binding TotalCount}"/>
+                                            <DataGridTextColumn Header="Genel Oran" Width="80" Binding="{Binding TotalPercent, StringFormat={}{0:F1}%}"/>
+                                            <DataGridTemplateColumn Header="Değerlendirme" Width="*">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Border CornerRadius="6" Padding="8,3" HorizontalAlignment="Left">
+                                                            <Border.Style>
+                                                                <Style TargetType="Border">
+                                                                    <Setter Property="Background" Value="#F1F5F9"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding Quality}" Value="MisleadingDistractor">
+                                                                            <Setter Property="Background" Value="#FEE2E2"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Quality}" Value="GoodDistractor">
+                                                                            <Setter Property="Background" Value="#E0E7FF"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding IsCorrect}" Value="True">
+                                                                            <Setter Property="Background" Value="#DCFCE7"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Border.Style>
+                                                            <TextBlock Text="{Binding EvaluationMessage}" FontSize="11" FontWeight="SemiBold">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Setter Property="Foreground" Value="#475569"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding Quality}" Value="MisleadingDistractor">
+                                                                                <Setter Property="Foreground" Value="#B91C1C"/>
+                                                                            </DataTrigger>
+                                                                            <DataTrigger Binding="{Binding Quality}" Value="GoodDistractor">
+                                                                                <Setter Property="Foreground" Value="#3730A3"/>
+                                                                            </DataTrigger>
+                                                                            <DataTrigger Binding="{Binding IsCorrect}" Value="True">
+                                                                                <Setter Property="Foreground" Value="#15803D"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Border>
+
+                                <!-- Educational Note Footer -->
+                                <Border Grid.Row="2" Margin="0,8,0,0" Padding="12,8" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="10">
+                                    <TextBlock Text="💡 Rehber: İyi bir çeldiricide alt başarı grubundaki oran üst gruptan yüksek olmalıdır. Üst grubun alt gruptan daha fazla işaretlediği çeldiriciler 'Ters Çeldirici ⚠️' olarak işaretlenir (soru kökünde veya şıkta çelişki işareti)." 
+                                               FontSize="11" Foreground="#64748B" TextWrapping="Wrap"/>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
 
                 <!-- Premium Footer -->
                 <Border Grid.Row="3" 

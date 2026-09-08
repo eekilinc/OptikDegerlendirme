@@ -32,7 +32,9 @@ namespace OptikFormApp.ViewModels
                 WrongDeductionFactor = _wrongDeductionFactor,
                 ThemeIndex = _themeIndex,
                 LayoutIndex = _layoutIndex,
-                FontSize = (int)_fontSize
+                FontSize = (int)_fontSize,
+                GradingModeIndex = _gradingSettings.Mode == GradingMode.RelativeEvaluation ? 0 : 1,
+                RelativeThreshold = _gradingSettings.RelativeThreshold
             });
         }
 

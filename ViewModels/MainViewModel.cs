@@ -37,6 +37,8 @@ namespace OptikFormApp.ViewModels
         private readonly SuccessPredictionService _successPredictionService;
         private readonly VersionService _versionService;
         private readonly BackupService _backupService;
+        private readonly GradingService _gradingService;
+        private readonly BookletMappingService _bookletMappingService = new();
 
         private readonly object _studentsLock = new();
         private readonly object _coursesLock = new();
@@ -128,6 +130,19 @@ namespace OptikFormApp.ViewModels
         private SuccessPredictionService.ClassPredictionSummary _classPredictionSummary = new();
         private double _passingScore = 50;
 
+        private GradingSettings _gradingSettings = new();
+        private ClassGradingStats _classGradingStats = new();
+
+        // Booklet Mapping Modal fields
+        private bool _isBookletMappingOpen;
+        private AnswerKeyModel? _selectedSourceAnswerKey;
+        private string _targetBookletName = "B";
+        private string _mappingInputText = "";
+        private string _mappingStatusHeader = "Eşleme Bekleniyor";
+        private string _mappingPreviewOrErrorMessage = "Lütfen eşleme metnini girin.";
+        private bool _isMappingValid;
+        private ObservableCollection<ItemAnalysisService.QuestionDistractorStats> _distractorStats = new();
+
         // Student Detail Modal fields
         private bool _isStudentDetailOpen;
         private StudentResult? _selectedStudentDetail;
@@ -156,6 +171,7 @@ namespace OptikFormApp.ViewModels
             _versionService = new VersionService();
             _versionCheckService = new VersionCheckService();
             _backupService = new BackupService(_dbService, _settingsService, _notificationService, _jsonDataService);
+            _gradingService = new GradingService();
 
             // Undo/Redo event handlers
             _undoRedoManager.CanUndoChanged += (s, e) => { OnPropertyChanged(nameof(CanUndo)); OnPropertyChanged(nameof(UndoDescription)); };
@@ -172,6 +188,9 @@ namespace OptikFormApp.ViewModels
             _themeIndex = saved.ThemeIndex;
             _layoutIndex = saved.LayoutIndex;
             _fontSize = saved.FontSize > 0 ? saved.FontSize : 14;
+            _gradingSettings.Mode = saved.GradingModeIndex == 0 ? GradingMode.RelativeEvaluation : GradingMode.AbsoluteGrading;
+            if (saved.RelativeThreshold > 0)
+                _gradingSettings.RelativeThreshold = saved.RelativeThreshold;
             _gridRowHeight = _layoutIndex == 0 ? 32 : 50;
             _gridCellPadding = _layoutIndex == 0
                 ? new System.Windows.Thickness(10, 0, 10, 0)
@@ -1219,6 +1238,48 @@ namespace OptikFormApp.ViewModels
             CloseAdvancedFilterCommand = new RelayCommand(_ => IsAdvancedFilterOpen = false);
             ClearFiltersCommand = new RelayCommand(_ => ClearAdvancedFilters());
             ToggleSortDirectionCommand = new RelayCommand(_ => { IsSortDescending = !IsSortDescending; });
+            SetQuickFilterCommand = new RelayCommand(p => QuickFilterStatus = p?.ToString() ?? "All");
+
+            // Booklet Mapping Commands
+            OpenBookletMappingCommand = new RelayCommand(_ => {
+                SelectedSourceAnswerKey = AnswerKeys.FirstOrDefault();
+                IsBookletMappingOpen = true;
+                UpdateMappingPreview();
+            });
+            CloseBookletMappingCommand = new RelayCommand(_ => IsBookletMappingOpen = false);
+            ApplyBookletMappingCommand = new RelayCommand(_ => {
+                if (!IsMappingValid || SelectedSourceAnswerKey == null || string.IsNullOrEmpty(SelectedSourceAnswerKey.Answers))
+                {
+                    ShowToastWarning("Geçerli bir eşleme tanımlanmadı!");
+                    return;
+                }
+
+                var validation = _bookletMappingService.ParseAndValidate(MappingInputText, SelectedSourceAnswerKey.Answers.Length);
+                if (!validation.IsValid) return;
+
+                string targetAnswers = _bookletMappingService.GenerateTargetAnswers(SelectedSourceAnswerKey.Answers, validation.ValidMapping);
+                string tName = string.IsNullOrWhiteSpace(TargetBookletName) ? "B" : TargetBookletName.Trim().ToUpper();
+
+                var existing = AnswerKeys.FirstOrDefault(k => string.Equals(k.BookletName, tName, StringComparison.OrdinalIgnoreCase));
+                if (existing != null)
+                {
+                    existing.Answers = targetAnswers;
+                }
+                else
+                {
+                    AnswerKeys.Add(new AnswerKeyModel { BookletName = tName, Answers = targetAnswers });
+                }
+
+                HasUnsavedData = true;
+                IsBookletMappingOpen = false;
+                ShowToastSuccess($"{tName} kitapçığı başarıyla türetildi ve eklendi ({targetAnswers.Length} soru).");
+                AddToLog($"{tName} kitapçığı eşleme matrisi ile türetildi.", LogLevel.Success);
+
+                if (Students.Count > 0)
+                {
+                    EvaluateCommand.Execute(null);
+                }
+            });
 
             // Success Prediction Commands
             OpenSuccessPredictionCommand = new RelayCommand(_ => {
@@ -1537,6 +1598,40 @@ namespace OptikFormApp.ViewModels
 
         public int ValidationIssuesCount => ValidationIssues.Count;
 
+        public GradingSettings GradingSettings 
+        { 
+            get => _gradingSettings; 
+            set { _gradingSettings = value; OnPropertyChanged(); } 
+        }
+
+        public ClassGradingStats ClassGradingStats 
+        { 
+            get => _classGradingStats; 
+            set { _classGradingStats = value; OnPropertyChanged(); } 
+        }
+
+        public int GradingModeIndex
+        {
+            get => _gradingSettings.Mode == GradingMode.RelativeEvaluation ? 0 : 1;
+            set
+            {
+                _gradingSettings.Mode = value == 0 ? GradingMode.RelativeEvaluation : GradingMode.AbsoluteGrading;
+                OnPropertyChanged();
+                SaveSettings();
+            }
+        }
+
+        public double RelativeThreshold
+        {
+            get => _gradingSettings.RelativeThreshold;
+            set
+            {
+                _gradingSettings.RelativeThreshold = value;
+                OnPropertyChanged();
+                SaveSettings();
+            }
+        }
+
         // Collections and Properties
         public ObservableCollection<StudentResult> Students { get; set; }
         public ObservableCollection<AnswerKeyModel> AnswerKeys { get; set; }
@@ -1733,6 +1828,34 @@ namespace OptikFormApp.ViewModels
         public ObservableCollection<ItemAnalysisService.QuestionItemStats> QuestionStats { get => _questionStats; set { _questionStats = value; OnPropertyChanged(); } }
         public ObservableCollection<ItemAnalysisService.AnomalyResult> Anomalies { get => _anomalies; set { _anomalies = value; OnPropertyChanged(); } }
         public ItemAnalysisService.ReliabilityStats ReliabilityStats { get => _reliabilityStats; set { _reliabilityStats = value; OnPropertyChanged(); } }
+        public ObservableCollection<ItemAnalysisService.QuestionDistractorStats> DistractorStats { get => _distractorStats; set { _distractorStats = value; OnPropertyChanged(); } }
+        private ItemAnalysisService.QuestionDistractorStats? _selectedDistractorQuestion;
+        public ItemAnalysisService.QuestionDistractorStats? SelectedDistractorQuestion { get => _selectedDistractorQuestion; set { _selectedDistractorQuestion = value; OnPropertyChanged(); } }
+
+        // Booklet Mapping Properties & Commands
+        public bool IsBookletMappingOpen { get => _isBookletMappingOpen; set { _isBookletMappingOpen = value; OnPropertyChanged(); } }
+        public AnswerKeyModel? SelectedSourceAnswerKey 
+        { 
+            get => _selectedSourceAnswerKey; 
+            set { _selectedSourceAnswerKey = value; OnPropertyChanged(); UpdateMappingPreview(); } 
+        }
+        public string TargetBookletName 
+        { 
+            get => _targetBookletName; 
+            set { _targetBookletName = value; OnPropertyChanged(); UpdateMappingPreview(); } 
+        }
+        public string MappingInputText 
+        { 
+            get => _mappingInputText; 
+            set { _mappingInputText = value; OnPropertyChanged(); UpdateMappingPreview(); } 
+        }
+        public string MappingStatusHeader { get => _mappingStatusHeader; set { _mappingStatusHeader = value; OnPropertyChanged(); } }
+        public string MappingPreviewOrErrorMessage { get => _mappingPreviewOrErrorMessage; set { _mappingPreviewOrErrorMessage = value; OnPropertyChanged(); } }
+        public bool IsMappingValid { get => _isMappingValid; set { _isMappingValid = value; OnPropertyChanged(); } }
+
+        public ICommand OpenBookletMappingCommand { get; set; }
+        public ICommand CloseBookletMappingCommand { get; set; }
+        public ICommand ApplyBookletMappingCommand { get; set; }
         
         // Item Analysis Commands
         public ICommand OpenItemAnalysisCommand { get; set; }
@@ -1744,6 +1867,7 @@ namespace OptikFormApp.ViewModels
         public ICommand CloseAdvancedFilterCommand { get; set; }
         public ICommand ClearFiltersCommand { get; set; }
         public ICommand ToggleSortDirectionCommand { get; set; }
+        public ICommand SetQuickFilterCommand { get; set; }
 
         // Success Prediction Properties
         public bool IsSuccessPredictionOpen { get => _isSuccessPredictionOpen; set { _isSuccessPredictionOpen = value; OnPropertyChanged(); } }

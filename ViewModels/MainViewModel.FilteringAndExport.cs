@@ -26,10 +26,27 @@ namespace OptikFormApp.ViewModels
             BulkAnswerPreview = count > 0 ? $"{count} geçerli giriş algılandı" : "Henüz geçerli giriş yok";
         }
 
+        private string _quickFilterStatus = "All";
+        public string QuickFilterStatus
+        {
+            get => _quickFilterStatus;
+            set
+            {
+                _quickFilterStatus = value;
+                OnPropertyChanged();
+                StudentsView.Refresh();
+            }
+        }
+
         private bool FilterStudents(object obj)
         {
             if (obj is not StudentResult student) return false;
             
+            // Quick Filter Pills
+            if (QuickFilterStatus == "Passed" && student.Status != "Geçti") return false;
+            if (QuickFilterStatus == "Conditional" && student.Status != "Şartlı Geçti") return false;
+            if (QuickFilterStatus == "Failed" && student.Status != "Kaldı") return false;
+
             // Text search filter
             if (!string.IsNullOrWhiteSpace(SearchText))
             {

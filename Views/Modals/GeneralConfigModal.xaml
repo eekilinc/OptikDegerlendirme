@@ -392,6 +392,115 @@
                         </StackPanel>
                     </Border>
 
+                    <!-- Grading System (BDS / Absolute) Card -->
+                    <Border CornerRadius="16" 
+                            Padding="20,18"
+                            Margin="0,0,0,12"
+                            BorderThickness="1">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="#F1F5F9"/>
+                                <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
+                                        <Setter Property="Background" Value="#334155"/>
+                                        <Setter Property="BorderBrush" Value="#475569"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                                <Border Width="40" 
+                                        Height="40" 
+                                        CornerRadius="10"
+                                        Background="#EDE9FE"
+                                        Margin="0,0,12,0">
+                                    <TextBlock Text="🎓" 
+                                               FontSize="20" 
+                                               HorizontalAlignment="Center" 
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Harf Notu &amp; Değerlendirme Sistemi" 
+                                               FontSize="15" 
+                                               FontWeight="SemiBold">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="#1E293B"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
+                                                        <Setter Property="Foreground" Value="#F8FAFC"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <TextBlock Text="Çan eğrisi (BDS) veya mutlak katalog seçimi" 
+                                               FontSize="12" 
+                                               Opacity="0.7">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="#64748B"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
+                                                        <Setter Property="Foreground" Value="#94A3B8"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <TextBlock Text="Değerlendirme Modu" 
+                                       FontSize="12" 
+                                       Margin="0,0,0,6">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#64748B"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
+                                                <Setter Property="Foreground" Value="#94A3B8"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <ComboBox SelectedIndex="{Binding GradingModeIndex, UpdateSourceTrigger=PropertyChanged}"
+                                      Padding="10,10" 
+                                      MinHeight="40"
+                                      Margin="0,0,0,14"
+                                      BorderThickness="1"
+                                      BorderBrush="#E2E8F0">
+                                <ComboBoxItem Content="📊 Bağıl Değerlendirme (YÖK Çan Eğrisi / T-Skor)"/>
+                                <ComboBoxItem Content="📋 Mutlak Değerlendirme (Katalog Puan Aralıkları)"/>
+                            </ComboBox>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="Bağıl Barajı (HBN Alt Sınırı)" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Bu puanın altı çana katılmaz, doğrudan FF alır" FontSize="11" Opacity="0.7"/>
+                                </StackPanel>
+                                <TextBox Grid.Column="1" 
+                                         Text="{Binding RelativeThreshold, UpdateSourceTrigger=PropertyChanged}"
+                                         Padding="8,8" 
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         FontWeight="Bold" 
+                                         FontSize="14" 
+                                         Foreground="#8B5CF6"
+                                         Background="White"
+                                         BorderBrush="#8B5CF6"
+                                         BorderThickness="1.5"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
                     <!-- Excel Folder Card -->
                     <Border CornerRadius="16" 
                             Padding="20,18"

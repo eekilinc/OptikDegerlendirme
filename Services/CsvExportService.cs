@@ -17,7 +17,7 @@ namespace OptikFormApp.Services
             var sb = new StringBuilder();
 
             // Başlık satırı
-            sb.AppendLine("Sıra (Derece);Öğrenci No;Ad Soyad;Kitapçık;Doğru;Yanlış;Boş;Net;Puan;Cevaplar");
+            sb.AppendLine("Sıra (Derece);Öğrenci No;Ad Soyad;Kitapçık;Doğru;Yanlış;Boş;Net;Puan;Harf Notu;Katsayı;Durum;T-Skor;Cevaplar");
 
             foreach (var s in students)
             {
@@ -31,6 +31,10 @@ namespace OptikFormApp.Services
                     s.EmptyCount,
                     s.NetCount.ToString("F2"),
                     s.Score.ToString("F2"),
+                    Escape(s.LetterGrade),
+                    s.GradePoint.ToString("F2"),
+                    Escape(s.Status),
+                    s.TScore.ToString("F2"),
                     Escape(s.RawAnswers)
                 ));
             }

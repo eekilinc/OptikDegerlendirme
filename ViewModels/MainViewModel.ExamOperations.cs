@@ -131,9 +131,11 @@ namespace OptikFormApp.ViewModels
                 var coeff = NetCoefficient;
                 var bScore = BaseScore;
 
+                ClassGradingStats? gradingStats = null;
                 await Task.Run(() => 
                 {
-                    _parserService.EvaluateStudents(list, keys, settings, factor);
+                    _parserService.EvaluateStudents(list, keys, settings, factor, coeff, bScore);
+                    gradingStats = _gradingService.CalculateGrades(list, GradingSettings);
                 });
 
                 var statsList = _parserService.CalculateStatistics(list, keys);
@@ -151,7 +153,13 @@ namespace OptikFormApp.ViewModels
                         original.EmptyCount = evaluated.EmptyCount;
                         original.NetCount = evaluated.NetCount;
                         original.Rank = evaluated.Rank;
-                        original.Score = Math.Round((evaluated.NetCount * coeff) + bScore, 2);
+                        original.Score = evaluated.Score;
+                        original.LetterGrade = evaluated.LetterGrade;
+                        original.GradePoint = evaluated.GradePoint;
+                        original.Status = evaluated.Status;
+                        original.ZScore = evaluated.ZScore;
+                        original.TScore = evaluated.TScore;
+                        original.Percentile = evaluated.Percentile;
                         
                         original.QuestionResults = new List<bool>(evaluated.QuestionResults);
                         original.ColoredAnswers.Clear();
@@ -159,6 +167,11 @@ namespace OptikFormApp.ViewModels
                         {
                             original.ColoredAnswers.Add(answer);
                         }
+                    }
+
+                    if (gradingStats != null)
+                    {
+                        ClassGradingStats = gradingStats;
                     }
 
                     Statistics.Clear();
@@ -178,7 +191,14 @@ namespace OptikFormApp.ViewModels
                 await RunItemAnalysisAsync();
 
                 StatusMessage = "Değerlendirme başarıyla tamamlandı.";
-                AddToLog("Değerlendirme başarıyla tamamlandı.", LogLevel.Success);
+                if (gradingStats != null)
+                {
+                    AddToLog($"Değerlendirme ve Harf Notları tamamlandı. Düzey: {gradingStats.ClassLevelDescription}, Ort: {gradingStats.MeanScore:F2}, Sapma: {gradingStats.StandardDeviation:F2}, Başarı: %{gradingStats.PassRate:F1}", LogLevel.Success);
+                }
+                else
+                {
+                    AddToLog("Değerlendirme başarıyla tamamlandı.", LogLevel.Success);
+                }
             }
             catch (Exception ex)
             {
@@ -367,6 +387,7 @@ namespace OptikFormApp.ViewModels
                     var questionStats = _itemAnalysisService.AnalyzeQuestions(studentsCopy, answerKey, questionCount);
                     var reliability = _itemAnalysisService.CalculateReliability(studentsCopy, answerKey, questionCount);
                     var anomalies = _itemAnalysisService.DetectAnomalies(studentsCopy, answerKey, questionCount);
+                    var distractors = _itemAnalysisService.AnalyzeDistractors(studentsCopy, answerKey, questionCount);
 
                     System.Windows.Application.Current.Dispatcher.Invoke(() =>
                     {
@@ -378,6 +399,10 @@ namespace OptikFormApp.ViewModels
 
                         Anomalies.Clear();
                         foreach (var anomaly in anomalies) Anomalies.Add(anomaly);
+
+                        DistractorStats.Clear();
+                        foreach (var d in distractors) DistractorStats.Add(d);
+                        SelectedDistractorQuestion = DistractorStats.FirstOrDefault();
                     });
                 });
 
@@ -448,6 +473,71 @@ namespace OptikFormApp.ViewModels
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        private void UpdateMappingPreview()
+        {
+            if (SelectedSourceAnswerKey == null || string.IsNullOrWhiteSpace(SelectedSourceAnswerKey.Answers))
+            {
+                IsMappingValid = false;
+                MappingStatusHeader = "Kaynak Kitapçık Seçilmedi";
+                MappingPreviewOrErrorMessage = "Lütfen önce geçerli cevap anahtarı bulunan bir kaynak kitapçık (örn: A Kitapçığı) seçin.";
+                return;
+            }
+
+            int expectedCount = SelectedSourceAnswerKey.Answers.Length;
+            string targetName = string.IsNullOrWhiteSpace(TargetBookletName) ? "B" : TargetBookletName.Trim().ToUpper();
+            string sourceName = SelectedSourceAnswerKey.BookletName;
+
+            if (string.IsNullOrWhiteSpace(MappingInputText))
+            {
+                IsMappingValid = false;
+                MappingStatusHeader = "Eşleme Bekleniyor";
+                MappingPreviewOrErrorMessage = $"Lütfen {expectedCount} soru için eşleme kurallarını girin veya yapıştırın.\n\nÖrnek formatlar:\n- Ok formatı: 1->5, 2->1, 3->4...\n- Satır satır: 1 5 [Enter] 2 1 [Enter] 3 4...\n- Doğrudan sıra: 5, 1, 4, 2, 3...";
+                return;
+            }
+
+            var validation = _bookletMappingService.ParseAndValidate(MappingInputText, expectedCount);
+            if (!validation.IsValid)
+            {
+                IsMappingValid = false;
+                MappingStatusHeader = "⚠️ Hatalı Eşleme";
+                MappingPreviewOrErrorMessage = validation.ErrorMessage ?? "Geçersiz eşleme formatı.";
+                return;
+            }
+
+            try
+            {
+                string targetAnswers = _bookletMappingService.GenerateTargetAnswers(SelectedSourceAnswerKey.Answers, validation.ValidMapping);
+                IsMappingValid = true;
+                MappingStatusHeader = $"✅ Başarılı ({validation.ValidMapping.Count} Soru Eşleşti)";
+
+                var previewLines = new System.Text.StringBuilder();
+                previewLines.AppendLine($"Kaynak: {sourceName} Kitapçığı ({expectedCount} Soru) -> Hedef: {targetName} Kitapçığı");
+                previewLines.AppendLine($"Üretilen Cevaplar: {targetAnswers}");
+                previewLines.AppendLine();
+                previewLines.AppendLine("Eşleme Önizlemesi:");
+
+                int displayCount = Math.Min(validation.ValidMapping.Count, 15);
+                for (int i = 1; i <= displayCount; i++)
+                {
+                    int srcQ = validation.ValidMapping[i];
+                    char ans = targetAnswers[i - 1];
+                    previewLines.AppendLine($"  {targetName} Soru {i,2}  <--  {sourceName} Soru {srcQ,2}   (Cevap: {ans})");
+                }
+                if (validation.ValidMapping.Count > displayCount)
+                {
+                    previewLines.AppendLine($"  ... ve {validation.ValidMapping.Count - displayCount} soru daha.");
+                }
+
+                MappingPreviewOrErrorMessage = previewLines.ToString();
+            }
+            catch (Exception ex)
+            {
+                IsMappingValid = false;
+                MappingStatusHeader = "⚠️ Oluşturma Hatası";
+                MappingPreviewOrErrorMessage = ex.Message;
             }
         }
     }

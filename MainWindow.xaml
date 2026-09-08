@@ -64,6 +64,7 @@
                         <MenuItem Header="Sınavı Veritabanına Kaydet" Command="{Binding SaveExamCommand}" InputGestureText="Ctrl+S"/>
                         <Separator/>
                         <MenuItem Header="Cevap Anahtarlarını Yönet" Command="{Binding OpenModalCommand}"/>
+                        <MenuItem Header="🔄 Kitapçık Dönüştürücü (Eşleme Matrisi)" Command="{Binding OpenBookletMappingCommand}"/>
                         <MenuItem Header="Soru Ayarlarını Yönet (İptal/Çoklu)" Command="{Binding OpenQuestionSettingsCommand}"/>
                         <MenuItem Header="Öğrenim Çıktılarını (Konu) Yönet" Command="{Binding OpenLearningOutcomesCommand}"/>
                         <Separator/>
@@ -117,6 +118,7 @@
             <Grid Grid.Row="1" Grid.Column="1" Margin="25">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -153,8 +155,12 @@
                     <views:WorkflowView />
                 </Border>
 
+                <!-- EXECUTIVE KPI DASHBOARD (Shown when students loaded) -->
+                <views:DashboardKpiView Grid.Row="1" Margin="0,0,0,15"
+                                        Visibility="{Binding Students.Count, Converter={StaticResource DataToVisConverter}}"/>
+
                 <!-- TAB CONTROL -->
-                <Border Grid.Row="1" Style="{StaticResource GlassCard}" ClipToBounds="True">
+                <Border Grid.Row="2" Style="{StaticResource GlassCard}" ClipToBounds="True">
                     <Border.Background>
                         <RadialGradientBrush Center="0.5,0.3" RadiusX="1" RadiusY="1">
                             <GradientStop Color="#08FFFFFF" Offset="0"/>
@@ -244,7 +250,7 @@
                 </Border>
 
                 <!-- STATUS PANEL & LOGS (BOTTOM) -->
-                <Border Grid.Row="2" Margin="0,20,0,0">
+                <Border Grid.Row="3" Margin="0,20,0,0">
                     <Border.RenderTransform>
                         <TranslateTransform X="0" Y="0"/>
                     </Border.RenderTransform>
@@ -341,6 +347,10 @@
         <!-- STUDENT DETAIL MODAL OVERLAY -->
         <modals:StudentDetailModal Panel.ZIndex="645" 
                                    Visibility="{Binding IsStudentDetailOpen, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+        <!-- BOOKLET MAPPING MODAL OVERLAY -->
+        <modals:BookletMappingModal Panel.ZIndex="648" 
+                                    Visibility="{Binding IsBookletMappingOpen, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
         <!-- VALIDATION DETAILS MODAL OVERLAY -->
         <modals:ValidationDetailsModal Panel.ZIndex="650" 

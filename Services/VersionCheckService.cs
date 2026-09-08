@@ -12,14 +12,22 @@ namespace OptikFormApp.Services
     /// </summary>
     public class VersionCheckService
     {
+        private static readonly HttpClient _sharedHttpClient = CreateHttpClient();
+
+        private static HttpClient CreateHttpClient()
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("User-Agent", "OptikDegerlendirme-App");
+            client.Timeout = TimeSpan.FromSeconds(10);
+            return client;
+        }
+
         private readonly HttpClient _httpClient;
         private readonly string _githubApiUrl = "https://api.github.com/repos/eekilinc/optikdegerlendirme/releases/latest";
         
-        public VersionCheckService()
+        public VersionCheckService(HttpClient? httpClient = null)
         {
-            _httpClient = new HttpClient();
-            _httpClient.DefaultRequestHeaders.Add("User-Agent", "OptikDegerlendirme-App");
-            _httpClient.Timeout = TimeSpan.FromSeconds(10);
+            _httpClient = httpClient ?? _sharedHttpClient;
         }
 
         /// <summary>
@@ -29,11 +37,6 @@ namespace OptikFormApp.Services
         {
             try
             {
-                // TLS 1.2 ve üzeri kullan
-                System.Net.ServicePointManager.SecurityProtocol = 
-                    System.Net.SecurityProtocolType.Tls12 | 
-                    System.Net.SecurityProtocolType.Tls13;
-                
                 var response = await _httpClient.GetAsync(_githubApiUrl);
                 
                 if (!response.IsSuccessStatusCode)
@@ -81,7 +84,7 @@ namespace OptikFormApp.Services
                     PublishedAt = release.PublishedAt
                 };
             }
-            catch (HttpRequestException ex)
+            catch (HttpRequestException)
             {
                 return new VersionCheckResult
                 {

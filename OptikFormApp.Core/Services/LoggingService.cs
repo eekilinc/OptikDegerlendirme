@@ -53,6 +53,11 @@ public class LoggingService : ILoggingService
         _logger.Warning(message, args);
     }
 
+    public void LogWarning(Exception exception, string message, params object[] args)
+    {
+        _logger.Warning(exception, message, args);
+    }
+
     public void LogError(Exception exception, string message, params object[] args)
     {
         _logger.Error(exception, message, args);

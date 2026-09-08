@@ -1,6 +1,6 @@
 ; Optik Değerlendirme Installer Script
 #define MyAppName "Optik Değerlendirme"
-#define MyAppVersion "1.3.0"
+#define MyAppVersion "1.3.4"
 #define MyAppPublisher "AĞLASUN MYO"
 #define MyAppURL "https://github.com/eekilinc/optikdegerlendirme"
 #define MyAppExeName "OptikFormApp.exe"

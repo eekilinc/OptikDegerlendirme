@@ -77,13 +77,13 @@ public class BackupService
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogWarning("Failed to delete old backup: {FileName}", file.Name);
+                    _logger.LogWarning(ex, "Failed to delete old backup: {FileName}", file.Name);
                 }
             }
         }
         catch (Exception ex)
         {
-            _logger.LogWarning("Failed to clean old backups");
+            _logger.LogWarning(ex, "Failed to clean old backups");
         }
     }
 

@@ -195,12 +195,13 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="TabItem">
-                                            <Border Name="Border" Padding="20,12" BorderThickness="0,0,0,2" BorderBrush="Transparent" Background="{DynamicResource CardBg}">
+                                            <Border Name="Border" Padding="18,12" Margin="2,4,2,0" CornerRadius="8,8,0,0" BorderThickness="0,0,0,3" BorderBrush="Transparent" Background="Transparent" Cursor="Hand">
                                                 <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="0"/>
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsSelected" Value="True">
                                                     <Setter TargetName="Border" Property="BorderBrush" Value="#3B82F6"/>
+                                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource CardBg}"/>
                                                     <Setter Property="TextElement.Foreground" Value="#3B82F6"/>
                                                     <Setter Property="TextElement.FontWeight" Value="Bold"/>
                                                 </Trigger>
@@ -209,7 +210,8 @@
                                                     <Setter Property="TextElement.FontWeight" Value="SemiBold"/>
                                                 </Trigger>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="TextElement.Foreground" Value="#3B82F6"/>
+                                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource HoverBg}"/>
+                                                    <Setter Property="TextElement.Foreground" Value="#2563EB"/>
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -218,32 +220,32 @@
                             </Style>
                         </TabControl.Resources>
                         <!-- TAB 1: STUDENTS -->
-                        <TabItem Header="Öğrenci İşlemleri">
+                        <TabItem Header="👥 Öğrenci Listesi">
                             <views:StudentListView />
                         </TabItem>
 
                         <!-- TAB 2: STATISTICS -->
-                        <TabItem Header="Madde Analizi">
+                        <TabItem Header="📊 Madde Analizi">
                             <views:StatisticsView />
                         </TabItem>
 
                         <!-- TAB 3: CHARTS -->
-                        <TabItem Header="Grafiksel Analiz">
+                        <TabItem Header="📈 Grafiksel Analiz &amp; Çan Eğrisi">
                             <views:PremiumChartsView />
                         </TabItem>
 
                         <!-- TAB 4: OUTCOMES -->
-                        <TabItem Header="Kazanım Değerlendirmesi">
+                        <TabItem Header="🎯 Kazanım Analizi">
                             <views:OutcomesView />
                         </TabItem>
 
                         <!-- TAB 5: QUESTION DIFFICULTY -->
-                        <TabItem Header="Zorluk Seviyesi Analizi">
+                        <TabItem Header="⚖️ Soru Zorluk Düzeyleri">
                             <views:QuestionDifficultyView />
                         </TabItem>
 
                         <!-- TAB 6: STATISTICAL REPORTS -->
-                        <TabItem Header="İstatistiksel Raporlar">
+                        <TabItem Header="📋 Kapsamlı İstatistik Raporu">
                             <views:StatisticsReportView />
                         </TabItem>
                     </TabControl>

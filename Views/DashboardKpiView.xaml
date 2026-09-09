@@ -4,136 +4,213 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="110" d:DesignWidth="1100">
+             d:DesignHeight="120" d:DesignWidth="1200">
     
     <UserControl.Resources>
-        <!-- KPI Card Style -->
-        <Style x:Key="KpiCardBorder" TargetType="Border">
+        <!-- Lüks Executive KPI Kart Stili -->
+        <Style x:Key="ExecutiveKpiCard" TargetType="Border">
             <Setter Property="Background" Value="{DynamicResource CardBg}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="14"/>
-            <Setter Property="Padding" Value="14,10"/>
-            <Setter Property="Margin" Value="4"/>
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Padding" Value="16,14"/>
+            <Setter Property="Margin" Value="5"/>
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect Color="#000000" Opacity="0.04" BlurRadius="10" ShadowDepth="2"/>
+                    <DropShadowEffect Color="#000000" Opacity="0.06" BlurRadius="16" ShadowDepth="3"/>
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- İkon Rozet Stili -->
+        <Style x:Key="KpiIconBadge" TargetType="Border">
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
     </UserControl.Resources>
 
-    <UniformGrid Rows="1" Columns="6" Margin="0,0,0,10">
+    <UniformGrid Rows="1" Columns="6" Margin="0,0,0,14">
         <!-- 1. Katılım / Sınava Giren -->
-        <Border Style="{StaticResource KpiCardBorder}">
+        <Border Style="{StaticResource ExecutiveKpiCard}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" Grid.Row="0">
-                    <TextBlock Text="👥" FontSize="13" Margin="0,0,6,0"/>
-                    <TextBlock Text="SINAVA GİREN" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" Opacity="0.9"/>
+                
+                <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center">
+                    <Border Style="{StaticResource KpiIconBadge}" Background="#EFF6FF">
+                        <TextBlock Text="👥" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="KATILIM" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
+                        <TextBlock Text="Sınava Giren" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}"/>
+                    </StackPanel>
                 </StackPanel>
-                <TextBlock Grid.Row="1" Text="{Binding Students.Count}" FontSize="24" FontWeight="ExtraBold" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" Margin="0,2"/>
-                <TextBlock Grid.Row="2" Text="Toplam Katılım" FontSize="10" Foreground="#3B82F6" FontWeight="SemiBold"/>
+
+                <TextBlock Grid.Row="1" Text="{Binding Students.Count}" FontSize="28" FontWeight="ExtraBold" Foreground="#2563EB" VerticalAlignment="Center" Margin="0,4,0,2"/>
+                
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <Border Background="#DBEAFE" CornerRadius="4" Padding="6,2">
+                        <TextBlock Text="Toplam Katılım" FontSize="9" FontWeight="Bold" Foreground="#1D4ED8"/>
+                    </Border>
+                </StackPanel>
             </Grid>
         </Border>
 
         <!-- 2. Sınıf Ortalaması -->
-        <Border Style="{StaticResource KpiCardBorder}">
+        <Border Style="{StaticResource ExecutiveKpiCard}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" Grid.Row="0">
-                    <TextBlock Text="📈" FontSize="13" Margin="0,0,6,0"/>
-                    <TextBlock Text="ORTALAMA" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" Opacity="0.9"/>
+                
+                <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center">
+                    <Border Style="{StaticResource KpiIconBadge}" Background="#ECFDF5">
+                        <TextBlock Text="📈" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="ORTALAMA" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
+                        <TextBlock Text="Sınıf Puanı" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}"/>
+                    </StackPanel>
                 </StackPanel>
-                <TextBlock Grid.Row="1" Text="{Binding ClassGradingStats.MeanScore, StringFormat={}{0:F2}}" FontSize="24" FontWeight="ExtraBold" Foreground="#10B981" VerticalAlignment="Center" Margin="0,2"/>
-                <TextBlock Grid.Row="2" Text="{Binding ClassGradingStats.StandardDeviation, StringFormat={}±{0:F2} Sapma}" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
+
+                <TextBlock Grid.Row="1" Text="{Binding ClassGradingStats.MeanScore, StringFormat={}{0:F2}}" FontSize="28" FontWeight="ExtraBold" Foreground="#10B981" VerticalAlignment="Center" Margin="0,4,0,2"/>
+                
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <Border Background="#D1FAE5" CornerRadius="4" Padding="6,2">
+                        <TextBlock Text="{Binding ClassGradingStats.StandardDeviation, StringFormat={}±{0:F2} Sapma}" FontSize="9" FontWeight="Bold" Foreground="#047857"/>
+                    </Border>
+                </StackPanel>
             </Grid>
         </Border>
 
         <!-- 3. Başarı Oranı -->
-        <Border Style="{StaticResource KpiCardBorder}">
+        <Border Style="{StaticResource ExecutiveKpiCard}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" Grid.Row="0">
-                    <TextBlock Text="🎯" FontSize="13" Margin="0,0,6,0"/>
-                    <TextBlock Text="BAŞARI ORANI" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" Opacity="0.9"/>
+                
+                <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center">
+                    <Border Style="{StaticResource KpiIconBadge}" Background="#F5F3FF">
+                        <TextBlock Text="🎯" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="BAŞARI" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
+                        <TextBlock Text="Geçme Oranı" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}"/>
+                    </StackPanel>
                 </StackPanel>
-                <TextBlock Grid.Row="1" Text="{Binding ClassGradingStats.PassRate, StringFormat={}%{0:F1}}" FontSize="24" FontWeight="ExtraBold" Foreground="#8B5CF6" VerticalAlignment="Center" Margin="0,2"/>
+
+                <TextBlock Grid.Row="1" Text="{Binding ClassGradingStats.PassRate, StringFormat={}%{0:F1}}" FontSize="28" FontWeight="ExtraBold" Foreground="#8B5CF6" VerticalAlignment="Center" Margin="0,4,0,2"/>
+                
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
-                    <TextBlock Text="{Binding ClassGradingStats.PassedCount, StringFormat={}{0} Geçti}" FontSize="10" Foreground="#15803D" FontWeight="SemiBold" Margin="0,0,4,0"/>
+                    <TextBlock Text="{Binding ClassGradingStats.PassedCount, StringFormat={}{0} Geçti}" FontSize="10" Foreground="#15803D" FontWeight="Bold" Margin="0,0,4,0"/>
                     <TextBlock Text="•" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,0,4,0"/>
-                    <TextBlock Text="{Binding ClassGradingStats.FailedCount, StringFormat={}{0} Kaldı}" FontSize="10" Foreground="#B91C1C" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding ClassGradingStats.FailedCount, StringFormat={}{0} Kaldı}" FontSize="10" Foreground="#DC2626" FontWeight="Bold"/>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- 4. Uç Puanlar -->
-        <Border Style="{StaticResource KpiCardBorder}">
+        <!-- 4. Uç Puanlar & Ranj -->
+        <Border Style="{StaticResource ExecutiveKpiCard}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" Grid.Row="0">
-                    <TextBlock Text="🏆" FontSize="13" Margin="0,0,6,0"/>
-                    <TextBlock Text="EN YÜKSEK / EN DÜŞÜK" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" Opacity="0.9"/>
+                
+                <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center">
+                    <Border Style="{StaticResource KpiIconBadge}" Background="#FEF3C7">
+                        <TextBlock Text="🏆" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="UÇ DEĞERLER" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
+                        <TextBlock Text="En Yüksek / Düşük" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}"/>
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,2">
-                    <TextBlock Text="{Binding ClassGradingStats.HighestScore, StringFormat={}{0:F1}}" FontSize="22" FontWeight="ExtraBold" Foreground="#F59E0B"/>
-                    <TextBlock Text=" / " FontSize="16" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
-                    <TextBlock Text="{Binding ClassGradingStats.LowestScore, StringFormat={}{0:F1}}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,4,0,2">
+                    <TextBlock Text="{Binding ClassGradingStats.HighestScore, StringFormat={}{0:F0}}" FontSize="26" FontWeight="ExtraBold" Foreground="#D97706"/>
+                    <TextBlock Text=" / " FontSize="18" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding ClassGradingStats.LowestScore, StringFormat={}{0:F0}}" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                 </StackPanel>
-                <TextBlock Grid.Row="2" Text="Puan Yelpazesi" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
+
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <Border Background="#FEF3C7" CornerRadius="4" Padding="6,2">
+                        <TextBlock Text="{Binding ClassStats.Range, StringFormat={}Ranj: {0:F0} Puan}" FontSize="9" FontWeight="Bold" Foreground="#B45309"/>
+                    </Border>
+                </StackPanel>
             </Grid>
         </Border>
 
         <!-- 5. Çan Seviyesi (BDS) -->
-        <Border Style="{StaticResource KpiCardBorder}">
+        <Border Style="{StaticResource ExecutiveKpiCard}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" Grid.Row="0">
-                    <TextBlock Text="📏" FontSize="13" Margin="0,0,6,0"/>
-                    <TextBlock Text="SINIF DÜZEYİ (BDS)" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" Opacity="0.9"/>
+                
+                <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center">
+                    <Border Style="{StaticResource KpiIconBadge}" Background="#EEF2FF">
+                        <TextBlock Text="⚖️" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="SINIF DÜZEYİ" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
+                        <TextBlock Text="YÖK BDS Çan Eğrisi" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}"/>
+                    </StackPanel>
                 </StackPanel>
+
                 <TextBlock Grid.Row="1" Text="{Binding ClassGradingStats.ClassLevelDescription}" 
-                           FontSize="14" FontWeight="Bold" Foreground="#6366F1" 
-                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,2"/>
-                <TextBlock Grid.Row="2" Text="YÖK Çan Eğrisi" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
+                           FontSize="15" FontWeight="ExtraBold" Foreground="#4F46E5" 
+                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,4,0,2"/>
+                
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <Border Background="#E0E7FF" CornerRadius="4" Padding="6,2">
+                        <TextBlock Text="T-Skor Bağıl Not" FontSize="9" FontWeight="Bold" Foreground="#3730A3"/>
+                    </Border>
+                </StackPanel>
             </Grid>
         </Border>
 
-        <!-- 6. Güvenilirlik KR-20 -->
-        <Border Style="{StaticResource KpiCardBorder}">
+        <!-- 6. Güvenilirlik KR-20 & SeM -->
+        <Border Style="{StaticResource ExecutiveKpiCard}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" Grid.Row="0">
-                    <TextBlock Text="🛡️" FontSize="13" Margin="0,0,6,0"/>
-                    <TextBlock Text="TEST GÜVENİLİRLİĞİ" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" Opacity="0.9"/>
+                
+                <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center">
+                    <Border Style="{StaticResource KpiIconBadge}" Background="#E0F2FE">
+                        <TextBlock Text="🛡️" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="GÜVENİLİRLİK" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
+                        <TextBlock Text="KR-20 / Tutarlık" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}"/>
+                    </StackPanel>
                 </StackPanel>
-                <TextBlock Grid.Row="1" Text="{Binding ReliabilityStats.KR20, StringFormat={}{0:F2}}" FontSize="24" FontWeight="ExtraBold" Foreground="#06B6D4" VerticalAlignment="Center" Margin="0,2"/>
-                <TextBlock Grid.Row="2" Text="KR-20 Katsayısı" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
+
+                <TextBlock Grid.Row="1" Text="{Binding ReliabilityStats.KR20, StringFormat={}{0:F2}}" FontSize="28" FontWeight="ExtraBold" Foreground="#0284C7" VerticalAlignment="Center" Margin="0,4,0,2"/>
+                
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <Border Background="#E0F2FE" CornerRadius="4" Padding="6,2">
+                        <TextBlock Text="{Binding ClassStats.StandardErrorOfMeasurement, StringFormat={}SeM: ±{0:F1}}" FontSize="9" FontWeight="Bold" Foreground="#0369A1"/>
+                    </Border>
+                </StackPanel>
             </Grid>
         </Border>
     </UniformGrid>
 </UserControl>
+

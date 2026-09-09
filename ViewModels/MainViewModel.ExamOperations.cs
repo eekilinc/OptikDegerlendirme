@@ -345,8 +345,10 @@ namespace OptikFormApp.ViewModels
             if (Students.Count == 0) return;
 
             var studentsList = Students.ToList();
+            double kr20 = ReliabilityStats?.KR20 ?? 0;
+            double cronbach = ReliabilityStats?.CronbachAlpha ?? 0;
 
-            ClassStats = _statsReportService.CalculateClassStatistics(studentsList);
+            ClassStats = _statsReportService.CalculateClassStatistics(studentsList, passingScore: 50, kr20: kr20, cronbachAlpha: cronbach);
             OnPropertyChanged(nameof(ClassStats));
 
             ScoreDistribution.Clear();
@@ -403,6 +405,8 @@ namespace OptikFormApp.ViewModels
                         DistractorStats.Clear();
                         foreach (var d in distractors) DistractorStats.Add(d);
                         SelectedDistractorQuestion = DistractorStats.FirstOrDefault();
+
+                        UpdateStatisticsReport();
                     });
                 });
 

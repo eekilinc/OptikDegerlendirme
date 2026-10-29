@@ -40,7 +40,7 @@
                 
                 <!-- Compact Header with Logo -->
                 <Border Grid.Row="0" 
-                        Background="#3B82F6"
+                        Background="{DynamicResource Accent}"
                         CornerRadius="16,16,0,0" 
                         Height="70"
                         Padding="20,10">
@@ -357,7 +357,7 @@
                                 <Border Width="64" 
                                         Height="64" 
                                         CornerRadius="32" 
-                                        Background="#3B82F6"
+                                        Background="{DynamicResource Accent}"
                                         Margin="0,0,0,12">
                                     <TextBlock Text="EK" 
                                                FontSize="24" 

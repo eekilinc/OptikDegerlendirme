@@ -16,7 +16,7 @@ jobs:
         dotnet-version: '9.0.x'
     - run: dotnet restore OptikFormApp.csproj
     - run: dotnet build OptikFormApp.csproj --no-restore -c Release
-    - run: dotnet test OptikFormApp.Tests/OptikFormApp.Tests.csproj -c Release --no-build --collect:"XPlat Code Coverage"
+    - run: dotnet test OptikFormApp.Tests/OptikFormApp.Tests.csproj -c Release --collect:"XPlat Code Coverage"
     - uses: actions/upload-artifact@v4
       if: always()
       with:

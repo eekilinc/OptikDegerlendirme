@@ -29,10 +29,10 @@
                     </Button.Template>
                     <Button.Style>
                         <Style TargetType="Button">
-                            <Setter Property="Background" Value="#DC2626"/>
+                            <Setter Property="Background" Value="{DynamicResource Error}"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#B91C1C"/>
+                                    <Setter Property="Background" Value="{DynamicResource AccentRed}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>

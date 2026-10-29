@@ -53,13 +53,13 @@
                                 Padding="12,7" Margin="0,0,6,0">
                             <Button.Style>
                                 <Style TargetType="Button" BasedOn="{StaticResource PipelineButton}">
-                                    <Setter Property="Background" Value="#22C55E"/>
-                                    <Setter Property="BorderBrush" Value="#16A34A"/>
+                                    <Setter Property="Background" Value="{DynamicResource Success}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource Success}"/>
                                     <Setter Property="Foreground" Value="White"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding HasUnsavedData}" Value="True">
-                                            <Setter Property="Background" Value="#DC2626"/>
-                                            <Setter Property="BorderBrush" Value="#B91C1C"/>
+                                            <Setter Property="Background" Value="{DynamicResource Error}"/>
+                                            <Setter Property="BorderBrush" Value="{DynamicResource AccentRed}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

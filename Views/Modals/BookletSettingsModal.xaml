@@ -66,8 +66,8 @@
                         Padding="28,24">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#8B5CF6" Offset="0"/>
-                            <GradientStop Color="#7C3AED" Offset="1"/>
+                            <GradientStop Color="{DynamicResource AccentPurple}" Offset="0"/>
+                            <GradientStop Color="{DynamicResource AccentViolet}" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
                     
@@ -120,12 +120,12 @@
                             BorderThickness="1">
                         <Border.Style>
                             <Style TargetType="Border">
-                                <Setter Property="Background" Value="#F5F3FF"/>
-                                <Setter Property="BorderBrush" Value="#DDD6FE"/>
+                                <Setter Property="Background" Value="{DynamicResource AccentBgLight}"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource AccentBgLight}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                        <Setter Property="Background" Value="#4C1D95"/>
-                                        <Setter Property="BorderBrush" Value="#6D28D9"/>
+                                        <Setter Property="Background" Value="{DynamicResource AccentViolet}"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource AccentViolet}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -138,10 +138,10 @@
                                        VerticalAlignment="Center">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#7C3AED"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource AccentViolet}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="#C4B5FD"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource AccentBgLight}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

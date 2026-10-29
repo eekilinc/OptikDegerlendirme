@@ -143,11 +143,11 @@
         <Style TargetType="ComboBoxItem">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="BorderBrush" Value="#E5E7EB"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
             <Setter Property="Padding" Value="8,4"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F3F4F6"/>
+                    <Setter Property="Background" Value="{DynamicResource AltRowBg}"/>
                     <Setter Property="Foreground" Value="Black"/>
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">

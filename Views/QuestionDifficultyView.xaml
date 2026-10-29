@@ -61,7 +61,7 @@
                     <!-- Ã‡ok Zor -->
                     <Border CornerRadius="8" Padding="12,10" Margin="0,0,6,0" MinWidth="90">
                         <Border.Background>
-                            <SolidColorBrush Color="#6B7280"/>
+                            <SolidColorBrush Color="{DynamicResource TextMuted}"/>
                         </Border.Background>
                         <StackPanel>
                             <TextBlock Text="âš«" FontSize="18" HorizontalAlignment="Center"/>
@@ -75,7 +75,7 @@
                     <Border CornerRadius="8" Padding="12,10" Margin="6,0,0,0" MinWidth="90"
                             BorderBrush="{DynamicResource Accent}" BorderThickness="2">
                         <Border.Background>
-                            <SolidColorBrush Color="#EFF6FF"/>
+                            <SolidColorBrush Color="{DynamicResource HoverBg}"/>
                         </Border.Background>
                         <StackPanel>
                             <TextBlock Text="ğŸ“Š" FontSize="18" HorizontalAlignment="Center"/>

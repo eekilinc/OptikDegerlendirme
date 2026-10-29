@@ -243,11 +243,11 @@
                         </Grid>
                         <Border.Style>
                             <Style TargetType="Border">
-                                <Setter Property="Background" Value="#F0FDF4"/>
+                                <Setter Property="Background" Value="{DynamicResource SuccessBgLight}"/>
                                 <Setter Property="BorderBrush" Value="{DynamicResource Success}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                        <Setter Property="Background" Value="#064E3B"/>
+                                        <Setter Property="Background" Value="{DynamicResource Success}"/>
                                         <Setter Property="BorderBrush" Value="{DynamicResource Success}"/>
                                     </DataTrigger>
                                 </Style.Triggers>

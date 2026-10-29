@@ -42,8 +42,8 @@
                         Padding="24,16">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#8B5CF6" Offset="0"/>
-                            <GradientStop Color="#7C3AED" Offset="1"/>
+                            <GradientStop Color="{DynamicResource AccentPurple}" Offset="0"/>
+                            <GradientStop Color="{DynamicResource AccentViolet}" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
                     
@@ -129,7 +129,7 @@
                                         <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                                     </DataTrigger>
                                     <Trigger Property="IsFocused" Value="True">
-                                        <Setter Property="BorderBrush" Value="#8B5CF6"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource AccentPurple}"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>

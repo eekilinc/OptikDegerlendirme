@@ -71,8 +71,8 @@
                             <Setter Property="Background">
                                 <Setter.Value>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#667EEA" Offset="0"/>
-                                        <GradientStop Color="#764BA2" Offset="1"/>
+                                        <GradientStop Color="{DynamicResource AccentPurple}" Offset="0"/>
+                                        <GradientStop Color="{DynamicResource AccentViolet}" Offset="1"/>
                                     </LinearGradientBrush>
                                 </Setter.Value>
                             </Setter>
@@ -96,7 +96,7 @@
                                        Opacity="0.9">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#E0E0E0"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource Border}"/>
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
@@ -240,7 +240,7 @@
                                                 <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
                                             </Trigger>
                                             <Trigger Property="IsSelected" Value="True">
-                                                <Setter Property="Background" Value="#667EEA"/>
+                                                <Setter Property="Background" Value="{DynamicResource AccentPurple}"/>
                                                 <Setter Property="Foreground" Value="White"/>
                                             </Trigger>
                                         </Style.Triggers>
@@ -341,7 +341,7 @@
                                                 <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
                                             </Trigger>
                                             <Trigger Property="IsSelected" Value="True">
-                                                <Setter Property="Background" Value="#667EEA"/>
+                                                <Setter Property="Background" Value="{DynamicResource AccentPurple}"/>
                                                 <Setter Property="Foreground" Value="White"/>
                                             </Trigger>
                                         </Style.Triggers>
@@ -442,12 +442,12 @@
                         BorderThickness="1">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Background" Value="#EFF6FF"/>
-                            <Setter Property="BorderBrush" Value="#BFDBFE"/>
+                            <Setter Property="Background" Value="{DynamicResource HoverBg}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource AccentBgLight}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                    <Setter Property="Background" Value="#1E3A5F"/>
-                                    <Setter Property="BorderBrush" Value="#3B5998"/>
+                                    <Setter Property="Background" Value="{DynamicResource Accent}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -462,7 +462,7 @@
                                     <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                            <Setter Property="Foreground" Value="#60A5FA"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentBgLight}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -536,7 +536,7 @@
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" 
-                                                            To="#5A67D8" Duration="0:0:0.2"/>
+                                                            To="{DynamicResource AccentPurple}" Duration="0:0:0.2"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </EventTrigger>
@@ -544,7 +544,7 @@
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" 
-                                                            To="#667EEA" Duration="0:0:0.2"/>
+                                                            To="{DynamicResource AccentPurple}" Duration="0:0:0.2"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </EventTrigger>

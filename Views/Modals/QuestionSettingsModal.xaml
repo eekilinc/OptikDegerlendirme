@@ -45,8 +45,8 @@
                         Padding="28,24">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#F43F5E" Offset="0"/>
-                            <GradientStop Color="#E11D48" Offset="1"/>
+                            <GradientStop Color="{DynamicResource Error}" Offset="0"/>
+                            <GradientStop Color="{DynamicResource Error}" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
                     <Grid>
@@ -95,12 +95,12 @@
                         BorderThickness="1">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Background" Value="#FFF1F2"/>
-                            <Setter Property="BorderBrush" Value="#FECDD3"/>
+                            <Setter Property="Background" Value="{DynamicResource ErrorBgLight}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource ErrorBgLight}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                    <Setter Property="Background" Value="#881337"/>
-                                    <Setter Property="BorderBrush" Value="#BE123C"/>
+                                    <Setter Property="Background" Value="{DynamicResource Error}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource Error}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -113,10 +113,10 @@
                                    VerticalAlignment="Center">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="#BE123C"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource Error}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                            <Setter Property="Foreground" Value="#FDA4AF"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource ErrorBgLight}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

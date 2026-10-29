@@ -188,31 +188,31 @@
                                         <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding LetterGrade}" Value="AA">
-                                                <Setter Property="Background" Value="#DCFCE7"/>
+                                                <Setter Property="Background" Value="{DynamicResource SuccessBgLight}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding LetterGrade}" Value="BA">
-                                                <Setter Property="Background" Value="#DCFCE7"/>
+                                                <Setter Property="Background" Value="{DynamicResource SuccessBgLight}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding LetterGrade}" Value="BB">
-                                                <Setter Property="Background" Value="#E0E7FF"/>
+                                                <Setter Property="Background" Value="{DynamicResource AccentBgLight}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding LetterGrade}" Value="CB">
-                                                <Setter Property="Background" Value="#E0E7FF"/>
+                                                <Setter Property="Background" Value="{DynamicResource AccentBgLight}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding LetterGrade}" Value="CC">
-                                                <Setter Property="Background" Value="#FEF3C7"/>
+                                                <Setter Property="Background" Value="{DynamicResource WarningBgLight}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding LetterGrade}" Value="DC">
-                                                <Setter Property="Background" Value="#FFEDD5"/>
+                                                <Setter Property="Background" Value="{DynamicResource WarningBgLight}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding LetterGrade}" Value="DD">
-                                                <Setter Property="Background" Value="#FFEDD5"/>
+                                                <Setter Property="Background" Value="{DynamicResource WarningBgLight}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding LetterGrade}" Value="FD">
-                                                <Setter Property="Background" Value="#FEE2E2"/>
+                                                <Setter Property="Background" Value="{DynamicResource ErrorBgLight}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding LetterGrade}" Value="FF">
-                                                <Setter Property="Background" Value="#FEE2E2"/>
+                                                <Setter Property="Background" Value="{DynamicResource ErrorBgLight}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -223,31 +223,31 @@
                                             <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding LetterGrade}" Value="AA">
-                                                    <Setter Property="Foreground" Value="#15803D"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource Success}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding LetterGrade}" Value="BA">
-                                                    <Setter Property="Foreground" Value="#15803D"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource Success}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding LetterGrade}" Value="BB">
-                                                    <Setter Property="Foreground" Value="#4338CA"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource AccentViolet}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding LetterGrade}" Value="CB">
-                                                    <Setter Property="Foreground" Value="#4338CA"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource AccentViolet}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding LetterGrade}" Value="CC">
-                                                    <Setter Property="Foreground" Value="#B45309"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource Warning}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding LetterGrade}" Value="DC">
-                                                    <Setter Property="Foreground" Value="#C2410C"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource Warning}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding LetterGrade}" Value="DD">
-                                                    <Setter Property="Foreground" Value="#C2410C"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource Warning}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding LetterGrade}" Value="FD">
-                                                    <Setter Property="Foreground" Value="#B91C1C"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource AccentRed}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding LetterGrade}" Value="FF">
-                                                    <Setter Property="Foreground" Value="#B91C1C"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource AccentRed}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -268,13 +268,13 @@
                                         <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Status}" Value="Geçti">
-                                                <Setter Property="Background" Value="#DCFCE7"/>
+                                                <Setter Property="Background" Value="{DynamicResource SuccessBgLight}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Status}" Value="Şartlı Geçti">
-                                                <Setter Property="Background" Value="#FEF3C7"/>
+                                                <Setter Property="Background" Value="{DynamicResource WarningBgLight}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Status}" Value="Kaldı">
-                                                <Setter Property="Background" Value="#FEE2E2"/>
+                                                <Setter Property="Background" Value="{DynamicResource ErrorBgLight}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -285,13 +285,13 @@
                                             <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Status}" Value="Geçti">
-                                                    <Setter Property="Foreground" Value="#166534"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource Success}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Status}" Value="Şartlı Geçti">
-                                                    <Setter Property="Foreground" Value="#92400E"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource Warning}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Status}" Value="Kaldı">
-                                                    <Setter Property="Foreground" Value="#991B1B"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource Error}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>

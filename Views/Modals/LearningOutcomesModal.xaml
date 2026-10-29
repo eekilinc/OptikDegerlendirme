@@ -46,7 +46,7 @@
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                             <GradientStop Color="{DynamicResource SuccessColor}" Offset="0"/>
-                            <GradientStop Color="#059669" Offset="1"/>
+                            <GradientStop Color="{DynamicResource AccentGreen}" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
                     <Grid>
@@ -95,12 +95,12 @@
                         BorderThickness="1">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Background" Value="#ECFDF5"/>
-                            <Setter Property="BorderBrush" Value="#A7F3D0"/>
+                            <Setter Property="Background" Value="{DynamicResource SuccessBgLight}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource SuccessBgLight}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                    <Setter Property="Background" Value="#064E3B"/>
-                                    <Setter Property="BorderBrush" Value="#065F46"/>
+                                    <Setter Property="Background" Value="{DynamicResource Success}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource Success}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -121,10 +121,10 @@
                                        Margin="0,0,0,6">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#047857"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource Success}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="#6EE7B7"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource SuccessBgLight}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -143,7 +143,7 @@
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                                 <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                                                 <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
-                                                <Setter Property="BorderBrush" Value="#065F46"/>
+                                                <Setter Property="BorderBrush" Value="{DynamicResource Success}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -156,10 +156,10 @@
                                        Margin="0,0,0,6">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#047857"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource Success}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="#6EE7B7"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource SuccessBgLight}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -178,7 +178,7 @@
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                                 <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                                                 <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
-                                                <Setter Property="BorderBrush" Value="#065F46"/>
+                                                <Setter Property="BorderBrush" Value="{DynamicResource Success}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -195,10 +195,10 @@
                                        Margin="0,0,0,6">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#047857"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource Success}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="#6EE7B7"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource SuccessBgLight}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -217,7 +217,7 @@
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                                 <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                                                 <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
-                                                <Setter Property="BorderBrush" Value="#065F46"/>
+                                                <Setter Property="BorderBrush" Value="{DynamicResource Success}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

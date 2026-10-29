@@ -207,7 +207,7 @@
                                     <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                            <Setter Property="Foreground" Value="#60A5FA"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentBgLight}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -285,14 +285,14 @@
                                             <TextBox.Style>
                                                 <Style TargetType="TextBox">
                                                     <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                                    <Setter Property="Foreground" Value="#1E40AF"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                                     <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
                                                     <Setter Property="BorderThickness" Value="2"/>
                                                     <Setter Property="CaretBrush" Value="{DynamicResource Accent}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
                                                             <Setter Property="Background" Value="{DynamicResource TextMain}"/>
-                                                            <Setter Property="Foreground" Value="#60A5FA"/>
+                                                            <Setter Property="Foreground" Value="{DynamicResource AccentBgLight}"/>
                                                             <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>

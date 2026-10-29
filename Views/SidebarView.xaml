@@ -67,7 +67,7 @@
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource HoverBg}"/>
-                                            <Setter TargetName="Bd" Property="BorderBrush" Value="#93C5FD"/>
+                                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource AccentBgLight}"/>
                                         </Trigger>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource CardBg}"/>
@@ -128,7 +128,7 @@
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource HoverBg}"/>
-                                            <Setter TargetName="Bd" Property="BorderBrush" Value="#A7F3D0"/>
+                                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource SuccessBgLight}"/>
                                         </Trigger>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource CardBg}"/>

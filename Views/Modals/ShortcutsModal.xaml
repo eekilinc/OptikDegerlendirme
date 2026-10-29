@@ -140,7 +140,7 @@
                                         <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="#60A5FA"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource AccentBgLight}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -423,10 +423,10 @@
                                        VerticalAlignment="Center">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#8B5CF6"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource AccentPurple}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="#A78BFA"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource AccentBgLight}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

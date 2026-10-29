@@ -81,7 +81,7 @@
                     
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="ArayÃ¼z AyarlarÄ±" 
+                            <TextBlock Text="Arayüz Ayarları" 
                                        FontSize="26" 
                                        FontWeight="Bold">
                                 <TextBlock.Style>
@@ -90,7 +90,7 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <TextBlock Text="GÃ¶rÃ¼nÃ¼m ve yerleÅŸim ayarlarÄ±nÄ± kiÅŸiselleÅŸtirin" 
+                            <TextBlock Text="Görünüm ve yerleÅŸim ayarlarını kiÅŸiselleÅŸtirin" 
                                        FontSize="13" 
                                        Margin="0,6,0,0"
                                        Opacity="0.9">
@@ -188,7 +188,7 @@
                             </Border>
                             
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock Text="Renk TemasÄ±" 
+                                <TextBlock Text="Renk Teması" 
                                            FontSize="15" 
                                            FontWeight="SemiBold">
                                     <TextBlock.Style>
@@ -202,7 +202,7 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                                <TextBlock Text="AÃ§Ä±k veya koyu mod arasÄ±nda geÃ§iÅŸ yapÄ±n" 
+                                <TextBlock Text="Açık veya koyu mod arasında geçiÅŸ yapın" 
                                            FontSize="12" 
                                            Margin="0,3,0,0">
                                     <TextBlock.Style>
@@ -246,8 +246,8 @@
                                         </Style.Triggers>
                                     </Style>
                                 </ComboBox.Resources>
-                                <ComboBoxItem Content="ğŸŒ AydÄ±nlÄ±k"/>
-                                <ComboBoxItem Content="ğŸŒ™ KaranlÄ±k"/>
+                                <ComboBoxItem Content="ğŸŒ Aydınlık"/>
+                                <ComboBoxItem Content="ğŸŒ™ Karanlık"/>
                             </ComboBox>
                         </Grid>
                     </Border>
@@ -304,7 +304,7 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                                <TextBlock Text="SatÄ±r yÃ¼ksekliÄŸi ve hÃ¼cre boÅŸluÄŸu" 
+                                <TextBlock Text="Satır yüksekliÄŸi ve hücre boÅŸluÄŸu" 
                                            FontSize="12" 
                                            Margin="0,3,0,0">
                                     <TextBlock.Style>
@@ -392,7 +392,7 @@
                             </Border>
                             
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock Text="YazÄ± Boyutu" 
+                                <TextBlock Text="Yazı Boyutu" 
                                            FontSize="15" 
                                            FontWeight="SemiBold">
                                     <TextBlock.Style>
@@ -406,7 +406,7 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                                <TextBlock Text="ArayÃ¼z yazÄ± boyutunu ayarlayÄ±n" 
+                                <TextBlock Text="Arayüz yazı boyutunu ayarlayın" 
                                            FontSize="12" 
                                            Margin="0,3,0,0">
                                     <TextBlock.Style>
@@ -454,7 +454,7 @@
                     </Border.Style>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="ğŸ’¡" FontSize="16" Margin="0,0,10,0"/>
-                        <TextBlock Text="Ayarlar anÄ±nda uygulanÄ±r ve otomatik olarak kaydedilir" 
+                        <TextBlock Text="Ayarlar anında uygulanır ve otomatik olarak kaydedilir" 
                                    FontSize="12" 
                                    VerticalAlignment="Center">
                             <TextBlock.Style>

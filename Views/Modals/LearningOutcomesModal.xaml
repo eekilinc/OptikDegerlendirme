@@ -51,11 +51,11 @@
                     </Border.Background>
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="ğŸ¯ Konu / KazanÄ±m YÃ¶netimi" 
+                            <TextBlock Text="ğŸ¯ Konu / Kazanım Yönetimi" 
                                        FontSize="26" 
                                        FontWeight="Bold"
                                        Foreground="White"/>
-                            <TextBlock Text="Soru numaralarÄ±na gÃ¶re konu baÅŸlÄ±klarÄ±nÄ± tanÄ±mlayÄ±n" 
+                            <TextBlock Text="Soru numaralarına göre konu baÅŸlıklarını tanımlayın" 
                                        FontSize="13" 
                                        Foreground="{DynamicResource SuccessBgLight}"
                                        Margin="0,6,0,0"
@@ -116,7 +116,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="KazanÄ±m AdÄ±" 
+                            <TextBlock Text="Kazanım Adı" 
                                        FontSize="12" 
                                        Margin="0,0,0,6">
                                 <TextBlock.Style>
@@ -151,7 +151,7 @@
                             </TextBox>
                         </StackPanel>
                         <StackPanel Grid.Column="2">
-                            <TextBlock Text="KitapÃ§Ä±k" 
+                            <TextBlock Text="Kitapçık" 
                                        FontSize="12" 
                                        Margin="0,0,0,6">
                                 <TextBlock.Style>
@@ -300,9 +300,9 @@
                             </Style>
                         </DataGrid.RowStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Konu BaÅŸlÄ±ÄŸÄ±" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="KitapÃ§Ä±k" Binding="{Binding BookletName}" Width="90" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Soru AralÄ±ÄŸÄ±" Binding="{Binding QuestionNumbersRaw}" Width="130" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Konu BaÅŸlıÄŸı" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Kitapçık" Binding="{Binding BookletName}" Width="90" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Soru AralıÄŸı" Binding="{Binding QuestionNumbersRaw}" Width="130" IsReadOnly="True"/>
                             <DataGridTemplateColumn Width="90">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

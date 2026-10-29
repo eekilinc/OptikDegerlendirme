@@ -31,7 +31,7 @@
                             <TextBlock Text="ğŸ’¾" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel>
-                            <TextBlock Text="SÄ±navÄ± Kaydet" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Sınavı Kaydet" FontSize="20" FontWeight="Bold" Foreground="White"/>
                             <TextBlock Text="DeÄŸerlendirme verilerini kaydedin" FontSize="13" Foreground="White" Opacity="0.9" Margin="0,2,0,0"/>
                         </StackPanel>
                     </StackPanel>
@@ -44,14 +44,14 @@
                     <Border Background="{DynamicResource HoverBg}" BorderBrush="{DynamicResource Accent}" BorderThickness="1" CornerRadius="10" Padding="15" Margin="0,0,0,20">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="â„¹ï¸" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                            <TextBlock Text="Kaydedilen sÄ±navlar seÃ§ili derste listelenir ve tekrar aÃ§Ä±labilir." 
+                            <TextBlock Text="Kaydedilen sınavlar seçili derste listelenir ve tekrar açılabilir." 
                                        FontSize="12" Foreground="{DynamicResource TextMain}" 
                                        TextWrapping="Wrap"/>
                         </StackPanel>
                     </Border>
                     
                     <!-- Exam Name -->
-                    <TextBlock Text="SÄ±nav AdÄ±" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
+                    <TextBlock Text="Sınav Adı" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
                     <TextBox Text="{Binding NewExamName, UpdateSourceTrigger=PropertyChanged}" 
                              Margin="0,0,0,15" 
                              Padding="12,10" 
@@ -186,7 +186,7 @@
                                 </StackPanel>
                                 
                                 <StackPanel Grid.Column="1">
-                                    <TextBlock Text="AdÄ±" FontSize="11" Foreground="{DynamicResource AccentGreen}" Margin="0,0,0,4"/>
+                                    <TextBlock Text="Adı" FontSize="11" Foreground="{DynamicResource AccentGreen}" Margin="0,0,0,4"/>
                                     <TextBox Text="{Binding NewCourseNameInline, UpdateSourceTrigger=PropertyChanged}"
                                              Padding="10,8"
                                              FontSize="13"/>
@@ -194,7 +194,7 @@
                             </Grid>
                             
                             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Content="Ä°ptal" 
+                                <Button Content="İptal" 
                                         Command="{Binding ToggleAddCourseInlineCommand}"
                                         Padding="15,8"
                                         Background="Transparent"
@@ -275,13 +275,13 @@
                         </Grid.ColumnDefinitions>
                         
                         <Button Grid.Column="0" 
-                                Content="VazgeÃ§" 
+                                Content="Vazgeç" 
                                 Command="{Binding CloseSaveExamModalCommand}" 
                                 Style="{StaticResource OutlineButton}" 
                                 Padding="20,10" FontSize="13"/>
                         
                         <Button Grid.Column="2" 
-                                Content="ğŸ’¾ SÄ±navÄ± Kaydet" 
+                                Content="ğŸ’¾ Sınavı Kaydet" 
                                 Command="{Binding ConfirmSaveExamCommand}" 
                                 IsEnabled="{Binding Students.Count}" 
                                 Background="{DynamicResource Accent}" 

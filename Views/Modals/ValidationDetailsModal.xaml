@@ -25,7 +25,7 @@
                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
                     <TextBlock Text="âš ï¸" FontSize="28" Margin="0,0,15,0"/>
                     <StackPanel>
-                        <TextBlock Text="Veri DoÄŸrulama HatalarÄ±" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
+                        <TextBlock Text="Veri DoÄŸrulama Hataları" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
                         <TextBlock Text="{Binding ValidationIssuesCount, StringFormat='Toplam {0} adet sorun tespit edildi'}" 
                                    FontSize="14" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
                     </StackPanel>
@@ -34,7 +34,7 @@
                 <!-- Summary -->
                 <Border Grid.Row="1" Background="{DynamicResource ErrorBgLight}" BorderBrush="{DynamicResource ErrorBgLight}" BorderThickness="1" CornerRadius="8" 
                         Padding="12,10" Margin="0,0,0,15">
-                    <TextBlock Text="AÅŸaÄŸÄ±daki tabloda tÃ¼m doÄŸrulama hatalarÄ± listelenmektedir. Her hata iÃ§in Ã¶ÄŸrenci bilgisi, sorun tÃ¼rÃ¼ ve detaylÄ± aÃ§Ä±klama gÃ¶rÃ¼lmektedir." 
+                    <TextBlock Text="AÅŸaÄŸıdaki tabloda tüm doÄŸrulama hataları listelenmektedir. Her hata için öÄŸrenci bilgisi, sorun türü ve detaylı açıklama görülmektedir." 
                                TextWrapping="Wrap" Foreground="{DynamicResource Error}" FontSize="13"/>
                 </Border>
                 
@@ -81,7 +81,7 @@
                 
                 <!-- Footer Buttons -->
                 <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-                    <Button Content="ğŸ“‹ TÃ¼mÃ¼nÃ¼ Kopyala" Padding="15,10" Margin="0,0,10,0" 
+                    <Button Content="ğŸ“‹ Tümünü Kopyala" Padding="15,10" Margin="0,0,10,0" 
                             Background="{DynamicResource Accent}" Foreground="White" FontWeight="SemiBold" FontSize="13"
                             Command="{Binding CopyValidationErrorsCommand}"/>
                     <Button Content="Kapat" Padding="20,10" 

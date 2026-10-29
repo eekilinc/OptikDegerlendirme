@@ -73,11 +73,11 @@
                     
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="ğŸ“ Cevap AnahtarÄ± YÃ¶netimi" 
+                            <TextBlock Text="ğŸ“ Cevap Anahtarı Yönetimi" 
                                        FontSize="26" 
                                        FontWeight="Bold"
                                        Foreground="White"/>
-                            <TextBlock Text="KitapÃ§Ä±k tÃ¼rlerine gÃ¶re cevap ÅŸablonlarÄ±nÄ± yÃ¶netin" 
+                            <TextBlock Text="Kitapçık türlerine göre cevap ÅŸablonlarını yönetin" 
                                        FontSize="13" 
                                        Foreground="{DynamicResource AccentBgLight}"
                                        Margin="0,6,0,0"
@@ -132,7 +132,7 @@
                         </Border.Style>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="ğŸ’¡" FontSize="16" Margin="0,0,10,0"/>
-                            <TextBlock Text="Her kitapÃ§Ä±k tÃ¼rÃ¼ iÃ§in ayrÄ± cevap anahtarÄ± tanÄ±mlayabilirsiniz. Ã–ÄŸrencilerin kitapÃ§Ä±k tÃ¼rÃ¼ otomatik olarak algÄ±lanÄ±r." 
+                            <TextBlock Text="Her kitapçık türü için ayrı cevap anahtarı tanımlayabilirsiniz. Ã–ÄŸrencilerin kitapçık türü otomatik olarak algılanır." 
                                        FontSize="12"
                                        TextWrapping="Wrap"
                                        VerticalAlignment="Center">
@@ -190,7 +190,7 @@
                                                         Orientation="Vertical" 
                                                         Margin="0,0,16,0"
                                                         Width="70">
-                                                <TextBlock Text="KitapÃ§Ä±k" 
+                                                <TextBlock Text="Kitapçık" 
                                                            FontSize="11" 
                                                            Margin="0,0,0,6">
                                                     <TextBlock.Style>
@@ -216,13 +216,13 @@
                                                          Padding="12,8"
                                                          MinWidth="50"
                                                          MinHeight="42"
-                                                         ToolTip="KitapÃ§Ä±k tipi (Ã¶rn: A, B, C)"/>
+                                                         ToolTip="Kitapçık tipi (örn: A, B, C)"/>
                                             </StackPanel>
 
                                             <!-- Answers Input -->
                                             <StackPanel Grid.Column="1" 
                                                         Orientation="Vertical">
-                                                <TextBlock Text="Cevap AnahtarÄ±" 
+                                                <TextBlock Text="Cevap Anahtarı" 
                                                            FontSize="11" 
                                                            Margin="0,0,0,6">
                                                     <TextBlock.Style>
@@ -274,8 +274,8 @@
                                                         FontWeight="SemiBold"
                                                         Margin="0,0,0,8"
                                                         Cursor="Hand"
-                                                        ToolTip="DetaylÄ± soru dÃ¼zenleyici">
-                                                    <Button.Content>ğŸ” DetaylÄ±</Button.Content>
+                                                        ToolTip="Detaylı soru düzenleyici">
+                                                    <Button.Content>ğŸ” Detaylı</Button.Content>
                                                     <Button.Template>
                                                         <ControlTemplate TargetType="Button">
                                                             <Border Background="{TemplateBinding Background}" 

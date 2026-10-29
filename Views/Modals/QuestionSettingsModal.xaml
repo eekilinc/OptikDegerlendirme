@@ -51,11 +51,11 @@
                     </Border.Background>
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="âš™ï¸ Soru AyarlarÄ±" 
+                            <TextBlock Text="âš™ï¸ Soru Ayarları" 
                                        FontSize="26" 
                                        FontWeight="Bold"
                                        Foreground="White"/>
-                            <TextBlock Text="Soru iptali veya Ã§oklu doÄŸru seÃ§eneklerini yÃ¶netin" 
+                            <TextBlock Text="Soru iptali veya çoklu doÄŸru seçeneklerini yönetin" 
                                        FontSize="13" 
                                        Foreground="{DynamicResource ErrorBgLight}"
                                        Margin="0,6,0,0"
@@ -107,7 +107,7 @@
                     </Border.Style>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="ğŸ’¡" FontSize="16" Margin="0,0,10,0"/>
-                        <TextBlock Text="Ä°ptal edilen sorular puanlamaya dahil edilmez. Ã‡oklu doÄŸru seÃ§enekleri iÃ§in harfleri birleÅŸtirin (Ã¶rn: AB)" 
+                        <TextBlock Text="İptal edilen sorular puanlamaya dahil edilmez. Ã‡oklu doÄŸru seçenekleri için harfleri birleÅŸtirin (örn: AB)" 
                                    FontSize="12"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center">
@@ -176,7 +176,7 @@
                             </Style>
                         </DataGrid.RowStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="KitapÃ§Ä±k" Binding="{Binding BookletName}" IsReadOnly="True" Width="70">
+                            <DataGridTextColumn Header="Kitapçık" Binding="{Binding BookletName}" IsReadOnly="True" Width="70">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -195,7 +195,7 @@
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
                             
-                            <DataGridTemplateColumn Header="Ä°ptal (X)" Width="90">
+                            <DataGridTemplateColumn Header="İptal (X)" Width="90">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <CheckBox IsChecked="{Binding IsCancelled, UpdateSourceTrigger=PropertyChanged}" 
@@ -215,7 +215,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="Ã‡oklu DoÄŸru SeÃ§enekler" Width="*">
+                            <DataGridTemplateColumn Header="Ã‡oklu DoÄŸru Seçenekler" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBox Text="{Binding MultipleCorrectAnswers, UpdateSourceTrigger=PropertyChanged}" 

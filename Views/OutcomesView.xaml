@@ -30,7 +30,7 @@
                                         
                                         <!-- Success Progress Bars -->
                                         <StackPanel Margin="0,0,25,0">
-                                            <TextBlock Text="{Binding GlobalSuccessRate, StringFormat='Genel SÄ±nÄ±f BaÅŸarÄ±sÄ±: %{0}'}" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,3"/>
+                                            <TextBlock Text="{Binding GlobalSuccessRate, StringFormat='Genel Sınıf BaÅŸarısı: %{0}'}" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,3"/>
                                             <Grid Height="6" Background="{DynamicResource Border}" Margin="0,0,0,8">
                                                 <Border Background="{DynamicResource Accent}" HorizontalAlignment="Left" CornerRadius="3">
                                                     <Border.Width>
@@ -42,7 +42,7 @@
                                                 </Border>
                                             </Grid>
 
-                                            <TextBlock Text="{Binding SuccessRate, StringFormat='Bu KitapÃ§Ä±k BaÅŸarÄ±sÄ±: %{0}'}" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,3"/>
+                                            <TextBlock Text="{Binding SuccessRate, StringFormat='Bu Kitapçık BaÅŸarısı: %{0}'}" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,3"/>
                                             <Grid Height="6" Background="{DynamicResource Border}">
                                                 <Border Background="{DynamicResource Success}" HorizontalAlignment="Left" CornerRadius="3">
                                                     <Border.Width>
@@ -60,7 +60,7 @@
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                             <TextBlock Text="{Binding GlobalSuccessRate, StringFormat='{}%{0:F1}'}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource Accent}" Margin="0,0,0,0"/>
                                         </StackPanel>
-                                        <TextBlock Text="Genel BaÅŸarÄ±" FontSize="10" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Right" Margin="0,-5,0,5"/>
+                                        <TextBlock Text="Genel BaÅŸarı" FontSize="10" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Right" Margin="0,-5,0,5"/>
                                         
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                             <TextBlock Text="{Binding CorrectCount}" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
@@ -83,9 +83,9 @@
                     <Border Width="80" Height="80" Background="{DynamicResource AltRowBg}" CornerRadius="40" Margin="0,0,0,20">
                         <TextBlock Text="ğŸ¯" FontSize="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
-                    <TextBlock Text="Konu Analizi HazÄ±r DeÄŸil" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
-                    <TextBlock Text="Konu bazlÄ± baÅŸarÄ± raporu iÃ§in 'Cevap AnahtarlarÄ±nÄ± YÃ¶net' kÄ±smÄ±ndan konularÄ± tanÄ±mlayÄ±n." FontSize="14" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,10,0,25" TextAlignment="Center"/>
-                    <Button Content="KonularÄ±/Ã‡Ä±ktÄ±larÄ± YÃ¶net" Command="{Binding OpenLearningOutcomesCommand}" Style="{StaticResource PipelineButton}" 
+                    <TextBlock Text="Konu Analizi Hazır DeÄŸil" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Konu bazlı baÅŸarı raporu için 'Cevap Anahtarlarını Yönet' kısmından konuları tanımlayın." FontSize="14" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,10,0,25" TextAlignment="Center"/>
+                    <Button Content="Konuları/Ã‡ıktıları Yönet" Command="{Binding OpenLearningOutcomesCommand}" Style="{StaticResource PipelineButton}" 
                             Background="{DynamicResource Error}" Foreground="White" Padding="25,12" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>

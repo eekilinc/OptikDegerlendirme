@@ -64,7 +64,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="% YanlÄ±ÅŸ" Binding="{Binding IncorrectPercent, StringFormat={}{0:N2}%}" Width="85">
+                <DataGridTextColumn Header="% YanlıÅŸ" Binding="{Binding IncorrectPercent, StringFormat={}{0:N2}%}" Width="85">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="FontWeight" Value="Medium"/>
@@ -96,9 +96,9 @@
                 <Border Width="80" Height="80" Background="{DynamicResource AltRowBg}" CornerRadius="40" Margin="0,0,0,20">
                     <TextBlock Text="ğŸ“Š" FontSize="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
-                <TextBlock Text="Analiz Verisi BulunamadÄ±" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
-                <TextBlock Text="Ä°statistikleri gÃ¶rebilmek iÃ§in Ã¶nce cevap anahtarÄ±nÄ± girin ve 'Hesapla' butonuna basÄ±n." FontSize="14" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,10,0,25" TextAlignment="Center"/>
-                <Button Content="PuanlarÄ± Hesapla (F5)" Command="{Binding EvaluateCommand}" Style="{StaticResource PipelineButton}" 
+                <TextBlock Text="Analiz Verisi Bulunamadı" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
+                <TextBlock Text="İstatistikleri görebilmek için önce cevap anahtarını girin ve 'Hesapla' butonuna basın." FontSize="14" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,10,0,25" TextAlignment="Center"/>
+                <Button Content="Puanları Hesapla (F5)" Command="{Binding EvaluateCommand}" Style="{StaticResource PipelineButton}" 
                         Background="{DynamicResource AccentPurple}" Foreground="White" Padding="25,12" HorizontalAlignment="Center"/>
             </StackPanel>
         </Border>

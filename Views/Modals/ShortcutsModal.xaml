@@ -73,11 +73,11 @@
                     
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="âŒ¨ï¸ Klavye KÄ±sayollarÄ±" 
+                            <TextBlock Text="âŒ¨ï¸ Klavye Kısayolları" 
                                        FontSize="26" 
                                        FontWeight="Bold"
                                        Foreground="White"/>
-                            <TextBlock Text="UygulamayÄ± daha hÄ±zlÄ± kullanmak iÃ§in kÄ±sayollarÄ± Ã¶ÄŸrenin" 
+                            <TextBlock Text="Uygulamayı daha hızlı kullanmak için kısayolları öÄŸrenin" 
                                        FontSize="13" 
                                        Foreground="{DynamicResource AccentBgLight}"
                                        Margin="0,6,0,0"
@@ -131,7 +131,7 @@
                                            HorizontalAlignment="Center" 
                                            VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock Text="Dosya Ä°ÅŸlemleri" 
+                            <TextBlock Text="Dosya İÅŸlemleri" 
                                        FontSize="14" 
                                        FontWeight="Bold"
                                        VerticalAlignment="Center">
@@ -183,7 +183,7 @@
                                                Foreground="{DynamicResource Accent}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
-                                           Text="TXT DosyasÄ± YÃ¼kle" 
+                                           Text="TXT Dosyası Yükle" 
                                            FontSize="13" 
                                            VerticalAlignment="Center">
                                     <TextBlock.Style>
@@ -234,7 +234,7 @@
                                                Foreground="{DynamicResource Accent}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
-                                           Text="SÄ±navÄ± Kaydet" 
+                                           Text="Sınavı Kaydet" 
                                            FontSize="13" 
                                            VerticalAlignment="Center">
                                     <TextBlock.Style>
@@ -336,7 +336,7 @@
                                                Foreground="{DynamicResource Success}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
-                                           Text="CSV DÄ±ÅŸa Aktar" 
+                                           Text="CSV DıÅŸa Aktar" 
                                            FontSize="13" 
                                            VerticalAlignment="Center">
                                     <TextBlock.Style>
@@ -417,7 +417,7 @@
                                            HorizontalAlignment="Center" 
                                            VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock Text="Ä°ÅŸlemler" 
+                            <TextBlock Text="İÅŸlemler" 
                                        FontSize="14" 
                                        FontWeight="Bold"
                                        VerticalAlignment="Center">
@@ -468,7 +468,7 @@
                                                Foreground="{DynamicResource AccentViolet}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
-                                           Text="PuanlarÄ± Hesapla" 
+                                           Text="Puanları Hesapla" 
                                            FontSize="13" 
                                            VerticalAlignment="Center">
                                     <TextBlock.Style>
@@ -519,7 +519,7 @@
                                                Foreground="{DynamicResource Accent}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
-                                           Text="Bu Pencereyi AÃ§" 
+                                           Text="Bu Pencereyi Aç" 
                                            FontSize="13" 
                                            VerticalAlignment="Center">
                                     <TextBlock.Style>
@@ -659,7 +659,7 @@
                     <Grid>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock Text="ğŸ’¡" FontSize="16" Margin="0,0,8,0"/>
-                            <TextBlock Text="TÃ¼m kÄ±sayollar Dosya menÃ¼sÃ¼nde de gÃ¶sterilmektedir" 
+                            <TextBlock Text="Tüm kısayollar Dosya menüsünde de gösterilmektedir" 
                                        FontSize="12"
                                        VerticalAlignment="Center">
                                 <TextBlock.Style>

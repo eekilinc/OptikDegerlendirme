@@ -14,9 +14,9 @@
                 <TextBlock Text="âš ï¸" FontSize="20" VerticalAlignment="Center" Margin="0,0,15,0"/>
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock Text="{Binding ValidationIssuesCount, StringFormat='{}{0} Adet Veri DoÄŸrulama Sorunu Tespit Edildi!'}" FontWeight="Bold" Foreground="{DynamicResource Error}" FontSize="14"/>
-                    <TextBlock Text="BazÄ± satÄ±rlarda okuma hatalarÄ± veya eksik iÅŸaretlemeler var." FontSize="12" Foreground="{DynamicResource AccentRed}" Margin="0,2,0,0"/>
+                    <TextBlock Text="Bazı satırlarda okuma hataları veya eksik iÅŸaretlemeler var." FontSize="12" Foreground="{DynamicResource AccentRed}" Margin="0,2,0,0"/>
                 </StackPanel>
-                <Button Content="ğŸ” DetaylarÄ± GÃ¶r" Margin="15,0,0,0" Padding="12,6" 
+                <Button Content="ğŸ” Detayları Gör" Margin="15,0,0,0" Padding="12,6" 
                         Background="{DynamicResource Error}" Foreground="White" FontWeight="SemiBold" FontSize="12"
                         BorderThickness="0" Cursor="Hand"
                         Command="{Binding ShowValidationDetailsCommand}">
@@ -76,7 +76,7 @@
                 <Border.Effect><DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.03" BlurRadius="5" ShadowDepth="1"/></Border.Effect>
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-                    <TextBlock Text="ğŸ“„ Ä°ÅŸlem KayÄ±tlarÄ±" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,5"/>
+                    <TextBlock Text="ğŸ“„ İÅŸlem Kayıtları" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,5"/>
                     <ScrollViewer Grid.Row="1" Height="80" VerticalScrollBarVisibility="Auto">
                         <ItemsControl ItemsSource="{Binding Logs}">
                             <ItemsControl.ItemTemplate>

@@ -199,7 +199,7 @@
 
                 <!-- Booklet Filter -->
                 <StackPanel Grid.Row="2" Margin="0,0,0,16">
-                    <TextBlock Text="KitapÃ§Ä±k Tipi" 
+                    <TextBlock Text="Kitapçık Tipi" 
                                FontSize="12"
                                Margin="0,0,0,6">
                         <TextBlock.Style>
@@ -215,7 +215,7 @@
                     </TextBlock>
                     <ComboBox ItemsSource="{Binding AvailableBookletTypes}"
                               SelectedItem="{Binding SelectedBookletFilter}"
-                              ToolTip="Filtrelemek iÃ§in kitapÃ§Ä±k tipi seÃ§in"
+                              ToolTip="Filtrelemek için kitapçık tipi seçin"
                               Padding="12,8"
                               FontSize="14"
                               BorderThickness="1"
@@ -250,7 +250,7 @@
                     </Grid.ColumnDefinitions>
                     
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="Min DoÄŸru SayÄ±sÄ±" 
+                        <TextBlock Text="Min DoÄŸru Sayısı" 
                                    FontSize="12"
                                    Margin="0,0,0,6">
                             <TextBlock.Style>
@@ -265,7 +265,7 @@
                             </TextBlock.Style>
                         </TextBlock>
                         <TextBox Text="{Binding MinCorrectFilter, TargetNullValue=''}" 
-                                 ToolTip="Minimum doÄŸru cevap sayÄ±sÄ±"
+                                 ToolTip="Minimum doÄŸru cevap sayısı"
                                  Padding="12,8"
                                  FontSize="14"
                                  BorderThickness="1"
@@ -287,7 +287,7 @@
                     </StackPanel>
                     
                     <StackPanel Grid.Column="2">
-                        <TextBlock Text="Max YanlÄ±ÅŸ SayÄ±sÄ±" 
+                        <TextBlock Text="Max YanlıÅŸ Sayısı" 
                                    FontSize="12"
                                    Margin="0,0,0,6">
                             <TextBlock.Style>
@@ -302,7 +302,7 @@
                             </TextBlock.Style>
                         </TextBlock>
                         <TextBox Text="{Binding MaxWrongFilter, TargetNullValue=''}" 
-                                 ToolTip="Maximum yanlÄ±ÅŸ cevap sayÄ±sÄ±"
+                                 ToolTip="Maximum yanlıÅŸ cevap sayısı"
                                  Padding="12,8"
                                  FontSize="14"
                                  BorderThickness="1"
@@ -359,7 +359,7 @@
                                            HorizontalAlignment="Center" 
                                            VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock Text="SÄ±ralama AyarlarÄ±" 
+                            <TextBlock Text="Sıralama Ayarları" 
                                        FontSize="15" 
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center">
@@ -406,10 +406,10 @@
                                         <sys:String>Puan</sys:String>
                                         <sys:String>Ad Soyad</sys:String>
                                         <sys:String>Ã–ÄŸrenci No</sys:String>
-                                        <sys:String>DoÄŸru SayÄ±sÄ±</sys:String>
-                                        <sys:String>YanlÄ±ÅŸ SayÄ±sÄ±</sys:String>
-                                        <sys:String>Net SayÄ±sÄ±</sys:String>
-                                        <sys:String>SÄ±ralama</sys:String>
+                                        <sys:String>DoÄŸru Sayısı</sys:String>
+                                        <sys:String>YanlıÅŸ Sayısı</sys:String>
+                                        <sys:String>Net Sayısı</sys:String>
+                                        <sys:String>Sıralama</sys:String>
                                     </x:Array>
                                 </ComboBox.ItemsSource>
                             </ComboBox>
@@ -419,7 +419,7 @@
                                     Command="{Binding ToggleSortDirectionCommand}"
                                     Margin="10,0,0,0"
                                     Padding="14,8"
-                                    ToolTip="SÄ±ralama yÃ¶nÃ¼nÃ¼ deÄŸiÅŸtir"
+                                    ToolTip="Sıralama yönünü deÄŸiÅŸtir"
                                     Background="{DynamicResource AccentCyan}"
                                     Foreground="White"
                                     FontSize="13"

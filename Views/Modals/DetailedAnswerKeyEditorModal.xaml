@@ -54,11 +54,11 @@
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <TextBlock Text="ğŸ“‹" FontSize="20" Margin="0,0,10,0"/>
                             <StackPanel>
-                                <TextBlock Text="DetaylÄ± Cevap AnahtarÄ±" 
+                                <TextBlock Text="Detaylı Cevap Anahtarı" 
                                            FontSize="16" 
                                            FontWeight="Bold"
                                            Foreground="White"/>
-                                <TextBlock Text="{Binding SelectedAnswerKeyForEdit.BookletName, StringFormat='KitapÃ§Ä±k {0}'}" 
+                                <TextBlock Text="{Binding SelectedAnswerKeyForEdit.BookletName, StringFormat='Kitapçık {0}'}" 
                                            FontSize="11" 
                                            Foreground="{DynamicResource AccentBgLight}"/>
                             </StackPanel>
@@ -324,7 +324,7 @@
                         </Style>
                     </Border.Style>
                     <Grid>
-                        <TextBlock Text="Her kutuya tÄ±klayÄ±p cevabÄ± deÄŸiÅŸtirin. Analiz butonu ile istatistikleri gÃ¶rÃ¼n." 
+                        <TextBlock Text="Her kutuya tıklayıp cevabı deÄŸiÅŸtirin. Analiz butonu ile istatistikleri görün." 
                                    FontSize="10"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center">

@@ -106,7 +106,7 @@
                             </Style>
                         </Border.Style>
                         <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="KR-20 GÃ¼venirlik" 
+                            <TextBlock Text="KR-20 Güvenirlik" 
                                        FontSize="12" 
                                        Margin="0,0,0,8">
                                 <TextBlock.Style>
@@ -204,7 +204,7 @@
                             </Style>
                         </Border.Style>
                         <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="Soru SayÄ±sÄ±" 
+                            <TextBlock Text="Soru Sayısı" 
                                        FontSize="12" 
                                        Margin="0,0,0,8">
                                 <TextBlock.Style>
@@ -266,7 +266,7 @@
                         </Style>
                     </TabControl.Resources>
 
-                    <!-- TAB 1: Soru Ä°statistikleri & Anomaliler -->
+                    <!-- TAB 1: Soru İstatistikleri & Anomaliler -->
                     <TabItem Header="ğŸ“‹ Madde Analizi &amp; Anomaliler">
                         <Grid Margin="0,10,0,0">
                             <Grid.ColumnDefinitions>
@@ -334,7 +334,7 @@
                                         <DataGridTextColumn Header="Zorluk" 
                                                             Binding="{Binding Difficulty, StringFormat={}{0:P0}}" 
                                                             Width="70"/>
-                                        <DataGridTextColumn Header="AyÄ±rt." 
+                                        <DataGridTextColumn Header="Ayırt." 
                                                             Binding="{Binding Discrimination, StringFormat={}{0:F2}}" 
                                                             Width="70"/>
                                         <DataGridTextColumn Header="DoÄŸru" 
@@ -484,7 +484,7 @@
                                     </ScrollViewer>
                                     
                                     <TextBlock Grid.Row="1" 
-                                               Text="Anomali tespit edilmedi. TÃ¼m sorular normal gÃ¶rÃ¼nÃ¼yor." 
+                                               Text="Anomali tespit edilmedi. Tüm sorular normal görünüyor." 
                                                HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"
                                                FontSize="13">
@@ -507,7 +507,7 @@
                         </Grid>
                     </TabItem>
 
-                    <!-- TAB 2: Ã‡eldirici & SeÃ§enek Analizi -->
+                    <!-- TAB 2: Ã‡eldirici & Seçenek Analizi -->
                     <TabItem Header="ğŸ¯ Ã‡eldirici Analizi (Ãœst/Alt %27)">
                         <Grid Margin="0,10,0,0">
                             <Grid.ColumnDefinitions>
@@ -614,12 +614,12 @@
                                             <TextBlock FontWeight="Bold" FontSize="15" Foreground="{DynamicResource Warning}" VerticalAlignment="Center">
                                                 <Run Text="Soru "/>
                                                 <Run Text="{Binding SelectedDistractorQuestion.QuestionNumber}"/>
-                                                <Run Text=" â€” SeÃ§enek ve Ã‡eldirici DaÄŸÄ±lÄ±mÄ±"/>
+                                                <Run Text=" â€” Seçenek ve Ã‡eldirici DaÄŸılımı"/>
                                             </TextBlock>
                                         </StackPanel>
                                         <Border Grid.Column="1" Background="{DynamicResource Warning}" CornerRadius="8" Padding="10,4">
                                             <TextBlock Foreground="White" FontWeight="Bold" FontSize="12">
-                                                <Run Text="DoÄŸru YanÄ±t: "/>
+                                                <Run Text="DoÄŸru Yanıt: "/>
                                                 <Run Text="{Binding SelectedDistractorQuestion.CorrectAnswer}"/>
                                             </TextBlock>
                                         </Border>
@@ -648,8 +648,8 @@
                                               Background="Transparent"
                                               BorderThickness="0">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="SeÃ§enek" Binding="{Binding Option}" FontWeight="Bold" Width="60"/>
-                                            <DataGridTemplateColumn Header="TÃ¼r" Width="90">
+                                            <DataGridTextColumn Header="Seçenek" Binding="{Binding Option}" FontWeight="Bold" Width="60"/>
+                                            <DataGridTemplateColumn Header="Tür" Width="90">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Border CornerRadius="6" Padding="6,2" HorizontalAlignment="Left">
@@ -735,7 +735,7 @@
 
                                 <!-- Educational Note Footer -->
                                 <Border Grid.Row="2" Margin="0,8,0,0" Padding="12,8" Background="{DynamicResource AppBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10">
-                                    <TextBlock Text="ğŸ’¡ Rehber: Ä°yi bir Ã§eldiricide alt baÅŸarÄ± grubundaki oran Ã¼st gruptan yÃ¼ksek olmalÄ±dÄ±r. Ãœst grubun alt gruptan daha fazla iÅŸaretlediÄŸi Ã§eldiriciler 'Ters Ã‡eldirici âš ï¸' olarak iÅŸaretlenir (soru kÃ¶kÃ¼nde veya ÅŸÄ±kta Ã§eliÅŸki iÅŸareti)." 
+                                    <TextBlock Text="ğŸ’¡ Rehber: İyi bir çeldiricide alt baÅŸarı grubundaki oran üst gruptan yüksek olmalıdır. Ãœst grubun alt gruptan daha fazla iÅŸaretlediÄŸi çeldiriciler 'Ters Ã‡eldirici âš ï¸' olarak iÅŸaretlenir (soru kökünde veya ÅŸıkta çeliÅŸki iÅŸareti)." 
                                                FontSize="11" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap"/>
                                 </Border>
                             </Grid>

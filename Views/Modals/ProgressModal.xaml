@@ -104,7 +104,7 @@
                               VerticalAlignment="Center"/>
                     
                     <Button Grid.Column="1" 
-                           Content="Ä°ptal" 
+                           Content="İptal" 
                            Command="{Binding CancelProgressCommand}"
                            Visibility="{Binding Progress.CanCancel, Converter={StaticResource BoolToVis}}"
                            Style="{StaticResource OutlineButton}"

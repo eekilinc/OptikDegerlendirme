@@ -50,11 +50,11 @@
                     
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="ğŸ“‹ SÄ±nav ÅablonlarÄ±" 
+                            <TextBlock Text="ğŸ“‹ Sınav Şablonları" 
                                        FontSize="26" 
                                        FontWeight="Bold"
                                        Foreground="White"/>
-                            <TextBlock Text="KaydedilmiÅŸ ayarlarÄ±nÄ±zÄ± ÅŸablon olarak kullanÄ±n" 
+                            <TextBlock Text="KaydedilmiÅŸ ayarlarınızı ÅŸablon olarak kullanın" 
                                        FontSize="13" 
                                        Foreground="{DynamicResource AccentBgLight}"
                                        Margin="0,6,0,0"
@@ -123,7 +123,7 @@
                                                    HorizontalAlignment="Center" 
                                                    VerticalAlignment="Center"/>
                                     </Border>
-                                    <TextBlock Text="Yeni Åablon OluÅŸtur" 
+                                    <TextBlock Text="Yeni Şablon OluÅŸtur" 
                                                FontSize="16" 
                                                FontWeight="SemiBold"
                                                VerticalAlignment="Center">
@@ -140,7 +140,7 @@
                                     </TextBlock>
                                 </StackPanel>
                                 
-                                <TextBlock Text="Åablon AdÄ±" 
+                                <TextBlock Text="Şablon Adı" 
                                            FontSize="12" 
                                            Margin="0,0,0,6">
                                     <TextBlock.Style>
@@ -175,7 +175,7 @@
                                     </TextBox.Style>
                                 </TextBox>
                                 
-                                <TextBlock Text="AÃ§Ä±klama (isteÄŸe baÄŸlÄ±)" 
+                                <TextBlock Text="Açıklama (isteÄŸe baÄŸlı)" 
                                            FontSize="12" 
                                            Margin="0,0,0,6">
                                     <TextBlock.Style>
@@ -210,7 +210,7 @@
                                     </TextBox.Style>
                                 </TextBox>
                                 
-                                <Button Content="âœ¨ Åablon Olarak Kaydet" 
+                                <Button Content="âœ¨ Şablon Olarak Kaydet" 
                                         Command="{Binding SaveAsTemplateCommand}"
                                         Background="{DynamicResource AccentPurple}" 
                                         Foreground="White"
@@ -246,7 +246,7 @@
                                            HorizontalAlignment="Center" 
                                            VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock Text="KayÄ±tlÄ± Åablonlar" 
+                            <TextBlock Text="Kayıtlı Şablonlar" 
                                        FontSize="16" 
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center">
@@ -337,7 +337,7 @@
                                             </StackPanel>
                                             
                                             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                <Button Content="ğŸ“‚ YÃ¼kle" 
+                                                <Button Content="ğŸ“‚ Yükle" 
                                                         Command="{Binding DataContext.LoadTemplateCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                         CommandParameter="{Binding Id}"
                                                         Background="{DynamicResource AccentPurple}" 
@@ -386,7 +386,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                         
-                        <TextBlock Text="HenÃ¼z kaydedilmiÅŸ ÅŸablon yok." 
+                        <TextBlock Text="Henüz kaydedilmiÅŸ ÅŸablon yok." 
                                    FontSize="13" 
                                    HorizontalAlignment="Center" 
                                    Margin="0,24"
@@ -423,7 +423,7 @@
                         </Style>
                     </Border.Style>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Content="ğŸ“¤ DÄ±ÅŸa Aktar" 
+                        <Button Content="ğŸ“¤ DıÅŸa Aktar" 
                                 Command="{Binding ExportTemplateCommand}"
                                 Background="White"
                                 Foreground="{DynamicResource TextMain}"
@@ -458,7 +458,7 @@
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
-                        <Button Content="ğŸ“¥ Ä°Ã§e Aktar" 
+                        <Button Content="ğŸ“¥ İçe Aktar" 
                                 Command="{Binding ImportTemplateCommand}"
                                 Background="{DynamicResource AccentPurple}"
                                 Foreground="White"

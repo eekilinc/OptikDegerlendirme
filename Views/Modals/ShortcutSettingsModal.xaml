@@ -47,11 +47,11 @@
                         </Grid.ColumnDefinitions>
                         
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="Klavye KÄ±sayollarÄ±" 
+                            <TextBlock Text="Klavye Kısayolları" 
                                       FontSize="20" 
                                       FontWeight="Bold" 
                                       Foreground="{DynamicResource Border}"/>
-                            <TextBlock Text="KÄ±sayol tuÅŸlarÄ±nÄ± Ã¶zelleÅŸtirin" 
+                            <TextBlock Text="Kısayol tuÅŸlarını özelleÅŸtirin" 
                                       FontSize="13" 
                                       Foreground="{DynamicResource TextMuted}"
                                       Margin="0,4,0,0"/>
@@ -121,7 +121,7 @@
                                                         
                                                         <!-- Edit Button -->
                                                         <Button Grid.Column="2" 
-                                                               Content="DÃ¼zenle" 
+                                                               Content="Düzenle" 
                                                                Command="{Binding DataContext.EditShortcutCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                                CommandParameter="{Binding}"
                                                                Padding="16,6"
@@ -145,7 +145,7 @@
                         CornerRadius="0,0,16,16"
                         Padding="24,16">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="VarsayÄ±lana SÄ±fÄ±rla" 
+                        <Button Content="Varsayılana Sıfırla" 
                                Command="{Binding ResetShortcutsCommand}"
                                Style="{StaticResource OutlineButton}"
                                Padding="20,10"

@@ -56,7 +56,7 @@
                     </Border.BorderBrush>
                     
                     <Grid>
-                        <TextBlock Text="ğŸ¯ BaÅŸarÄ± Tahmini" 
+                        <TextBlock Text="ğŸ¯ BaÅŸarı Tahmini" 
                                    FontSize="26" 
                                    FontWeight="Bold" 
                                    Foreground="White"
@@ -170,7 +170,7 @@
                             </Style>
                         </Border.Style>
                         <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="Tahmini GeÃ§me OranÄ±" 
+                            <TextBlock Text="Tahmini Geçme Oranı" 
                                        FontSize="11" 
                                        Margin="0,0,0,6">
                                 <TextBlock.Style>
@@ -219,7 +219,7 @@
                             </Style>
                         </Border.Style>
                         <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="YÃ¼ksek Riskli" 
+                            <TextBlock Text="Yüksek Riskli" 
                                        FontSize="11" 
                                        Margin="0,0,0,6">
                                 <TextBlock.Style>
@@ -327,7 +327,7 @@
                         </Grid.ColumnDefinitions>
                         
                         <TextBlock Grid.Column="0" 
-                                   Text="GeÃ§me PuanÄ±:" 
+                                   Text="Geçme Puanı:" 
                                    VerticalAlignment="Center"
                                    FontSize="14"
                                    FontWeight="SemiBold"
@@ -436,10 +436,10 @@
                             <DataGridTextColumn Header="Tahmini Puan" 
                                                 Binding="{Binding PredictedScore, StringFormat={}{0:F1}}" 
                                                 Width="90"/>
-                            <DataGridTextColumn Header="GeÃ§me OlasÄ±lÄ±ÄŸÄ±" 
+                            <DataGridTextColumn Header="Geçme OlasılıÄŸı" 
                                                 Binding="{Binding GradeProbability, StringFormat={}{0:P0}}" 
                                                 Width="110"/>
-                            <DataGridTextColumn Header="GÃ¼ven" 
+                            <DataGridTextColumn Header="Güven" 
                                                 Binding="{Binding Confidence, StringFormat={}{0:P0}}" 
                                                 Width="70"/>
                             <DataGridTextColumn Header="Risk" 

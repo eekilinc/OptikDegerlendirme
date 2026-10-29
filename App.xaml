@@ -4,6 +4,10 @@
              xmlns:vm="clr-namespace:OptikFormApp.ViewModels"
              xmlns:modals="clr-namespace:OptikFormApp.Views.Modals">
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/DefaultTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
         <!-- Shared Converters -->
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -73,11 +77,6 @@
                     <SolidColorBrush Color="#000000" Opacity="0.5"/>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <BlurEffect Radius="3" KernelType="Gaussian"/>
-                </Setter.Value>
-            </Setter>
         </Style>
 
         <Style x:Key="PremiumModal" TargetType="Border">
@@ -125,11 +124,8 @@
         </Style>
 
         <Style x:Key="GlassButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Background">
-                <Setter.Value>
-                    <SolidColorBrush Color="#3B82F6" Opacity="0.8"/>
-                </Setter.Value>
-            </Setter>
+            <Setter Property="Background" Value="{DynamicResource Accent}"/>
+            <Setter Property="Opacity" Value="0.85"/>
             <Setter Property="BorderBrush">
                 <Setter.Value>
                     <SolidColorBrush Color="#FFFFFF" Opacity="0.3"/>
@@ -162,7 +158,20 @@
         </Style>
 
         <Style TargetType="Button">
-            <Setter Property="Background" Value="#3B82F6"/>
+            <Setter Property="FocusVisualStyle">
+                <Setter.Value>
+                    <Style TargetType="Control">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Rectangle Margin="-2" Stroke="{DynamicResource Accent}" StrokeThickness="2" StrokeDashArray="2 2" RadiusX="8" RadiusY="8"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="{DynamicResource Accent}"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -210,18 +219,18 @@
                     </EventTrigger.Actions>
                 </EventTrigger>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#2563EB"/>
+                    <Setter Property="Background" Value="{DynamicResource AccentHover}"/>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="#94A3B8"/>
+                    <Setter Property="Background" Value="{DynamicResource TextMuted}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style x:Key="OutlineButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#3B82F6"/>
-            <Setter Property="BorderBrush" Value="#3B82F6"/>
+            <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
             <Setter Property="BorderThickness" Value="1.5"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -341,6 +350,10 @@
             <Setter Property="HeadersVisibility" Value="Column"/>
             <Setter Property="AutoGenerateColumns" Value="False"/>
             <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="EnableRowVirtualization" Value="True"/>
+            <Setter Property="EnableColumnVirtualization" Value="True"/>
+            <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
+            <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
         </Style>
 
         <Style TargetType="DataGridColumnHeader">
@@ -356,5 +369,6 @@
             <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
             <Setter Property="BorderThickness" Value="0,0,0,1"/>
         </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

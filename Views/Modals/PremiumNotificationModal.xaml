@@ -74,7 +74,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <Border Grid.Column="0" Width="32" Height="32" CornerRadius="16" 
-                        Background="#10B981" Margin="0,0,10,0">
+                        Background="{DynamicResource Success}" Margin="0,0,10,0">
                     <TextBlock Text="✓" FontSize="16" FontWeight="Bold" 
                               Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>

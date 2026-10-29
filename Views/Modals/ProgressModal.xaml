@@ -55,7 +55,7 @@
                                 Value="{Binding Progress.CurrentProgress, Mode=OneWay}" 
                                 Maximum="{Binding Progress.MaximumProgress, Mode=OneWay}"
                                 Background="#E5E7EB"
-                                Foreground="#3B82F6"
+                                Foreground="{DynamicResource Accent}"
                                 BorderThickness="0">
                         <ProgressBar.Style>
                             <Style TargetType="ProgressBar">
@@ -100,7 +100,7 @@
                               Text="{Binding Progress.ProgressPercentage, StringFormat={}{0:F0}%}" 
                               FontSize="14" 
                               FontWeight="SemiBold"
-                              Foreground="#3B82F6"
+                              Foreground="{DynamicResource Accent}"
                               VerticalAlignment="Center"/>
                     
                     <Button Grid.Column="1" 

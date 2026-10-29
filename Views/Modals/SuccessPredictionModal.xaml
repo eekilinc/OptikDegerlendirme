@@ -17,10 +17,10 @@
                 Padding="0">
             <Border.Style>
                 <Style TargetType="Border">
-                    <Setter Property="Background" Value="#F8FAFC"/>
+                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="#1E293B"/>
+                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -143,7 +143,7 @@
                                         <Setter Property="Foreground" Value="#115E59"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="#F8FAFC"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -238,7 +238,7 @@
                                        FontWeight="Bold">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#EF4444"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource Error}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                                 <Setter Property="Foreground" Value="#FCA5A5"/>
@@ -287,7 +287,7 @@
                                        FontWeight="Bold">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#3B82F6"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                                 <Setter Property="Foreground" Value="#93C5FD"/>
@@ -308,12 +308,12 @@
                         BorderThickness="1">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Background" Value="#F1F5F9"/>
-                            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                            <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                    <Setter Property="Background" Value="#334155"/>
-                                    <Setter Property="BorderBrush" Value="#475569"/>
+                                    <Setter Property="Background" Value="{DynamicResource Border}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource TextMuted}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -334,10 +334,10 @@
                                    Margin="0,0,16,0">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="#475569"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                            <Setter Property="Foreground" Value="#94A3B8"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -371,12 +371,12 @@
                         BorderThickness="1">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Background" Value="#F1F5F9"/>
-                            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                            <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                    <Setter Property="Background" Value="#334155"/>
-                                    <Setter Property="BorderBrush" Value="#475569"/>
+                                    <Setter Property="Background" Value="{DynamicResource Border}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource TextMuted}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -392,13 +392,13 @@
                         <DataGrid.ColumnHeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="#64748B"/>
+                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                 <Setter Property="FontWeight" Value="SemiBold"/>
                                 <Setter Property="Padding" Value="8,4"/>
                                 <Setter Property="BorderThickness" Value="0"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                        <Setter Property="Foreground" Value="#94A3B8"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -406,7 +406,7 @@
                         <DataGrid.RowStyle>
                             <Style TargetType="DataGridRow">
                                 <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="#1E293B"/>
+                                <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Risk}" Value="High">
                                         <Setter Property="Background" Value="#30EF4444"/>
@@ -418,7 +418,7 @@
                                         <Setter Property="Background" Value="#3010B981"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                        <Setter Property="Foreground" Value="#F8FAFC"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -457,12 +457,12 @@
                         BorderThickness="0,1,0,0">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Background" Value="#F8FAFC"/>
-                            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                            <Setter Property="Background" Value="{DynamicResource AppBg}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                    <Setter Property="Background" Value="#0F172A"/>
-                                    <Setter Property="BorderBrush" Value="#334155"/>
+                                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

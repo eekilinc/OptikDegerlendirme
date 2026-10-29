@@ -51,7 +51,7 @@
                         <Style TargetType="TextBlock">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
                             <Setter Property="FontWeight" Value="Bold"/>
-                            <Setter Property="Foreground" Value="#3B82F6"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
@@ -60,7 +60,7 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="FontWeight" Value="Bold"/>
-                            <Setter Property="Foreground" Value="#10B981"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Success}"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
@@ -68,7 +68,7 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="FontWeight" Value="Medium"/>
-                            <Setter Property="Foreground" Value="#EF4444"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Error}"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>

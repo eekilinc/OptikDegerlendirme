@@ -15,10 +15,10 @@
                 Padding="0">
             <Border.Style>
                 <Style TargetType="Border">
-                    <Setter Property="Background" Value="#F8FAFC"/>
+                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="#1E293B"/>
+                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

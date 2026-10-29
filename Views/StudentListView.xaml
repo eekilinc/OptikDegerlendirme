@@ -163,7 +163,7 @@
                         <Style TargetType="TextBlock">
                             <Setter Property="FontWeight" Value="Bold"/>
                             <Setter Property="HorizontalAlignment" Value="Center"/>
-                            <Setter Property="Foreground" Value="#2563EB"/>
+                            <Setter Property="Foreground" Value="{DynamicResource AccentHover}"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
@@ -185,7 +185,7 @@
                             <Border CornerRadius="6" Padding="6,2" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Border.Style>
                                     <Style TargetType="Border">
-                                        <Setter Property="Background" Value="#F1F5F9"/>
+                                        <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding LetterGrade}" Value="AA">
                                                 <Setter Property="Background" Value="#DCFCE7"/>
@@ -220,7 +220,7 @@
                                 <TextBlock Text="{Binding LetterGrade}" FontWeight="Bold" FontSize="11">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="#475569"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding LetterGrade}" Value="AA">
                                                     <Setter Property="Foreground" Value="#15803D"/>
@@ -265,7 +265,7 @@
                             <Border CornerRadius="8" Padding="6,2" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Border.Style>
                                     <Style TargetType="Border">
-                                        <Setter Property="Background" Value="#F1F5F9"/>
+                                        <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Status}" Value="Geçti">
                                                 <Setter Property="Background" Value="#DCFCE7"/>
@@ -282,7 +282,7 @@
                                 <TextBlock Text="{Binding Status}" FontSize="10" FontWeight="SemiBold">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="#64748B"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Status}" Value="Geçti">
                                                     <Setter Property="Foreground" Value="#166534"/>
@@ -327,7 +327,7 @@
                 <TextBlock Text="Kayıtlı Öğrenci Bulunamadı" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
                 <TextBlock Text="Henüz bir optik veri dosyası yüklenmemiş veya filtrelere uygun kayıt yok." FontSize="14" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,10,0,25" TextAlignment="Center"/>
                 <Button Content="Dosya Yükle (Ctrl+O)" Command="{Binding LoadTxtCommand}" Style="{StaticResource PipelineButton}" 
-                        Background="#3B82F6" Foreground="White" Padding="25,12" HorizontalAlignment="Center"/>
+                        Background="{DynamicResource Accent}" Foreground="White" Padding="25,12" HorizontalAlignment="Center"/>
             </StackPanel>
         </Border>
     </Grid>

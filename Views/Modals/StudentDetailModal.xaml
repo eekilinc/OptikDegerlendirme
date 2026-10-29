@@ -63,13 +63,13 @@
                                 <Run Text="Doğru: "/>
                                 <Run Text="{Binding SelectedStudentDetail.CorrectCount}" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
                                 <Run Text="  |  Yanlış: "/>
-                                <Run Text="{Binding SelectedStudentDetail.IncorrectCount}" FontWeight="Bold" Foreground="#EF4444"/>
+                                <Run Text="{Binding SelectedStudentDetail.IncorrectCount}" FontWeight="Bold" Foreground="{DynamicResource Error}"/>
                                 <Run Text="  |  Boş: "/>
                                 <Run Text="{Binding SelectedStudentDetail.EmptyCount}" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
                                 <Run Text="  |  Net: "/>
                                 <Run Text="{Binding SelectedStudentDetail.NetCount, StringFormat={}{0:N2}}" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
                                 <Run Text="  |  Puan: "/>
-                                <Run Text="{Binding SelectedStudentDetail.Score, StringFormat={}{0:N2}}" FontWeight="Bold" FontSize="14" Foreground="#3B82F6"/>
+                                <Run Text="{Binding SelectedStudentDetail.Score, StringFormat={}{0:N2}}" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource Accent}"/>
                             </TextBlock>
                         </StackPanel>
                     </Grid>
@@ -114,7 +114,7 @@
                     <Button Grid.Column="0" Content="Vazgeç" Command="{Binding CloseStudentDetailCommand}" 
                             Style="{StaticResource OutlineButton}" Margin="0,0,5,0"/>
                     <Button Grid.Column="1" Content="💾 Değişiklikleri Kaydet" Command="{Binding SaveStudentDetailCommand}" 
-                            Background="#3B82F6" Foreground="White" Margin="5,0,0,0"/>
+                            Background="{DynamicResource Accent}" Foreground="White" Margin="5,0,0,0"/>
                 </Grid>
             </StackPanel>
         </Border>

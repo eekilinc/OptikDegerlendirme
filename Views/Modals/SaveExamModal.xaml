@@ -25,7 +25,7 @@
                 </Grid.RowDefinitions>
                 
                 <!-- Header -->
-                <Border Grid.Row="0" Background="#3B82F6" CornerRadius="16,16,0,0" Padding="25,20">
+                <Border Grid.Row="0" Background="{DynamicResource Accent}" CornerRadius="16,16,0,0" Padding="25,20">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Border Background="White" CornerRadius="10" Width="40" Height="40" Padding="8" Margin="0,0,15,0">
                             <TextBlock Text="💾" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -41,7 +41,7 @@
                 <StackPanel Grid.Row="1" Margin="25,20">
                     
                     <!-- Info Banner -->
-                    <Border Background="#EFF6FF" BorderBrush="#3B82F6" BorderThickness="1" CornerRadius="10" Padding="15" Margin="0,0,0,20">
+                    <Border Background="#EFF6FF" BorderBrush="{DynamicResource Accent}" BorderThickness="1" CornerRadius="10" Padding="15" Margin="0,0,0,20">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="ℹ️" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
                             <TextBlock Text="Kaydedilen sınavlar seçili derste listelenir ve tekrar açılabilir." 
@@ -103,7 +103,7 @@
                                 VerticalAlignment="Bottom"
                                 Margin="8,0,0,0"
                                 Padding="12,10"
-                                Background="#10B981"
+                                Background="{DynamicResource Success}"
                                 Foreground="White"
                                 FontSize="12"
                                 FontWeight="SemiBold"
@@ -128,7 +128,7 @@
                                 VerticalAlignment="Bottom"
                                 Margin="8,0,0,0"
                                 Padding="12,10"
-                                Background="#EF4444"
+                                Background="{DynamicResource Error}"
                                 Foreground="White"
                                 FontSize="12"
                                 FontWeight="SemiBold"
@@ -150,7 +150,7 @@
                     
                     <!-- Inline Add Course Form -->
                     <Border Background="#F0FDF4" 
-                            BorderBrush="#10B981" 
+                            BorderBrush="{DynamicResource Success}" 
                             BorderThickness="1" 
                             CornerRadius="10" 
                             Padding="15" 
@@ -222,7 +222,7 @@
                                 <Button Content="Ekle" 
                                         Command="{Binding AddCourseInlineCommand}"
                                         Padding="20,8"
-                                        Background="#10B981"
+                                        Background="{DynamicResource Success}"
                                         Foreground="White"
                                         FontSize="12"
                                         FontWeight="SemiBold"
@@ -244,11 +244,11 @@
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Background" Value="#F0FDF4"/>
-                                <Setter Property="BorderBrush" Value="#10B981"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource Success}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                         <Setter Property="Background" Value="#064E3B"/>
-                                        <Setter Property="BorderBrush" Value="#10B981"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource Success}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -284,7 +284,7 @@
                                 Content="💾 Sınavı Kaydet" 
                                 Command="{Binding ConfirmSaveExamCommand}" 
                                 IsEnabled="{Binding Students.Count}" 
-                                Background="#3B82F6" 
+                                Background="{DynamicResource Accent}" 
                                 Foreground="White" 
                                 Padding="25,10" 
                                 FontSize="13" 

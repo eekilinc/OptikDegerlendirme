@@ -201,9 +201,9 @@
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsSelected" Value="True">
-                                                    <Setter TargetName="Border" Property="BorderBrush" Value="#3B82F6"/>
+                                                    <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Accent}"/>
                                                     <Setter TargetName="Border" Property="Background" Value="{DynamicResource CardBg}"/>
-                                                    <Setter Property="TextElement.Foreground" Value="#3B82F6"/>
+                                                    <Setter Property="TextElement.Foreground" Value="{DynamicResource Accent}"/>
                                                     <Setter Property="TextElement.FontWeight" Value="Bold"/>
                                                 </Trigger>
                                                 <Trigger Property="IsSelected" Value="False">
@@ -212,7 +212,7 @@
                                                 </Trigger>
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Setter TargetName="Border" Property="Background" Value="{DynamicResource HoverBg}"/>
-                                                    <Setter Property="TextElement.Foreground" Value="#2563EB"/>
+                                                    <Setter Property="TextElement.Foreground" Value="{DynamicResource AccentHover}"/>
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>

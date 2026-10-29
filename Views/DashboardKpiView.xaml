@@ -51,7 +51,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <TextBlock Grid.Row="1" Text="{Binding Students.Count}" FontSize="28" FontWeight="ExtraBold" Foreground="#2563EB" VerticalAlignment="Center" Margin="0,4,0,2"/>
+                <TextBlock Grid.Row="1" Text="{Binding Students.Count}" FontSize="28" FontWeight="ExtraBold" Foreground="{DynamicResource AccentHover}" VerticalAlignment="Center" Margin="0,4,0,2"/>
                 
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
                     <Border Background="#DBEAFE" CornerRadius="4" Padding="6,2">
@@ -80,7 +80,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <TextBlock Grid.Row="1" Text="{Binding ClassGradingStats.MeanScore, StringFormat={}{0:F2}}" FontSize="28" FontWeight="ExtraBold" Foreground="#10B981" VerticalAlignment="Center" Margin="0,4,0,2"/>
+                <TextBlock Grid.Row="1" Text="{Binding ClassGradingStats.MeanScore, StringFormat={}{0:F2}}" FontSize="28" FontWeight="ExtraBold" Foreground="{DynamicResource Success}" VerticalAlignment="Center" Margin="0,4,0,2"/>
                 
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
                     <Border Background="#D1FAE5" CornerRadius="4" Padding="6,2">

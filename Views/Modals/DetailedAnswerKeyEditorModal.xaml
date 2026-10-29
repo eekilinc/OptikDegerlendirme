@@ -18,10 +18,10 @@
                 MaxHeight="500">
             <Border.Style>
                 <Style TargetType="Border">
-                    <Setter Property="Background" Value="#F8FAFC"/>
+                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="#1E293B"/>
+                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -96,12 +96,12 @@
                         BorderThickness="0,0,0,1">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Background" Value="#F1F5F9"/>
-                            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                            <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                    <Setter Property="Background" Value="#334155"/>
-                                    <Setter Property="BorderBrush" Value="#475569"/>
+                                    <Setter Property="Background" Value="{DynamicResource Border}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource TextMuted}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -112,7 +112,7 @@
                         <Button Content="➕ Soru Ekle" 
                                 Command="{Binding AddQuestionToAnswerKeyCommand}"
                                 Padding="10,5"
-                                Background="#10B981"
+                                Background="{DynamicResource Success}"
                                 Foreground="White"
                                 FontSize="11"
                                 FontWeight="SemiBold"
@@ -133,7 +133,7 @@
                         <Button Content="➖ Son Soruyu Sil" 
                                 Command="{Binding RemoveLastQuestionFromAnswerKeyCommand}"
                                 Padding="10,5"
-                                Background="#EF4444"
+                                Background="{DynamicResource Error}"
                                 Foreground="White"
                                 FontSize="11"
                                 FontWeight="SemiBold"
@@ -204,7 +204,7 @@
                                    FontSize="12">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="#3B82F6"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                             <Setter Property="Foreground" Value="#60A5FA"/>
@@ -237,11 +237,11 @@
                                     <Border.Style>
                                         <Style TargetType="Border">
                                             <Setter Property="Background" Value="White"/>
-                                            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                                            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                                    <Setter Property="Background" Value="#0F172A"/>
-                                                    <Setter Property="BorderBrush" Value="#334155"/>
+                                                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -262,10 +262,10 @@
                                                    Margin="0,0,0,2">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
-                                                    <Setter Property="Foreground" Value="#64748B"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                                            <Setter Property="Foreground" Value="#94A3B8"/>
+                                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -284,16 +284,16 @@
                                                  CharacterCasing="Upper">
                                             <TextBox.Style>
                                                 <Style TargetType="TextBox">
-                                                    <Setter Property="Background" Value="#F8FAFC"/>
+                                                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                                                     <Setter Property="Foreground" Value="#1E40AF"/>
-                                                    <Setter Property="BorderBrush" Value="#3B82F6"/>
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
                                                     <Setter Property="BorderThickness" Value="2"/>
-                                                    <Setter Property="CaretBrush" Value="#3B82F6"/>
+                                                    <Setter Property="CaretBrush" Value="{DynamicResource Accent}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                                            <Setter Property="Background" Value="#1E293B"/>
+                                                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
                                                             <Setter Property="Foreground" Value="#60A5FA"/>
-                                                            <Setter Property="BorderBrush" Value="#3B82F6"/>
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -313,12 +313,12 @@
                         BorderThickness="0,1,0,0">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Background" Value="#F8FAFC"/>
-                            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                            <Setter Property="Background" Value="{DynamicResource AppBg}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                    <Setter Property="Background" Value="#0F172A"/>
-                                    <Setter Property="BorderBrush" Value="#334155"/>
+                                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -330,10 +330,10 @@
                                    VerticalAlignment="Center">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="#64748B"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                            <Setter Property="Foreground" Value="#94A3B8"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -342,7 +342,7 @@
 
                         <Button Content="Kaydet ve Kapat" 
                                 Command="{Binding CloseDetailedAnswerKeyEditorCommand}"
-                                Background="#3B82F6" 
+                                Background="{DynamicResource Accent}" 
                                 Foreground="White"
                                 Padding="18,8" 
                                 FontSize="12" 

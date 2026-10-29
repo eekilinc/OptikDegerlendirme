@@ -82,7 +82,7 @@
                 <!-- Footer Buttons -->
                 <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
                     <Button Content="📋 Tümünü Kopyala" Padding="15,10" Margin="0,0,10,0" 
-                            Background="#3B82F6" Foreground="White" FontWeight="SemiBold" FontSize="13"
+                            Background="{DynamicResource Accent}" Foreground="White" FontWeight="SemiBold" FontSize="13"
                             Command="{Binding CopyValidationErrorsCommand}"/>
                     <Button Content="Kapat" Padding="20,10" 
                             Background="#DC2626" Foreground="White" FontWeight="SemiBold" FontSize="13"

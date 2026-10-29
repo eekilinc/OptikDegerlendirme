@@ -27,7 +27,7 @@
             </StackPanel>
 
             <Button Grid.Column="1" HorizontalAlignment="Right" Command="{Binding CopyReportCommand}"
-                    Background="#3B82F6" Foreground="White" Padding="14,8" FontWeight="SemiBold"
+                    Background="{DynamicResource Accent}" Foreground="White" Padding="14,8" FontWeight="SemiBold"
                     Cursor="Hand" ToolTip="Tüm istatistiksel raporu panoya kopyala">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="📋" Margin="0,0,6,0"/>
@@ -55,7 +55,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Aritmetik Ortalama" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
                     <TextBlock Grid.Row="1" Text="{Binding ClassStats.AverageScore, StringFormat='{}{0:F2}'}" 
-                               FontSize="24" FontWeight="ExtraBold" Foreground="#2563EB" Margin="0,2"/>
+                               FontSize="24" FontWeight="ExtraBold" Foreground="{DynamicResource AccentHover}" Margin="0,2"/>
                     <TextBlock Grid.Row="2" Text="{Binding ClassStats.ModeScoreText, StringFormat='{}Mod: {0}'}" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
                 </Grid>
             </Border>
@@ -100,7 +100,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Başarı Oranı" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
                     <TextBlock Grid.Row="1" Text="{Binding ClassStats.SuccessRate, StringFormat='{}%{0:F1}'}" 
-                               FontSize="24" FontWeight="ExtraBold" Foreground="#10B981" Margin="0,2"/>
+                               FontSize="24" FontWeight="ExtraBold" Foreground="{DynamicResource Success}" Margin="0,2"/>
                     <TextBlock Grid.Row="2" Text="{Binding ReliabilityStats.KR20, StringFormat='{}KR-20: {0:F2}'}" FontSize="10" Foreground="#047857" FontWeight="SemiBold"/>
                 </Grid>
             </Border>
@@ -118,8 +118,8 @@
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Border" Property="BorderBrush" Value="#3B82F6"/>
-                                        <Setter Property="TextElement.Foreground" Value="#3B82F6"/>
+                                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Accent}"/>
+                                        <Setter Property="TextElement.Foreground" Value="{DynamicResource Accent}"/>
                                         <Setter Property="TextElement.FontWeight" Value="Bold"/>
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="False">
@@ -152,7 +152,7 @@
                                 <Grid>
                                     <StackPanel>
                                         <TextBlock Text="Aritmetik Ortalama (Mean)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                        <TextBlock Text="{Binding ClassStats.AverageScore, StringFormat='{}{0:F2}'}" FontSize="18" FontWeight="Bold" Foreground="#2563EB"/>
+                                        <TextBlock Text="{Binding ClassStats.AverageScore, StringFormat='{}{0:F2}'}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource AccentHover}"/>
                                         <TextBlock Text="Sınıfın tüm puanlarının toplamının öğrenci sayısına bölümü" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
                                     </StackPanel>
                                 </Grid>
@@ -236,7 +236,7 @@
                             <Border Style="{StaticResource MetricRowCard}">
                                 <StackPanel>
                                     <TextBlock Text="Çarpıklık Katsayısı (Skewness)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                    <TextBlock Text="{Binding ClassStats.Skewness, StringFormat='{}{0:F2}'}" FontSize="20" FontWeight="Bold" Foreground="#2563EB"/>
+                                    <TextBlock Text="{Binding ClassStats.Skewness, StringFormat='{}{0:F2}'}" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource AccentHover}"/>
                                     <Border Background="#DBEAFE" CornerRadius="4" Padding="6,3" Margin="0,4,0,4" HorizontalAlignment="Left">
                                         <TextBlock Text="{Binding ClassStats.SkewnessInterpretation}" FontSize="10" FontWeight="Bold" Foreground="#1D4ED8"/>
                                     </Border>
@@ -317,14 +317,14 @@
                             <Border Style="{StaticResource MetricRowCard}" Margin="0,0,0,8">
                                 <Grid>
                                     <TextBlock Text="Üst %10 (En Başarılı Grup Sınırı)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                    <TextBlock Text="{Binding Percentiles[%90 (Üst Sınır)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="#10B981"/>
+                                    <TextBlock Text="{Binding Percentiles[%90 (Üst Sınır)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource Success}"/>
                                 </Grid>
                             </Border>
 
                             <Border Style="{StaticResource MetricRowCard}" Margin="0,0,0,8">
                                 <Grid>
                                     <TextBlock Text="Üst %25 (Q3 - Üst Çeyrek Dilimi)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                    <TextBlock Text="{Binding Percentiles[%75 (Q3 - Üst Çeyrek)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="#2563EB"/>
+                                    <TextBlock Text="{Binding Percentiles[%75 (Q3 - Üst Çeyrek)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource AccentHover}"/>
                                 </Grid>
                             </Border>
 
@@ -345,7 +345,7 @@
                             <Border Style="{StaticResource MetricRowCard}" Margin="0,0,0,8">
                                 <Grid>
                                     <TextBlock Text="Alt %10 (Taban Puan Sınırı)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                    <TextBlock Text="{Binding Percentiles[%10 (Alt Sınır)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="#EF4444"/>
+                                    <TextBlock Text="{Binding Percentiles[%10 (Alt Sınır)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource Error}"/>
                                 </Grid>
                             </Border>
                         </StackPanel>

@@ -151,7 +151,7 @@
                     <Setter Property="Foreground" Value="Black"/>
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#3B82F6"/>
+                    <Setter Property="Background" Value="{DynamicResource Accent}"/>
                     <Setter Property="Foreground" Value="White"/>
                 </Trigger>
             </Style.Triggers>
@@ -284,7 +284,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsFocused" Value="True">
-                    <Setter Property="BorderBrush" Value="#3B82F6"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -325,6 +325,20 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style TargetType="ScrollViewer">
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
         </Style>
 
         <Style TargetType="Separator">

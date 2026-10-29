@@ -31,7 +31,7 @@ namespace OptikFormApp.Services
         /// var parser = new OpticalParserService();
         /// var result = await parser.ParseFileAsync("data.txt");
         /// </example>
-        public async Task<(List<StudentResult> Students, List<AnswerKeyModel> AnswerKeys, List<string> Errors)> ParseFileAsync(string filePath)
+        public async Task<(List<StudentResult> Students, List<AnswerKeyModel> AnswerKeys, List<string> Errors)> ParseFileAsync(string filePath, System.Threading.CancellationToken cancellationToken = default)
         {
             var students = new List<StudentResult>();
             var answerKeys = new List<AnswerKeyModel>();
@@ -46,7 +46,7 @@ namespace OptikFormApp.Services
             try
             {
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-                var lines = await File.ReadAllLinesAsync(filePath, System.Text.Encoding.GetEncoding(1254));
+                var lines = await File.ReadAllLinesAsync(filePath, System.Text.Encoding.GetEncoding(1254), cancellationToken);
                 int lineNum = 0;
 
                 foreach (var line in lines)
@@ -351,50 +351,56 @@ namespace OptikFormApp.Services
                 if (string.IsNullOrEmpty(key.Answers)) continue;
                 var bookletStudents = students.Where(s => s.BookletType == key.BookletName).ToList();
                 int totalStudents = bookletStudents.Count;
+                int qCount = key.Answers.Length;
 
-                for (int i = 0; i < key.Answers.Length; i++)
+                var correctArr = new int[qCount];
+                var incorrectArr = new int[qCount];
+                var emptyArr = new int[qCount];
+                var countA = new int[qCount]; var countB = new int[qCount]; var countC = new int[qCount];
+                var countD = new int[qCount]; var countE = new int[qCount]; var countEmpty = new int[qCount];
+
+                foreach (var student in bookletStudents)
                 {
-                    int correct = 0;
-                    int incorrect = 0;
-                    int emptyCount = 0;
-                    int countA = 0, countB = 0, countC = 0, countD = 0, countE = 0, countEmpty = 0;
-
-                    foreach (var student in bookletStudents)
+                    for (int i = 0; i < qCount; i++)
                     {
                         if (i < student.QuestionResults.Count)
                         {
-                            if (student.QuestionResults[i]) correct++;
+                            if (student.QuestionResults[i]) correctArr[i]++;
                             else
                             {
-                                // Check if empty or incorrect
                                 string ans = i < student.Answers.Count ? student.Answers[i].Trim().ToUpper() : "";
                                 if (string.IsNullOrEmpty(ans) || ans == " " || ans == "-")
-                                    emptyCount++;
+                                    emptyArr[i]++;
                                 else
-                                    incorrect++;
+                                    incorrectArr[i]++;
                             }
                         }
 
-                        // Count option distribution
                         if (i < student.Answers.Count)
                         {
                             string ans = student.Answers[i].Trim().ToUpper();
                             switch (ans)
                             {
-                                case "A": countA++; break;
-                                case "B": countB++; break;
-                                case "C": countC++; break;
-                                case "D": countD++; break;
-                                case "E": countE++; break;
-                                default: countEmpty++; break;
+                                case "A": countA[i]++; break;
+                                case "B": countB[i]++; break;
+                                case "C": countC[i]++; break;
+                                case "D": countD[i]++; break;
+                                case "E": countE[i]++; break;
+                                default: countEmpty[i]++; break;
                             }
                         }
                         else
                         {
-                            countEmpty++;
+                            countEmpty[i]++;
                         }
                     }
+                }
 
+                for (int i = 0; i < qCount; i++)
+                {
+                    int correct = correctArr[i];
+                    int incorrect = incorrectArr[i];
+                    int emptyCount = emptyArr[i];
                     stats.Add(new QuestionStatisticItem
                     {
                         Booklet = key.BookletName,
@@ -404,12 +410,12 @@ namespace OptikFormApp.Services
                         CorrectPercent = totalStudents > 0 ? (double)correct / totalStudents * 100 : 0,
                         IncorrectPercent = totalStudents > 0 ? (double)incorrect / totalStudents * 100 : 0,
                         EmptyPercent = totalStudents > 0 ? (double)emptyCount / totalStudents * 100 : 0,
-                        CountA = countA,
-                        CountB = countB,
-                        CountC = countC,
-                        CountD = countD,
-                        CountE = countE,
-                        CountEmpty = countEmpty
+                        CountA = countA[i],
+                        CountB = countB[i],
+                        CountC = countC[i],
+                        CountD = countD[i],
+                        CountE = countE[i],
+                        CountEmpty = countEmpty[i]
                     });
                 }
             }

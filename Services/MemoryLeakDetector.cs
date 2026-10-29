@@ -110,13 +110,8 @@ namespace OptikFormApp.Services
         {
             try
             {
-                // Force garbage collection
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                GC.Collect();
-
-                // Trim working set
-                SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
+                // Agresif GC toplama/trim kaldirildi; yalnizca LOH compaction.
+                // Agresif GC toplama kaldirildi.
             }
             catch (Exception ex)
             {

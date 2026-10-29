@@ -149,7 +149,7 @@ namespace OptikFormApp.Services
             try
             {
                 // Zip'i aç
-                ZipFile.ExtractToDirectory(zipPath, tempDir, true);
+                SafeExtractZip(zipPath, tempDir);
 
                 // Metadata kontrolü
                 var metaPath = Path.Combine(tempDir, "metadata.json");
@@ -254,7 +254,7 @@ namespace OptikFormApp.Services
             var tempDir = Path.Combine(Path.GetTempPath(), $"OptikInfo_{Guid.NewGuid():N}");
             try
             {
-                ZipFile.ExtractToDirectory(zipPath, tempDir);
+                SafeExtractZip(zipPath, tempDir);
                 var metaPath = Path.Combine(tempDir, "metadata.json");
                 if (File.Exists(metaPath))
                 {
@@ -312,6 +312,35 @@ namespace OptikFormApp.Services
             }
 
             return backups.OrderByDescending(b => b.CreatedDate).ToList();
+        }
+
+        /// <summary>
+        /// Zip slip (path traversal) korumalı çıkarma. Hedef dizin dışına çıkan girdiler reddedilir.
+        /// </summary>
+        private static void SafeExtractZip(string zipPath, string destinationDir)
+        {
+            var destRoot = Path.GetFullPath(destinationDir);
+            if (!destRoot.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                destRoot += Path.DirectorySeparatorChar;
+
+            using var archive = ZipFile.OpenRead(zipPath);
+            foreach (var entry in archive.Entries)
+            {
+                var destPath = Path.GetFullPath(Path.Combine(destinationDir, entry.FullName));
+                if (!destPath.StartsWith(destRoot, StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidDataException($"Güvensiz zip girişi (path traversal): {entry.FullName}");
+
+                if (string.IsNullOrEmpty(entry.Name))
+                {
+                    Directory.CreateDirectory(destPath);
+                }
+                else
+                {
+                    var parent = Path.GetDirectoryName(destPath);
+                    if (!string.IsNullOrEmpty(parent)) Directory.CreateDirectory(parent);
+                    entry.ExtractToFile(destPath, overwrite: true);
+                }
+            }
         }
 
         private string GetAppVersion()

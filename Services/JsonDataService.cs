@@ -82,6 +82,8 @@ namespace OptikFormApp.Services
             await File.WriteAllTextAsync(filePath, json);
         }
 
+        private const long MaxJsonImportBytes = 50 * 1024 * 1024; // 50 MB
+
         public async Task<ExamExportData?> ImportFromJsonAsync(string filePath)
         {
             if (!File.Exists(filePath))
@@ -89,6 +91,10 @@ namespace OptikFormApp.Services
 
             try
             {
+                var fi = new FileInfo(filePath);
+                if (fi.Length > MaxJsonImportBytes)
+                    return null;
+
                 var json = await File.ReadAllTextAsync(filePath);
                 var options = new JsonSerializerOptions
                 {
@@ -138,6 +144,8 @@ Veri:
 
             try
             {
+                if (new FileInfo(filePath).Length > MaxJsonImportBytes)
+                    return false;
                 var json = await File.ReadAllTextAsync(filePath);
                 var options = new JsonSerializerOptions
                 {

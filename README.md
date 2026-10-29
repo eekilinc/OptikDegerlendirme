@@ -405,3 +405,9 @@ Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
 ---
 
 **Not**: Bu uygulama AĞLASUN MYO sınav değerlendirme sistemi için özel olarak geliştirilmiştir.
+
+## Geliştirme
+
+Build: dotnet build OptikFormApp.csproj
+Test: dotnet test OptikFormApp.Tests/OptikFormApp.Tests.csproj
+

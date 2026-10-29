@@ -18,19 +18,27 @@ namespace OptikFormApp.Services
         private readonly string _dbPath;
         protected SqliteConnection _connection;
         private bool _disposed;
+        private readonly SemaphoreSlim _gate = new(1, 1);
 
-        public DatabaseService()
+        public DatabaseService(string? dbPath = null)
         {
             // Program Files dizinine yazma izni olmayabileceği için AppData'ya kaydet
-            var appDataPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "OptikDegerlendirme");
+            if (string.IsNullOrWhiteSpace(dbPath))
+            {
+                var appDataPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "OptikDegerlendirme");
+                if (!Directory.Exists(appDataPath))
+                    Directory.CreateDirectory(appDataPath);
+                dbPath = Path.Combine(appDataPath, "optik.db");
+            }
             
             // Klasör yoksa oluştur
-            if (!Directory.Exists(appDataPath))
-                Directory.CreateDirectory(appDataPath);
-            
-            _dbPath = Path.Combine(appDataPath, "optik.db");
+            var dir = Path.GetDirectoryName(dbPath);
+            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            _dbPath = dbPath;
             _connection = new SqliteConnection($"Data Source={_dbPath};Cache=Shared;Foreign Keys=True;");
             _connection.Open();
             
@@ -39,6 +47,7 @@ namespace OptikFormApp.Services
             cmd.CommandText = @"
                 PRAGMA journal_mode = WAL;
                 PRAGMA synchronous = NORMAL;
+                PRAGMA foreign_keys = ON;
             ";
             cmd.ExecuteNonQuery();
         }
@@ -59,7 +68,7 @@ namespace OptikFormApp.Services
             return cmd;
         }
 
-        public async Task InitializeDatabaseAsync()
+        public async Task InitializeDatabaseAsync(System.Threading.CancellationToken cancellationToken = default)
         {
             await EnableForeignKeysAsync();
             using var cmd = CreateCommand(@"
@@ -193,63 +202,79 @@ namespace OptikFormApp.Services
             return exams;
         }
 
-        public async Task<int> SaveExamAsync(ExamEntry exam, List<StudentResult> results)
+        public async Task<int> SaveExamAsync(ExamEntry exam, List<StudentResult> results, System.Threading.CancellationToken cancellationToken = default)
         {
-            using var transaction = await _connection.BeginTransactionAsync();
+            await _gate.WaitAsync();
             try
             {
-                using var cmd = CreateCommand(
-                    "INSERT INTO Exams (CourseId, Title, ExamDate, ConfigJson) VALUES (@cid, @title, @date, @config); SELECT last_insert_rowid();");
-                cmd.Transaction = (SqliteTransaction)transaction;
-                cmd.Parameters.AddWithValue("@cid", exam.CourseId);
-                cmd.Parameters.AddWithValue("@title", exam.Title);
-                cmd.Parameters.AddWithValue("@date", exam.Date.ToString("o"));
-                cmd.Parameters.AddWithValue("@config", exam.ConfigJson);
-                int examId = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                using var transaction = await _connection.BeginTransactionAsync();
+                try
+                {
+                    using var cmd = CreateCommand(
+                        "INSERT INTO Exams (CourseId, Title, ExamDate, ConfigJson) VALUES (@cid, @title, @date, @config); SELECT last_insert_rowid();");
+                    cmd.Transaction = (SqliteTransaction)transaction;
+                    cmd.Parameters.AddWithValue("@cid", exam.CourseId);
+                    cmd.Parameters.AddWithValue("@title", exam.Title);
+                    cmd.Parameters.AddWithValue("@date", exam.Date.ToString("o"));
+                    cmd.Parameters.AddWithValue("@config", exam.ConfigJson);
+                    int examId = Convert.ToInt32(await cmd.ExecuteScalarAsync(cancellationToken));
 
-                await InsertResultsAsync((SqliteTransaction)transaction, examId, results);
-                await transaction.CommitAsync();
-                return examId;
+                    await InsertResultsAsync((SqliteTransaction)transaction, examId, results, cancellationToken);
+                    await transaction.CommitAsync();
+                    return examId;
+                }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
             }
-            catch
+            finally
             {
-                await transaction.RollbackAsync();
-                throw;
+                _gate.Release();
             }
         }
 
-        public async Task UpdateExamAsync(ExamEntry exam, List<StudentResult> results)
+        public async Task UpdateExamAsync(ExamEntry exam, List<StudentResult> results, System.Threading.CancellationToken cancellationToken = default)
         {
-            using var transaction = await _connection.BeginTransactionAsync();
+            await _gate.WaitAsync();
             try
             {
-                using (var updateCmd = CreateCommand("UPDATE Exams SET Title=@title, ConfigJson=@config WHERE Id=@id"))
+                using var transaction = await _connection.BeginTransactionAsync();
+                try
                 {
-                    updateCmd.Transaction = (SqliteTransaction)transaction;
-                    updateCmd.Parameters.AddWithValue("@title", exam.Title);
-                    updateCmd.Parameters.AddWithValue("@config", exam.ConfigJson);
-                    updateCmd.Parameters.AddWithValue("@id", exam.Id);
-                    await updateCmd.ExecuteNonQueryAsync();
-                }
+                    using (var updateCmd = CreateCommand("UPDATE Exams SET Title=@title, ConfigJson=@config WHERE Id=@id"))
+                    {
+                        updateCmd.Transaction = (SqliteTransaction)transaction;
+                        updateCmd.Parameters.AddWithValue("@title", exam.Title);
+                        updateCmd.Parameters.AddWithValue("@config", exam.ConfigJson);
+                        updateCmd.Parameters.AddWithValue("@id", exam.Id);
+                        await updateCmd.ExecuteNonQueryAsync(cancellationToken);
+                    }
 
-                using (var delCmd = CreateCommand("DELETE FROM ExamResults WHERE ExamId = @eid"))
+                    using (var delCmd = CreateCommand("DELETE FROM ExamResults WHERE ExamId = @eid"))
+                    {
+                        delCmd.Transaction = (SqliteTransaction)transaction;
+                        delCmd.Parameters.AddWithValue("@eid", exam.Id);
+                        await delCmd.ExecuteNonQueryAsync(cancellationToken);
+                    }
+
+                    await InsertResultsAsync((SqliteTransaction)transaction, exam.Id, results, cancellationToken);
+                    await transaction.CommitAsync();
+                }
+                catch
                 {
-                    delCmd.Transaction = (SqliteTransaction)transaction;
-                    delCmd.Parameters.AddWithValue("@eid", exam.Id);
-                    await delCmd.ExecuteNonQueryAsync();
+                    await transaction.RollbackAsync();
+                    throw;
                 }
-
-                await InsertResultsAsync((SqliteTransaction)transaction, exam.Id, results);
-                await transaction.CommitAsync();
             }
-            catch
+            finally
             {
-                await transaction.RollbackAsync();
-                throw;
+                _gate.Release();
             }
         }
 
-        private async Task InsertResultsAsync(SqliteTransaction transaction, int examId, List<StudentResult> results)
+        private async Task InsertResultsAsync(SqliteTransaction transaction, int examId, List<StudentResult> results, System.Threading.CancellationToken cancellationToken = default)
         {
             const string sql = @"
                 INSERT INTO ExamResults
@@ -284,8 +309,8 @@ namespace OptikFormApp.Services
                 pInc.Value = res.IncorrectCount;
                 pEmp.Value = res.EmptyCount;
                 pQjson.Value = System.Text.Json.JsonSerializer.Serialize(res.QuestionResults);
-                
-                await cmd.ExecuteNonQueryAsync();
+
+                await cmd.ExecuteNonQueryAsync(cancellationToken);
             }
         }
 
@@ -303,15 +328,15 @@ namespace OptikFormApp.Services
             {
                 var res = new StudentResult
                 {
-                    RowNumber    = counter++,
-                    StudentId    = reader.GetString(0),
-                    FullName     = reader.GetString(1),
-                    BookletType  = reader.GetString(2),
-                    RawAnswers   = reader.GetString(3),
-                    Score        = reader.GetDouble(4),
-                    CorrectCount = reader.GetInt32(5),
-                    IncorrectCount = reader.GetInt32(6),
-                    EmptyCount   = reader.GetInt32(7)
+                    RowNumber      = counter++,
+                    StudentId      = reader.IsDBNull(0) ? "" : reader.GetString(0),
+                    FullName       = reader.IsDBNull(1) ? "" : reader.GetString(1),
+                    BookletType    = reader.IsDBNull(2) ? "" : reader.GetString(2),
+                    RawAnswers     = reader.IsDBNull(3) ? "" : reader.GetString(3),
+                    Score          = reader.IsDBNull(4) ? 0.0 : reader.GetDouble(4),
+                    CorrectCount   = reader.IsDBNull(5) ? 0 : reader.GetInt32(5),
+                    IncorrectCount = reader.IsDBNull(6) ? 0 : reader.GetInt32(6),
+                    EmptyCount     = reader.IsDBNull(7) ? 0 : reader.GetInt32(7)
                 };
 
                 int qNum = 1;
@@ -321,8 +346,15 @@ namespace OptikFormApp.Services
                     res.ColoredAnswers.Add(new AnswerItem { Character = c == ' ' ? '_' : c, State = AnswerState.NotEvaluated, QuestionNumber = qNum++ });
                 }
 
-                var qjson = reader.GetString(8);
-                res.QuestionResults = System.Text.Json.JsonSerializer.Deserialize<List<bool>>(qjson) ?? new List<bool>();
+                try
+                {
+                    var qjson = reader.IsDBNull(8) ? "[]" : reader.GetString(8);
+                    res.QuestionResults = System.Text.Json.JsonSerializer.Deserialize<List<bool>>(qjson) ?? new List<bool>();
+                }
+                catch
+                {
+                    res.QuestionResults = new List<bool>();
+                }
 
                 results.Add(res);
             }
@@ -396,7 +428,7 @@ namespace OptikFormApp.Services
             {
                 using var cmd = CreateCommand(@"
                     UPDATE ExamResults 
-                    SET Score = @score, CorrectCount = @corr, IncorrectCount = @inc, EmptyCount = @emp
+                    SET Score = @score
                     WHERE ExamId = @eid AND StudentId = @sid");
                 
                 cmd.Transaction = (SqliteTransaction)transaction;
@@ -404,21 +436,13 @@ namespace OptikFormApp.Services
                 var pEid = cmd.Parameters.Add("@eid", SqliteType.Integer);
                 var pSid = cmd.Parameters.Add("@sid", SqliteType.Text);
                 var pScore = cmd.Parameters.Add("@score", SqliteType.Real);
-                var pCorr = cmd.Parameters.Add("@corr", SqliteType.Integer);
-                var pInc = cmd.Parameters.Add("@inc", SqliteType.Integer);
-                var pEmp = cmd.Parameters.Add("@emp", SqliteType.Integer);
 
                 foreach (var (examId, studentId, newScore) in updates)
                 {
                     pEid.Value = examId;
                     pSid.Value = studentId;
                     pScore.Value = newScore;
-                    
-                    // Calculate counts based on score (simplified - you may need to recalculate properly)
-                    pCorr.Value = (int)Math.Round(newScore / 100.0 * 50); // Assuming 50 questions
-                    pInc.Value = (int)Math.Round((100 - newScore) / 100.0 * 50);
-                    pEmp.Value = 50 - (int)pCorr.Value - (int)pInc.Value;
-                    
+
                     await cmd.ExecuteNonQueryAsync();
                 }
 
@@ -435,27 +459,38 @@ namespace OptikFormApp.Services
         {
             if (examIds == null || examIds.Count == 0) return;
 
-            using var transaction = await _connection.BeginTransactionAsync();
+            await _gate.WaitAsync();
             try
             {
-                using var cmd = CreateCommand("DELETE FROM ExamResults WHERE ExamId IN ({0})");
-                cmd.Transaction = (SqliteTransaction)transaction;
-                
-                var parameters = string.Join(",", examIds.Select((_, i) => $"@eid{i}"));
-                cmd.CommandText = string.Format(cmd.CommandText, parameters);
-                
-                for (int i = 0; i < examIds.Count; i++)
+                using var transaction = await _connection.BeginTransactionAsync();
+                try
                 {
-                    cmd.Parameters.AddWithValue($"@eid{i}", examIds[i]);
-                }
+                    const int batchSize = 500;
+                    for (int offset = 0; offset < examIds.Count; offset += batchSize)
+                    {
+                        var batch = examIds.Skip(offset).Take(batchSize).ToList();
+                        using var cmd = _connection.CreateCommand();
+                        cmd.Transaction = (SqliteTransaction)transaction;
+                        var parameters = string.Join(",", batch.Select((_, i) => $"@eid{i}"));
+                        cmd.CommandText = $"DELETE FROM ExamResults WHERE ExamId IN ({parameters})";
+                        for (int i = 0; i < batch.Count; i++)
+                        {
+                            cmd.Parameters.AddWithValue($"@eid{i}", batch[i]);
+                        }
+                        await cmd.ExecuteNonQueryAsync();
+                    }
 
-                await cmd.ExecuteNonQueryAsync();
-                await transaction.CommitAsync();
+                    await transaction.CommitAsync();
+                }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
             }
-            catch
+            finally
             {
-                await transaction.RollbackAsync();
-                throw;
+                _gate.Release();
             }
         }
 
@@ -464,6 +499,7 @@ namespace OptikFormApp.Services
             if (_disposed) return;
             _connection?.Close();
             _connection?.Dispose();
+            _gate.Dispose();
             _disposed = true;
             GC.SuppressFinalize(this);
         }
@@ -475,9 +511,17 @@ namespace OptikFormApp.Services
         /// </summary>
         public async Task CloseConnectionAsync()
         {
-            if (_connection != null && _connection.State == System.Data.ConnectionState.Open)
+            await _gate.WaitAsync();
+            try
             {
-                await _connection.CloseAsync();
+                if (_connection != null && _connection.State == System.Data.ConnectionState.Open)
+                {
+                    await _connection.CloseAsync();
+                }
+            }
+            finally
+            {
+                _gate.Release();
             }
         }
 
@@ -486,11 +530,19 @@ namespace OptikFormApp.Services
         /// </summary>
         public async Task ReconnectAsync()
         {
-            if (_connection == null || _connection.State != System.Data.ConnectionState.Open)
+            await _gate.WaitAsync();
+            try
             {
+                if (_connection != null)
+                {
+                    try { await _connection.CloseAsync(); } catch { }
+                    try { _connection.Dispose(); } catch { }
+                    _connection = null!;
+                }
+
                 _connection = new SqliteConnection($"Data Source={_dbPath};Cache=Shared;Foreign Keys=True;");
                 await _connection.OpenAsync();
-                
+
                 using var cmd = _connection.CreateCommand();
                 cmd.CommandText = @"
                     PRAGMA journal_mode = WAL;
@@ -498,6 +550,10 @@ namespace OptikFormApp.Services
                     PRAGMA foreign_keys = ON;
                 ";
                 await cmd.ExecuteNonQueryAsync();
+            }
+            finally
+            {
+                _gate.Release();
             }
         }
 
@@ -507,16 +563,23 @@ namespace OptikFormApp.Services
         public async Task BackupDatabaseAsync(string backupPath)
         {
             // Önce WAL dosyalarını temizle
-            using var checkpointCmd = _connection.CreateCommand();
-            checkpointCmd.CommandText = "PRAGMA wal_checkpoint(TRUNCATE);";
-            await checkpointCmd.ExecuteNonQueryAsync();
+            await _gate.WaitAsync();
+            try
+            {
+                using var checkpointCmd = _connection.CreateCommand();
+                checkpointCmd.CommandText = "PRAGMA wal_checkpoint(TRUNCATE);";
+                await checkpointCmd.ExecuteNonQueryAsync();
 
-            // SQLite backup API kullan
-            using var backupConnection = new SqliteConnection($"Data Source={backupPath};");
-            await backupConnection.OpenAsync();
-            
-            _connection.BackupDatabase(backupConnection);
-            await backupConnection.CloseAsync();
+                using var backupConnection = new SqliteConnection($"Data Source={backupPath};");
+                await backupConnection.OpenAsync();
+
+                _connection.BackupDatabase(backupConnection);
+                await backupConnection.CloseAsync();
+            }
+            finally
+            {
+                _gate.Release();
+            }
         }
 
         /// <summary>
@@ -534,6 +597,10 @@ namespace OptikFormApp.Services
         /// </summary>
         public async Task SetUserVersionAsync(int version)
         {
+            if (version < 0 || version > 100000)
+                throw new ArgumentOutOfRangeException(nameof(version), "Version 0..100000 aralığında olmalıdır.");
+
+            // PRAGMA parametre bağlamayı desteklemez; değer doğrulanmış int olduğundan güvenlidir.
             using var cmd = CreateCommand($"PRAGMA user_version = {version};");
             await cmd.ExecuteNonQueryAsync();
         }

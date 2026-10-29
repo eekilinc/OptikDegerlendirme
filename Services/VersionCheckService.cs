@@ -38,7 +38,13 @@ namespace OptikFormApp.Services
             try
             {
                 var response = await _httpClient.GetAsync(_githubApiUrl);
-                
+
+                if (response.Content.Headers.ContentLength.HasValue &&
+                    response.Content.Headers.ContentLength.Value > 1024 * 1024)
+                {
+                    return new VersionCheckResult { HasUpdate = false, ErrorMessage = "Yanıt boyutu çok büyük." };
+                }
+
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorMessage = response.StatusCode switch

@@ -24,12 +24,10 @@ namespace OptikFormApp.Services
         {
             try
             {
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                GC.Collect();
+                // Agresif GC toplama kaldirildi.
 
                 // Process working set'ini küçült
-                Process.GetCurrentProcess().MinWorkingSet = new IntPtr(500000);
+                // MinWorkingSet zorlama kaldirildi
             }
             catch (Exception ex)
             {
@@ -44,13 +42,11 @@ namespace OptikFormApp.Services
         {
             try
             {
-                // Render mode ayarla
-                RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
-
+                // Hardware acceleration varsayılan; SoftwareOnly performansı düşürür.
                 // Text rendering optimization
                 TextOptions.TextFormattingModeProperty.OverrideMetadata(
                     typeof(Window),
-                    new FrameworkPropertyMetadata(TextFormattingMode.Display));
+                    new FrameworkPropertyMetadata(TextFormattingMode.Ideal));
 
                 TextOptions.TextRenderingModeProperty.OverrideMetadata(
                     typeof(Window),

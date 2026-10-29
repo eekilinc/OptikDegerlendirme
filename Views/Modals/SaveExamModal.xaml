@@ -1,4 +1,4 @@
-<UserControl x:Class="OptikFormApp.Views.Modals.SaveExamModal"
+﻿<UserControl x:Class="OptikFormApp.Views.Modals.SaveExamModal"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -28,11 +28,11 @@
                 <Border Grid.Row="0" Background="{DynamicResource Accent}" CornerRadius="16,16,0,0" Padding="25,20">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Border Background="White" CornerRadius="10" Width="40" Height="40" Padding="8" Margin="0,0,15,0">
-                            <TextBlock Text="💾" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Text="ğŸ’¾" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel>
-                            <TextBlock Text="Sınavı Kaydet" FontSize="20" FontWeight="Bold" Foreground="White"/>
-                            <TextBlock Text="Değerlendirme verilerini kaydedin" FontSize="13" Foreground="White" Opacity="0.9" Margin="0,2,0,0"/>
+                            <TextBlock Text="SÄ±navÄ± Kaydet" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="DeÄŸerlendirme verilerini kaydedin" FontSize="13" Foreground="White" Opacity="0.9" Margin="0,2,0,0"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -41,17 +41,17 @@
                 <StackPanel Grid.Row="1" Margin="25,20">
                     
                     <!-- Info Banner -->
-                    <Border Background="#EFF6FF" BorderBrush="{DynamicResource Accent}" BorderThickness="1" CornerRadius="10" Padding="15" Margin="0,0,0,20">
+                    <Border Background="{DynamicResource HoverBg}" BorderBrush="{DynamicResource Accent}" BorderThickness="1" CornerRadius="10" Padding="15" Margin="0,0,0,20">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="ℹ️" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                            <TextBlock Text="Kaydedilen sınavlar seçili derste listelenir ve tekrar açılabilir." 
+                            <TextBlock Text="â„¹ï¸" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Kaydedilen sÄ±navlar seÃ§ili derste listelenir ve tekrar aÃ§Ä±labilir." 
                                        FontSize="12" Foreground="{DynamicResource TextMain}" 
                                        TextWrapping="Wrap"/>
                         </StackPanel>
                     </Border>
                     
                     <!-- Exam Name -->
-                    <TextBlock Text="Sınav Adı" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
+                    <TextBlock Text="SÄ±nav AdÄ±" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
                     <TextBox Text="{Binding NewExamName, UpdateSourceTrigger=PropertyChanged}" 
                              Margin="0,0,0,15" 
                              Padding="12,10" 
@@ -86,7 +86,7 @@
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="📚" Margin="0,0,8,0"/>
+                                            <TextBlock Text="ğŸ“š" Margin="0,0,8,0"/>
                                             <TextBlock Text="{Binding Code}" FontWeight="SemiBold" Margin="0,0,5,0"/>
                                             <TextBlock Text="-" Foreground="{DynamicResource TextMuted}" Margin="0,0,5,0"/>
                                             <TextBlock Text="{Binding Name}"/>
@@ -98,7 +98,7 @@
                         
                         <!-- Add Course Button -->
                         <Button Grid.Column="1" 
-                                Content="➕ Yeni Ders" 
+                                Content="â• Yeni Ders" 
                                 Command="{Binding ToggleAddCourseInlineCommand}"
                                 VerticalAlignment="Bottom"
                                 Margin="8,0,0,0"
@@ -123,7 +123,7 @@
                         
                         <!-- Delete Course Button -->
                         <Button Grid.Column="2" 
-                                Content="🗑️ Sil" 
+                                Content="ğŸ—‘ï¸ Sil" 
                                 Command="{Binding DeleteSelectedCourseInlineCommand}"
                                 VerticalAlignment="Bottom"
                                 Margin="8,0,0,0"
@@ -149,7 +149,7 @@
                     </Grid>
                     
                     <!-- Inline Add Course Form -->
-                    <Border Background="#F0FDF4" 
+                    <Border Background="{DynamicResource SuccessBgLight}" 
                             BorderBrush="{DynamicResource Success}" 
                             BorderThickness="1" 
                             CornerRadius="10" 
@@ -167,7 +167,7 @@
                                        Text="Yeni Ders Ekle" 
                                        FontSize="13" 
                                        FontWeight="Bold" 
-                                       Foreground="#065F46"
+                                       Foreground="{DynamicResource Success}"
                                        Margin="0,0,0,10"/>
                             
                             <Grid Grid.Row="1" Margin="0,0,0,10">
@@ -177,7 +177,7 @@
                                 </Grid.ColumnDefinitions>
                                 
                                 <StackPanel Grid.Column="0" Margin="0,0,8,0">
-                                    <TextBlock Text="Kodu" FontSize="11" Foreground="#059669" Margin="0,0,0,4"/>
+                                    <TextBlock Text="Kodu" FontSize="11" Foreground="{DynamicResource AccentGreen}" Margin="0,0,0,4"/>
                                     <TextBox Text="{Binding NewCourseCodeInline, UpdateSourceTrigger=PropertyChanged}"
                                              Padding="10,8"
                                              FontSize="13"
@@ -186,7 +186,7 @@
                                 </StackPanel>
                                 
                                 <StackPanel Grid.Column="1">
-                                    <TextBlock Text="Adı" FontSize="11" Foreground="#059669" Margin="0,0,0,4"/>
+                                    <TextBlock Text="AdÄ±" FontSize="11" Foreground="{DynamicResource AccentGreen}" Margin="0,0,0,4"/>
                                     <TextBox Text="{Binding NewCourseNameInline, UpdateSourceTrigger=PropertyChanged}"
                                              Padding="10,8"
                                              FontSize="13"/>
@@ -194,13 +194,13 @@
                             </Grid>
                             
                             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Content="İptal" 
+                                <Button Content="Ä°ptal" 
                                         Command="{Binding ToggleAddCourseInlineCommand}"
                                         Padding="15,8"
                                         Background="Transparent"
-                                        BorderBrush="#059669"
+                                        BorderBrush="{DynamicResource AccentGreen}"
                                         BorderThickness="1"
-                                        Foreground="#059669"
+                                        Foreground="{DynamicResource AccentGreen}"
                                         FontSize="12"
                                         FontWeight="SemiBold"
                                         Margin="0,0,8,0"
@@ -258,8 +258,8 @@
                     <!-- Student Count Info -->
                     <Border Background="{DynamicResource AltRowBg}" CornerRadius="8" Padding="12,8" Margin="0,0,0,5">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="👥" Margin="0,0,8,0"/>
-                            <TextBlock Text="Kaydedilecek Öğrenci:" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,5,0"/>
+                            <TextBlock Text="ğŸ‘¥" Margin="0,0,8,0"/>
+                            <TextBlock Text="Kaydedilecek Ã–ÄŸrenci:" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,5,0"/>
                             <TextBlock Text="{Binding Students.Count, FallbackValue=0}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource Accent}"/>
                         </StackPanel>
                     </Border>
@@ -275,13 +275,13 @@
                         </Grid.ColumnDefinitions>
                         
                         <Button Grid.Column="0" 
-                                Content="Vazgeç" 
+                                Content="VazgeÃ§" 
                                 Command="{Binding CloseSaveExamModalCommand}" 
                                 Style="{StaticResource OutlineButton}" 
                                 Padding="20,10" FontSize="13"/>
                         
                         <Button Grid.Column="2" 
-                                Content="💾 Sınavı Kaydet" 
+                                Content="ğŸ’¾ SÄ±navÄ± Kaydet" 
                                 Command="{Binding ConfirmSaveExamCommand}" 
                                 IsEnabled="{Binding Students.Count}" 
                                 Background="{DynamicResource Accent}" 

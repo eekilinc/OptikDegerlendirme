@@ -1,4 +1,4 @@
-<UserControl x:Class="OptikFormApp.Views.Modals.SuccessPredictionModal"
+﻿<UserControl x:Class="OptikFormApp.Views.Modals.SuccessPredictionModal"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -56,7 +56,7 @@
                     </Border.BorderBrush>
                     
                     <Grid>
-                        <TextBlock Text="🎯 Başarı Tahmini" 
+                        <TextBlock Text="ğŸ¯ BaÅŸarÄ± Tahmini" 
                                    FontSize="26" 
                                    FontWeight="Bold" 
                                    Foreground="White"
@@ -74,7 +74,7 @@
                                 Padding="0"
                                 Margin="0,0,28,0"
                                 Cursor="Hand">
-                            <Button.Content>✕</Button.Content>
+                            <Button.Content>âœ•</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" 
@@ -121,7 +121,7 @@
                             </Style>
                         </Border.Style>
                         <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="Toplam Öğrenci" 
+                            <TextBlock Text="Toplam Ã–ÄŸrenci" 
                                        FontSize="11" 
                                        Margin="0,0,0,6">
                                 <TextBlock.Style>
@@ -170,7 +170,7 @@
                             </Style>
                         </Border.Style>
                         <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="Tahmini Geçme Oranı" 
+                            <TextBlock Text="Tahmini GeÃ§me OranÄ±" 
                                        FontSize="11" 
                                        Margin="0,0,0,6">
                                 <TextBlock.Style>
@@ -219,7 +219,7 @@
                             </Style>
                         </Border.Style>
                         <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="Yüksek Riskli" 
+                            <TextBlock Text="YÃ¼ksek Riskli" 
                                        FontSize="11" 
                                        Margin="0,0,0,6">
                                 <TextBlock.Style>
@@ -327,7 +327,7 @@
                         </Grid.ColumnDefinitions>
                         
                         <TextBlock Grid.Column="0" 
-                                   Text="Geçme Puanı:" 
+                                   Text="GeÃ§me PuanÄ±:" 
                                    VerticalAlignment="Center"
                                    FontSize="14"
                                    FontWeight="SemiBold"
@@ -354,7 +354,7 @@
                                 CornerRadius="8" 
                                 Padding="12,6"
                                 Margin="12,0,0,0"
-                                Background="#14B8A6">
+                                Background="{DynamicResource AccentTeal}">
                             <TextBlock Text="{Binding PassingScore, StringFormat={}{0:F0}}" 
                                        VerticalAlignment="Center"
                                        Foreground="White"
@@ -424,7 +424,7 @@
                             </Style>
                         </DataGrid.RowStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Öğrenci No" 
+                            <DataGridTextColumn Header="Ã–ÄŸrenci No" 
                                                 Binding="{Binding StudentId}" 
                                                 Width="100"/>
                             <DataGridTextColumn Header="Ad Soyad" 
@@ -436,10 +436,10 @@
                             <DataGridTextColumn Header="Tahmini Puan" 
                                                 Binding="{Binding PredictedScore, StringFormat={}{0:F1}}" 
                                                 Width="90"/>
-                            <DataGridTextColumn Header="Geçme Olasılığı" 
+                            <DataGridTextColumn Header="GeÃ§me OlasÄ±lÄ±ÄŸÄ±" 
                                                 Binding="{Binding GradeProbability, StringFormat={}{0:P0}}" 
                                                 Width="110"/>
-                            <DataGridTextColumn Header="Güven" 
+                            <DataGridTextColumn Header="GÃ¼ven" 
                                                 Binding="{Binding Confidence, StringFormat={}{0:P0}}" 
                                                 Width="70"/>
                             <DataGridTextColumn Header="Risk" 
@@ -468,13 +468,13 @@
                         </Style>
                     </Border.Style>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="🔄 Yeniden Tahmin Et" 
+                        <Button Content="ğŸ”„ Yeniden Tahmin Et" 
                                 Command="{Binding RunSuccessPredictionCommand}"
                                 Padding="18,10"
                                 Background="Transparent"
-                                BorderBrush="#14B8A6"
+                                BorderBrush="{DynamicResource AccentTeal}"
                                 BorderThickness="2"
-                                Foreground="#14B8A6"
+                                Foreground="{DynamicResource AccentTeal}"
                                 FontSize="13"
                                 FontWeight="SemiBold"
                                 Margin="0,0,12,0"
@@ -495,7 +495,7 @@
                         <Button Content="Kapat" 
                                 Command="{Binding CloseSuccessPredictionCommand}"
                                 Padding="28,10"
-                                Background="#14B8A6"
+                                Background="{DynamicResource AccentTeal}"
                                 Foreground="White"
                                 FontSize="13"
                                 FontWeight="SemiBold"

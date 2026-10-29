@@ -1,4 +1,4 @@
-<UserControl x:Class="OptikFormApp.Views.Modals.ItemAnalysisModal"
+﻿<UserControl x:Class="OptikFormApp.Views.Modals.ItemAnalysisModal"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -47,7 +47,7 @@
                         </LinearGradientBrush>
                     </Border.Background>
                     <Grid>
-                        <TextBlock Text="📊 Gelişmiş Soru Analizi" 
+                        <TextBlock Text="ğŸ“Š GeliÅŸmiÅŸ Soru Analizi" 
                                    FontSize="26" 
                                    FontWeight="Bold" 
                                    Foreground="White"
@@ -63,7 +63,7 @@
                                 FontSize="18" 
                                 Padding="0"
                                 Cursor="Hand">
-                            <Button.Content>✕</Button.Content>
+                            <Button.Content>âœ•</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" 
@@ -106,7 +106,7 @@
                             </Style>
                         </Border.Style>
                         <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="KR-20 Güvenirlik" 
+                            <TextBlock Text="KR-20 GÃ¼venirlik" 
                                        FontSize="12" 
                                        Margin="0,0,0,8">
                                 <TextBlock.Style>
@@ -204,7 +204,7 @@
                             </Style>
                         </Border.Style>
                         <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="Soru Sayısı" 
+                            <TextBlock Text="Soru SayÄ±sÄ±" 
                                        FontSize="12" 
                                        Margin="0,0,0,8">
                                 <TextBlock.Style>
@@ -266,8 +266,8 @@
                         </Style>
                     </TabControl.Resources>
 
-                    <!-- TAB 1: Soru İstatistikleri & Anomaliler -->
-                    <TabItem Header="📋 Madde Analizi &amp; Anomaliler">
+                    <!-- TAB 1: Soru Ä°statistikleri & Anomaliler -->
+                    <TabItem Header="ğŸ“‹ Madde Analizi &amp; Anomaliler">
                         <Grid Margin="0,10,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -334,13 +334,13 @@
                                         <DataGridTextColumn Header="Zorluk" 
                                                             Binding="{Binding Difficulty, StringFormat={}{0:P0}}" 
                                                             Width="70"/>
-                                        <DataGridTextColumn Header="Ayırt." 
+                                        <DataGridTextColumn Header="AyÄ±rt." 
                                                             Binding="{Binding Discrimination, StringFormat={}{0:F2}}" 
                                                             Width="70"/>
-                                        <DataGridTextColumn Header="Doğru" 
+                                        <DataGridTextColumn Header="DoÄŸru" 
                                                             Binding="{Binding CorrectRate, StringFormat={}{0:P0}}" 
                                                             Width="70"/>
-                                        <DataGridTextColumn Header="Boş" 
+                                        <DataGridTextColumn Header="BoÅŸ" 
                                                             Binding="{Binding EmptyRate, StringFormat={}{0:P0}}" 
                                                             Width="60"/>
                                         <DataGridTextColumn Header="PB Korel." 
@@ -382,7 +382,7 @@
                                                 CornerRadius="8"
                                                 Background="{DynamicResource Error}"
                                                 Margin="0,0,10,0">
-                                            <TextBlock Text="⚠️" 
+                                            <TextBlock Text="âš ï¸" 
                                                        FontSize="16" 
                                                        HorizontalAlignment="Center" 
                                                        VerticalAlignment="Center"/>
@@ -484,7 +484,7 @@
                                     </ScrollViewer>
                                     
                                     <TextBlock Grid.Row="1" 
-                                               Text="Anomali tespit edilmedi. Tüm sorular normal görünüyor." 
+                                               Text="Anomali tespit edilmedi. TÃ¼m sorular normal gÃ¶rÃ¼nÃ¼yor." 
                                                HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"
                                                FontSize="13">
@@ -507,8 +507,8 @@
                         </Grid>
                     </TabItem>
 
-                    <!-- TAB 2: Çeldirici & Seçenek Analizi -->
-                    <TabItem Header="🎯 Çeldirici Analizi (Üst/Alt %27)">
+                    <!-- TAB 2: Ã‡eldirici & SeÃ§enek Analizi -->
+                    <TabItem Header="ğŸ¯ Ã‡eldirici Analizi (Ãœst/Alt %27)">
                         <Grid Margin="0,10,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="260"/>
@@ -547,7 +547,7 @@
                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
-                                                <Border CornerRadius="8" Padding="10,6" Margin="0,2" BorderThickness="1" BorderBrush="#CBD5E1">
+                                                <Border CornerRadius="8" Padding="10,6" Margin="0,2" BorderThickness="1" BorderBrush="{DynamicResource TextMuted}">
                                                     <Border.Style>
                                                         <Style TargetType="Border">
                                                             <Setter Property="Background" Value="White"/>
@@ -574,7 +574,7 @@
                                                                 <Run Text="{Binding QuestionNumber}"/>
                                                             </TextBlock>
                                                             <TextBlock FontSize="11" Foreground="{DynamicResource TextMuted}">
-                                                                <Run Text="Doğru: "/>
+                                                                <Run Text="DoÄŸru: "/>
                                                                 <Run Text="{Binding CorrectAnswer}" FontWeight="Bold"/>
                                                             </TextBlock>
                                                         </StackPanel>
@@ -584,7 +584,7 @@
                                                                 CornerRadius="6" 
                                                                 Padding="6,2" 
                                                                 VerticalAlignment="Center">
-                                                            <TextBlock Text="⚠️ Ters Çeldirici" FontSize="10" FontWeight="Bold" Foreground="White"/>
+                                                            <TextBlock Text="âš ï¸ Ters Ã‡eldirici" FontSize="10" FontWeight="Bold" Foreground="White"/>
                                                         </Border>
                                                     </Grid>
                                                 </Border>
@@ -603,23 +603,23 @@
                                 </Grid.RowDefinitions>
 
                                 <!-- Header info for selected question -->
-                                <Border Grid.Row="0" CornerRadius="12" Padding="14,10" Margin="0,0,0,10" Background="#FFFBEB" BorderBrush="#FDE68A" BorderThickness="1">
+                                <Border Grid.Row="0" CornerRadius="12" Padding="14,10" Margin="0,0,0,10" Background="{DynamicResource WarningBgLight}" BorderBrush="{DynamicResource WarningBgLight}" BorderThickness="1">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                            <TextBlock Text="🎯 " FontSize="16" VerticalAlignment="Center"/>
-                                            <TextBlock FontWeight="Bold" FontSize="15" Foreground="#B45309" VerticalAlignment="Center">
+                                            <TextBlock Text="ğŸ¯ " FontSize="16" VerticalAlignment="Center"/>
+                                            <TextBlock FontWeight="Bold" FontSize="15" Foreground="{DynamicResource Warning}" VerticalAlignment="Center">
                                                 <Run Text="Soru "/>
                                                 <Run Text="{Binding SelectedDistractorQuestion.QuestionNumber}"/>
-                                                <Run Text=" — Seçenek ve Çeldirici Dağılımı"/>
+                                                <Run Text=" â€” SeÃ§enek ve Ã‡eldirici DaÄŸÄ±lÄ±mÄ±"/>
                                             </TextBlock>
                                         </StackPanel>
-                                        <Border Grid.Column="1" Background="#F59E0B" CornerRadius="8" Padding="10,4">
+                                        <Border Grid.Column="1" Background="{DynamicResource Warning}" CornerRadius="8" Padding="10,4">
                                             <TextBlock Foreground="White" FontWeight="Bold" FontSize="12">
-                                                <Run Text="Doğru Yanıt: "/>
+                                                <Run Text="DoÄŸru YanÄ±t: "/>
                                                 <Run Text="{Binding SelectedDistractorQuestion.CorrectAnswer}"/>
                                             </TextBlock>
                                         </Border>
@@ -648,8 +648,8 @@
                                               Background="Transparent"
                                               BorderThickness="0">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Seçenek" Binding="{Binding Option}" FontWeight="Bold" Width="60"/>
-                                            <DataGridTemplateColumn Header="Tür" Width="90">
+                                            <DataGridTextColumn Header="SeÃ§enek" Binding="{Binding Option}" FontWeight="Bold" Width="60"/>
+                                            <DataGridTemplateColumn Header="TÃ¼r" Width="90">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Border CornerRadius="6" Padding="6,2" HorizontalAlignment="Left">
@@ -666,11 +666,11 @@
                                                             <TextBlock FontSize="11" FontWeight="Bold">
                                                                 <TextBlock.Style>
                                                                     <Style TargetType="TextBlock">
-                                                                        <Setter Property="Text" Value="Çeldirici"/>
+                                                                        <Setter Property="Text" Value="Ã‡eldirici"/>
                                                                         <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                                                         <Style.Triggers>
                                                                             <DataTrigger Binding="{Binding IsCorrect}" Value="True">
-                                                                                <Setter Property="Text" Value="✅ Doğru"/>
+                                                                                <Setter Property="Text" Value="âœ… DoÄŸru"/>
                                                                                 <Setter Property="Foreground" Value="#15803D"/>
                                                                             </DataTrigger>
                                                                         </Style.Triggers>
@@ -681,13 +681,13 @@
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
-                                            <DataGridTextColumn Header="Üst %27 (Kişi)" Width="85" Binding="{Binding TopCount, StringFormat={}{0} kişi}"/>
-                                            <DataGridTextColumn Header="Üst %27 (%)" Width="85" Binding="{Binding TopPercent, StringFormat={}{0:F1}%}"/>
-                                            <DataGridTextColumn Header="Alt %27 (Kişi)" Width="85" Binding="{Binding BottomCount, StringFormat={}{0} kişi}"/>
+                                            <DataGridTextColumn Header="Ãœst %27 (KiÅŸi)" Width="85" Binding="{Binding TopCount, StringFormat={}{0} kiÅŸi}"/>
+                                            <DataGridTextColumn Header="Ãœst %27 (%)" Width="85" Binding="{Binding TopPercent, StringFormat={}{0:F1}%}"/>
+                                            <DataGridTextColumn Header="Alt %27 (KiÅŸi)" Width="85" Binding="{Binding BottomCount, StringFormat={}{0} kiÅŸi}"/>
                                             <DataGridTextColumn Header="Alt %27 (%)" Width="85" Binding="{Binding BottomPercent, StringFormat={}{0:F1}%}"/>
                                             <DataGridTextColumn Header="Toplam" Width="65" Binding="{Binding TotalCount}"/>
                                             <DataGridTextColumn Header="Genel Oran" Width="80" Binding="{Binding TotalPercent, StringFormat={}{0:F1}%}"/>
-                                            <DataGridTemplateColumn Header="Değerlendirme" Width="*">
+                                            <DataGridTemplateColumn Header="DeÄŸerlendirme" Width="*">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Border CornerRadius="6" Padding="8,3" HorizontalAlignment="Left">
@@ -735,7 +735,7 @@
 
                                 <!-- Educational Note Footer -->
                                 <Border Grid.Row="2" Margin="0,8,0,0" Padding="12,8" Background="{DynamicResource AppBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10">
-                                    <TextBlock Text="💡 Rehber: İyi bir çeldiricide alt başarı grubundaki oran üst gruptan yüksek olmalıdır. Üst grubun alt gruptan daha fazla işaretlediği çeldiriciler 'Ters Çeldirici ⚠️' olarak işaretlenir (soru kökünde veya şıkta çelişki işareti)." 
+                                    <TextBlock Text="ğŸ’¡ Rehber: Ä°yi bir Ã§eldiricide alt baÅŸarÄ± grubundaki oran Ã¼st gruptan yÃ¼ksek olmalÄ±dÄ±r. Ãœst grubun alt gruptan daha fazla iÅŸaretlediÄŸi Ã§eldiriciler 'Ters Ã‡eldirici âš ï¸' olarak iÅŸaretlenir (soru kÃ¶kÃ¼nde veya ÅŸÄ±kta Ã§eliÅŸki iÅŸareti)." 
                                                FontSize="11" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap"/>
                                 </Border>
                             </Grid>
@@ -762,13 +762,13 @@
                         </Style>
                     </Border.Style>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="🔄 Yeniden Analiz Et" 
+                        <Button Content="ğŸ”„ Yeniden Analiz Et" 
                                 Command="{Binding RunItemAnalysisCommand}"
                                 Padding="18,10"
                                 Background="Transparent"
-                                BorderBrush="#F59E0B"
+                                BorderBrush="{DynamicResource Warning}"
                                 BorderThickness="2"
-                                Foreground="#F59E0B"
+                                Foreground="{DynamicResource Warning}"
                                 FontSize="13"
                                 FontWeight="SemiBold"
                                 Margin="0,0,12,0"
@@ -789,7 +789,7 @@
                         <Button Content="Kapat" 
                                 Command="{Binding CloseItemAnalysisCommand}"
                                 Padding="28,10"
-                                Background="#F59E0B"
+                                Background="{DynamicResource Warning}"
                                 Foreground="White"
                                 FontSize="13"
                                 FontWeight="SemiBold"

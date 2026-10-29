@@ -1,4 +1,4 @@
-<UserControl x:Class="OptikFormApp.Views.StatisticsReportView"
+﻿<UserControl x:Class="OptikFormApp.Views.StatisticsReportView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -11,32 +11,32 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Başlık & Genel Sınav Bilgisi -->
+        <!-- BaÅŸlÄ±k & Genel SÄ±nav Bilgisi -->
         <Grid Grid.Row="0" Margin="0,0,0,16">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Border Width="40" Height="40" CornerRadius="12" Background="#EFF6FF" Margin="0,0,12,0">
-                    <TextBlock Text="📊" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Border Width="40" Height="40" CornerRadius="12" Background="{DynamicResource HoverBg}" Margin="0,0,12,0">
+                    <TextBlock Text="ğŸ“Š" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
                 <StackPanel>
-                    <TextBlock Text="Kapsamlı İstatistiksel Analiz Raporu" 
+                    <TextBlock Text="KapsamlÄ± Ä°statistiksel Analiz Raporu" 
                                FontSize="20" FontWeight="ExtraBold" 
                                Foreground="{DynamicResource TextMain}"/>
-                    <TextBlock Text="Merkezi eğilim, varyasyon, dağılım çarpıklığı, KR-20 güvenilirliği ve pedagojik değerlendirmeler" 
+                    <TextBlock Text="Merkezi eÄŸilim, varyasyon, daÄŸÄ±lÄ±m Ã§arpÄ±klÄ±ÄŸÄ±, KR-20 gÃ¼venilirliÄŸi ve pedagojik deÄŸerlendirmeler" 
                                FontSize="12" Foreground="{DynamicResource TextMuted}"/>
                 </StackPanel>
             </StackPanel>
 
             <Button Grid.Column="1" HorizontalAlignment="Right" Command="{Binding CopyReportCommand}"
                     Background="{DynamicResource Accent}" Foreground="White" Padding="14,8" FontWeight="SemiBold"
-                    Cursor="Hand" ToolTip="Tüm istatistiksel raporu panoya kopyala">
+                    Cursor="Hand" ToolTip="TÃ¼m istatistiksel raporu panoya kopyala">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="📋" Margin="0,0,6,0"/>
+                    <TextBlock Text="ğŸ“‹" Margin="0,0,6,0"/>
                     <TextBlock Text="Raporu Panoya Kopyala"/>
                 </StackPanel>
             </Button>
         </Grid>
 
-        <!-- Üst Hızlı Özet Kartları (4 Temel Metrik) -->
+        <!-- Ãœst HÄ±zlÄ± Ã–zet KartlarÄ± (4 Temel Metrik) -->
         <Grid Grid.Row="1" Margin="0,0,0,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -70,8 +70,8 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Medyan (Ortanca)" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
                     <TextBlock Grid.Row="1" Text="{Binding ClassStats.MedianScore, StringFormat='{}{0:F2}'}" 
-                               FontSize="24" FontWeight="ExtraBold" Foreground="#7C3AED" Margin="0,2"/>
-                    <TextBlock Grid.Row="2" Text="{Binding ClassStats.Range, StringFormat='{}Ranj (Açıklık): {0:F1}'}" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
+                               FontSize="24" FontWeight="ExtraBold" Foreground="{DynamicResource AccentViolet}" Margin="0,2"/>
+                    <TextBlock Grid.Row="2" Text="{Binding ClassStats.Range, StringFormat='{}Ranj (AÃ§Ä±klÄ±k): {0:F1}'}" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
                 </Grid>
             </Border>
 
@@ -85,12 +85,12 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Standart Sapma" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
                     <TextBlock Grid.Row="1" Text="{Binding ClassStats.StandardDeviation, StringFormat='{}{0:F2}'}" 
-                               FontSize="24" FontWeight="ExtraBold" Foreground="#D97706" Margin="0,2"/>
-                    <TextBlock Grid.Row="2" Text="{Binding ClassStats.StandardErrorOfMeasurement, StringFormat='{}Hata Payı SeM: ±{0:F2}'}" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
+                               FontSize="24" FontWeight="ExtraBold" Foreground="{DynamicResource AccentOrange}" Margin="0,2"/>
+                    <TextBlock Grid.Row="2" Text="{Binding ClassStats.StandardErrorOfMeasurement, StringFormat='{}Hata PayÄ± SeM: Â±{0:F2}'}" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
                 </Grid>
             </Border>
 
-            <!-- 4. Başarı & Güvenilirlik -->
+            <!-- 4. BaÅŸarÄ± & GÃ¼venilirlik -->
             <Border Grid.Column="3" Background="{DynamicResource AltRowBg}" CornerRadius="14" Padding="16,12">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -98,15 +98,15 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Başarı Oranı" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
+                    <TextBlock Text="BaÅŸarÄ± OranÄ±" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
                     <TextBlock Grid.Row="1" Text="{Binding ClassStats.SuccessRate, StringFormat='{}%{0:F1}'}" 
                                FontSize="24" FontWeight="ExtraBold" Foreground="{DynamicResource Success}" Margin="0,2"/>
-                    <TextBlock Grid.Row="2" Text="{Binding ReliabilityStats.KR20, StringFormat='{}KR-20: {0:F2}'}" FontSize="10" Foreground="#047857" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Row="2" Text="{Binding ReliabilityStats.KR20, StringFormat='{}KR-20: {0:F2}'}" FontSize="10" Foreground="{DynamicResource Success}" FontWeight="SemiBold"/>
                 </Grid>
             </Border>
         </Grid>
 
-        <!-- Detaylı Analiz Sekmeleri -->
+        <!-- DetaylÄ± Analiz Sekmeleri -->
         <TabControl Grid.Row="2" Background="Transparent" BorderThickness="0">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
@@ -140,11 +140,11 @@
                 </Style>
             </TabControl.Resources>
 
-            <!-- TAB 1: MERKEZİ EĞİLİM VE YAYILMA ÖLÇÜLERİ -->
-            <TabItem Header="📐 Merkezi Eğilim &amp; Yayılma">
+            <!-- TAB 1: MERKEZÄ° EÄÄ°LÄ°M VE YAYILMA Ã–LÃ‡ÃœLERÄ° -->
+            <TabItem Header="ğŸ“ Merkezi EÄŸilim &amp; YayÄ±lma">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="10">
-                        <TextBlock Text="Sınıfın Merkezi Eğilim ve Dağılım Parametreleri" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,14"/>
+                        <TextBlock Text="SÄ±nÄ±fÄ±n Merkezi EÄŸilim ve DaÄŸÄ±lÄ±m Parametreleri" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,14"/>
                         
                         <UniformGrid Columns="2" Margin="0,0,0,10">
                             <!-- Aritmetik Ortalama -->
@@ -153,7 +153,7 @@
                                     <StackPanel>
                                         <TextBlock Text="Aritmetik Ortalama (Mean)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
                                         <TextBlock Text="{Binding ClassStats.AverageScore, StringFormat='{}{0:F2}'}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource AccentHover}"/>
-                                        <TextBlock Text="Sınıfın tüm puanlarının toplamının öğrenci sayısına bölümü" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
+                                        <TextBlock Text="SÄ±nÄ±fÄ±n tÃ¼m puanlarÄ±nÄ±n toplamÄ±nÄ±n Ã¶ÄŸrenci sayÄ±sÄ±na bÃ¶lÃ¼mÃ¼" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -162,31 +162,31 @@
                             <Border Style="{StaticResource MetricRowCard}">
                                 <Grid>
                                     <StackPanel>
-                                        <TextBlock Text="Medyan (Ortanca Değer)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                        <TextBlock Text="{Binding ClassStats.MedianScore, StringFormat='{}{0:F2}'}" FontSize="18" FontWeight="Bold" Foreground="#7C3AED"/>
-                                        <TextBlock Text="Sıralı listede sınıfı tam ortadan ikiye bölen puan (%50 dilimi)" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
+                                        <TextBlock Text="Medyan (Ortanca DeÄŸer)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
+                                        <TextBlock Text="{Binding ClassStats.MedianScore, StringFormat='{}{0:F2}'}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource AccentViolet}"/>
+                                        <TextBlock Text="SÄ±ralÄ± listede sÄ±nÄ±fÄ± tam ortadan ikiye bÃ¶len puan (%50 dilimi)" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
 
-                            <!-- Mod (Tepe Değer) -->
+                            <!-- Mod (Tepe DeÄŸer) -->
                             <Border Style="{StaticResource MetricRowCard}">
                                 <Grid>
                                     <StackPanel>
-                                        <TextBlock Text="Mod (Tepe Değer)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                        <TextBlock Text="{Binding ClassStats.ModeScoreText}" FontSize="18" FontWeight="Bold" Foreground="#059669"/>
-                                        <TextBlock Text="Sınavda en çok tekrar eden / en fazla alınan puan" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
+                                        <TextBlock Text="Mod (Tepe DeÄŸer)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
+                                        <TextBlock Text="{Binding ClassStats.ModeScoreText}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource AccentGreen}"/>
+                                        <TextBlock Text="SÄ±navda en Ã§ok tekrar eden / en fazla alÄ±nan puan" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
 
-                            <!-- Ranj (Puan Açıklığı) -->
+                            <!-- Ranj (Puan AÃ§Ä±klÄ±ÄŸÄ±) -->
                             <Border Style="{StaticResource MetricRowCard}">
                                 <Grid>
                                     <StackPanel>
-                                        <TextBlock Text="Ranj (Puan Açıklığı / Range)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                        <TextBlock Text="{Binding ClassStats.Range, StringFormat='{}{0:F1} Puan'}" FontSize="18" FontWeight="Bold" Foreground="#D97706"/>
-                                        <TextBlock Text="{Binding ClassStats.MinScore, StringFormat='{}En Düşük: {0:F0} | En Yüksek: '}" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
+                                        <TextBlock Text="Ranj (Puan AÃ§Ä±klÄ±ÄŸÄ± / Range)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
+                                        <TextBlock Text="{Binding ClassStats.Range, StringFormat='{}{0:F1} Puan'}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource AccentOrange}"/>
+                                        <TextBlock Text="{Binding ClassStats.MinScore, StringFormat='{}En DÃ¼ÅŸÃ¼k: {0:F0} | En YÃ¼ksek: '}" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -197,26 +197,26 @@
                                     <StackPanel>
                                         <TextBlock Text="Standart Sapma &amp; Varyans" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding ClassStats.StandardDeviation, StringFormat='{}S: {0:F2}'}" FontSize="18" FontWeight="Bold" Foreground="#DC2626" Margin="0,0,15,0"/>
-                                            <TextBlock Text="{Binding ClassStats.Variance, StringFormat='{}S²: {0:F2}'}" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding ClassStats.StandardDeviation, StringFormat='{}S: {0:F2}'}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource Error}" Margin="0,0,15,0"/>
+                                            <TextBlock Text="{Binding ClassStats.Variance, StringFormat='{}SÂ²: {0:F2}'}" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                                         </StackPanel>
-                                        <TextBlock Text="Puanların ortalamadan ne kadar uzaklaştığının karesel ölçüsü" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
+                                        <TextBlock Text="PuanlarÄ±n ortalamadan ne kadar uzaklaÅŸtÄ±ÄŸÄ±nÄ±n karesel Ã¶lÃ§Ã¼sÃ¼" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
 
-                            <!-- Bağıl Değişkenlik Katsayısı -->
+                            <!-- BaÄŸÄ±l DeÄŸiÅŸkenlik KatsayÄ±sÄ± -->
                             <Border Style="{StaticResource MetricRowCard}">
                                 <Grid>
                                     <StackPanel>
-                                        <TextBlock Text="Bağıl Değişkenlik Katsayısı (Varyasyon %)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
+                                        <TextBlock Text="BaÄŸÄ±l DeÄŸiÅŸkenlik KatsayÄ±sÄ± (Varyasyon %)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding ClassStats.VariationCoefficient, StringFormat='{}%{0:F1}'}" FontSize="18" FontWeight="Bold" Foreground="#0284C7" Margin="0,0,10,0"/>
-                                            <Border Background="#E0F2FE" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding ClassStats.HomogeneityInterpretation}" FontSize="10" FontWeight="Bold" Foreground="#0369A1"/>
+                                            <TextBlock Text="{Binding ClassStats.VariationCoefficient, StringFormat='{}%{0:F1}'}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource Accent}" Margin="0,0,10,0"/>
+                                            <Border Background="{DynamicResource AccentBgLight}" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding ClassStats.HomogeneityInterpretation}" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource Accent}"/>
                                             </Border>
                                         </StackPanel>
-                                        <TextBlock Text="Grup yapısı: V &lt; 20 homojen, V &gt; 25 heterojen sınıf" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
+                                        <TextBlock Text="Grup yapÄ±sÄ±: V &lt; 20 homojen, V &gt; 25 heterojen sÄ±nÄ±f" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -225,56 +225,56 @@
                 </ScrollViewer>
             </TabItem>
 
-            <!-- TAB 2: DAĞILIM BİÇİMİ VE GÜVENİLİRLİK -->
-            <TabItem Header="📊 Dağılım Biçimi &amp; Güvenilirlik">
+            <!-- TAB 2: DAÄILIM BÄ°Ã‡Ä°MÄ° VE GÃœVENÄ°LÄ°RLÄ°K -->
+            <TabItem Header="ğŸ“Š DaÄŸÄ±lÄ±m BiÃ§imi &amp; GÃ¼venilirlik">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="10">
-                        <TextBlock Text="Çarpıklık, Basıklık ve Ölçme Güvenilirliği" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,14"/>
+                        <TextBlock Text="Ã‡arpÄ±klÄ±k, BasÄ±klÄ±k ve Ã–lÃ§me GÃ¼venilirliÄŸi" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,14"/>
 
                         <UniformGrid Columns="2" Margin="0,0,0,10">
-                            <!-- Çarpıklık Katsayısı -->
+                            <!-- Ã‡arpÄ±klÄ±k KatsayÄ±sÄ± -->
                             <Border Style="{StaticResource MetricRowCard}">
                                 <StackPanel>
-                                    <TextBlock Text="Çarpıklık Katsayısı (Skewness)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Text="Ã‡arpÄ±klÄ±k KatsayÄ±sÄ± (Skewness)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
                                     <TextBlock Text="{Binding ClassStats.Skewness, StringFormat='{}{0:F2}'}" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource AccentHover}"/>
-                                    <Border Background="#DBEAFE" CornerRadius="4" Padding="6,3" Margin="0,4,0,4" HorizontalAlignment="Left">
-                                        <TextBlock Text="{Binding ClassStats.SkewnessInterpretation}" FontSize="10" FontWeight="Bold" Foreground="#1D4ED8"/>
+                                    <Border Background="{DynamicResource AccentBgLight}" CornerRadius="4" Padding="6,3" Margin="0,4,0,4" HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding ClassStats.SkewnessInterpretation}" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource Accent}"/>
                                     </Border>
-                                    <TextBlock Text="&gt;0 sağa çarpık (zor sınav), &lt;0 sola çarpık (kolay sınav), 0'a yakın simetrik çan eğrisi" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Text="&gt;0 saÄŸa Ã§arpÄ±k (zor sÄ±nav), &lt;0 sola Ã§arpÄ±k (kolay sÄ±nav), 0'a yakÄ±n simetrik Ã§an eÄŸrisi" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
                                 </StackPanel>
                             </Border>
 
-                            <!-- Basıklık Katsayısı -->
+                            <!-- BasÄ±klÄ±k KatsayÄ±sÄ± -->
                             <Border Style="{StaticResource MetricRowCard}">
                                 <StackPanel>
-                                    <TextBlock Text="Basıklık Katsayısı (Kurtosis)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                    <TextBlock Text="{Binding ClassStats.Kurtosis, StringFormat='{}{0:F2}'}" FontSize="20" FontWeight="Bold" Foreground="#7C3AED"/>
-                                    <Border Background="#F3E8FF" CornerRadius="4" Padding="6,3" Margin="0,4,0,4" HorizontalAlignment="Left">
-                                        <TextBlock Text="{Binding ClassStats.KurtosisInterpretation}" FontSize="10" FontWeight="Bold" Foreground="#6B21A8"/>
+                                    <TextBlock Text="BasÄ±klÄ±k KatsayÄ±sÄ± (Kurtosis)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Text="{Binding ClassStats.Kurtosis, StringFormat='{}{0:F2}'}" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource AccentViolet}"/>
+                                    <Border Background="{DynamicResource AccentBgLight}" CornerRadius="4" Padding="6,3" Margin="0,4,0,4" HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding ClassStats.KurtosisInterpretation}" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource AccentViolet}"/>
                                     </Border>
-                                    <TextBlock Text="&gt;0 sivri (ortalamada yoğun yığılma), &lt;0 basık (düz/yayvan dağılım)" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Text="&gt;0 sivri (ortalamada yoÄŸun yÄ±ÄŸÄ±lma), &lt;0 basÄ±k (dÃ¼z/yayvan daÄŸÄ±lÄ±m)" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
                                 </StackPanel>
                             </Border>
 
                             <!-- KR-20 & Cronbach Alfa -->
                             <Border Style="{StaticResource MetricRowCard}">
                                 <StackPanel>
-                                    <TextBlock Text="İç Tutarlık ve Güvenilirlik (KR-20 / Alfa)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Text="Ä°Ã§ TutarlÄ±k ve GÃ¼venilirlik (KR-20 / Alfa)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
                                     <StackPanel Orientation="Horizontal" Margin="0,2,0,4">
-                                        <TextBlock Text="{Binding ReliabilityStats.KR20, StringFormat='{}KR-20: {0:F3}'}" FontSize="18" FontWeight="Bold" Foreground="#059669" Margin="0,0,15,0"/>
+                                        <TextBlock Text="{Binding ReliabilityStats.KR20, StringFormat='{}KR-20: {0:F3}'}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource AccentGreen}" Margin="0,0,15,0"/>
                                         <TextBlock Text="{Binding ReliabilityStats.CronbachAlpha, StringFormat='{}Alfa: {0:F3}'}" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                                     </StackPanel>
-                                    <TextBlock Text="0.70 üzeri kabul edilebilir, 0.80 üzeri yüksek güvenilirlik standardıdır." FontSize="10" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Text="0.70 Ã¼zeri kabul edilebilir, 0.80 Ã¼zeri yÃ¼ksek gÃ¼venilirlik standardÄ±dÄ±r." FontSize="10" Foreground="{DynamicResource TextMuted}"/>
                                 </StackPanel>
                             </Border>
 
-                            <!-- Ölçmenin Standart Hatası (SeM) ve Güven Aralıkları -->
+                            <!-- Ã–lÃ§menin Standart HatasÄ± (SeM) ve GÃ¼ven AralÄ±klarÄ± -->
                             <Border Style="{StaticResource MetricRowCard}">
                                 <StackPanel>
-                                    <TextBlock Text="Ölçmenin Standart Hatası (SeM) &amp; Güven Aralığı" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                    <TextBlock Text="{Binding ClassStats.StandardErrorOfMeasurement, StringFormat='{}SeM: ±{0:F2} Puan'}" FontSize="18" FontWeight="Bold" Foreground="#D97706"/>
-                                    <TextBlock Text="{Binding ClassStats.ConfidenceInterval68, StringFormat='{}%68 Güven Aralığı: {0}'}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,3,0,1"/>
-                                    <TextBlock Text="{Binding ClassStats.ConfidenceInterval95, StringFormat='{}%95 Güven Aralığı: {0}'}" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Text="Ã–lÃ§menin Standart HatasÄ± (SeM) &amp; GÃ¼ven AralÄ±ÄŸÄ±" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Text="{Binding ClassStats.StandardErrorOfMeasurement, StringFormat='{}SeM: Â±{0:F2} Puan'}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource AccentOrange}"/>
+                                    <TextBlock Text="{Binding ClassStats.ConfidenceInterval68, StringFormat='{}%68 GÃ¼ven AralÄ±ÄŸÄ±: {0}'}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,3,0,1"/>
+                                    <TextBlock Text="{Binding ClassStats.ConfidenceInterval95, StringFormat='{}%95 GÃ¼ven AralÄ±ÄŸÄ±: {0}'}" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
                                 </StackPanel>
                             </Border>
                         </UniformGrid>
@@ -282,8 +282,8 @@
                 </ScrollViewer>
             </TabItem>
 
-            <!-- TAB 3: PUAN DAĞILIMI VE YÜZDELİKLER -->
-            <TabItem Header="📈 Dağılım &amp; Yüzdelikler">
+            <!-- TAB 3: PUAN DAÄILIMI VE YÃœZDELÄ°KLER -->
+            <TabItem Header="ğŸ“ˆ DaÄŸÄ±lÄ±m &amp; YÃ¼zdelikler">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <Grid Margin="10">
                         <Grid.ColumnDefinitions>
@@ -293,7 +293,7 @@
 
                         <!-- Puan Frekans Tablosu -->
                         <StackPanel Grid.Column="0" Margin="0,0,15,0">
-                            <TextBlock Text="10'ar Puanlık Aralıklar Bazında Frekans" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,10"/>
+                            <TextBlock Text="10'ar PuanlÄ±k AralÄ±klar BazÄ±nda Frekans" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,10"/>
                             <DataGrid ItemsSource="{Binding ScoreDistribution}" 
                                       AutoGenerateColumns="False" 
                                       HeadersVisibility="Column"
@@ -304,48 +304,48 @@
                                       RowHeight="32">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Puan Dilimi" Binding="{Binding Range}" Width="90"/>
-                                    <DataGridTextColumn Header="Öğrenci" Binding="{Binding Count}" Width="70"/>
+                                    <DataGridTextColumn Header="Ã–ÄŸrenci" Binding="{Binding Count}" Width="70"/>
                                     <DataGridTextColumn Header="Oran (%)" Binding="{Binding Percentage, StringFormat='{}%{0:F1}'}" Width="80"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </StackPanel>
 
-                        <!-- Yüzdelikler (Percentile) -->
+                        <!-- YÃ¼zdelikler (Percentile) -->
                         <StackPanel Grid.Column="1">
-                            <TextBlock Text="Başarı Çeyrekleri ve Yüzdelikler (Percentile)" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,10"/>
+                            <TextBlock Text="BaÅŸarÄ± Ã‡eyrekleri ve YÃ¼zdelikler (Percentile)" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,10"/>
                             
                             <Border Style="{StaticResource MetricRowCard}" Margin="0,0,0,8">
                                 <Grid>
-                                    <TextBlock Text="Üst %10 (En Başarılı Grup Sınırı)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                    <TextBlock Text="{Binding Percentiles[%90 (Üst Sınır)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource Success}"/>
+                                    <TextBlock Text="Ãœst %10 (En BaÅŸarÄ±lÄ± Grup SÄ±nÄ±rÄ±)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Text="{Binding Percentiles[%90 (Ãœst SÄ±nÄ±r)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource Success}"/>
                                 </Grid>
                             </Border>
 
                             <Border Style="{StaticResource MetricRowCard}" Margin="0,0,0,8">
                                 <Grid>
-                                    <TextBlock Text="Üst %25 (Q3 - Üst Çeyrek Dilimi)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                    <TextBlock Text="{Binding Percentiles[%75 (Q3 - Üst Çeyrek)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource AccentHover}"/>
+                                    <TextBlock Text="Ãœst %25 (Q3 - Ãœst Ã‡eyrek Dilimi)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Text="{Binding Percentiles[%75 (Q3 - Ãœst Ã‡eyrek)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource AccentHover}"/>
                                 </Grid>
                             </Border>
 
                             <Border Style="{StaticResource MetricRowCard}" Margin="0,0,0,8">
                                 <Grid>
                                     <TextBlock Text="Ortanca %50 (Medyan)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                    <TextBlock Text="{Binding Percentiles[%50 (Medyan - Ortanca)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="#7C3AED"/>
+                                    <TextBlock Text="{Binding Percentiles[%50 (Medyan - Ortanca)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource AccentViolet}"/>
                                 </Grid>
                             </Border>
 
                             <Border Style="{StaticResource MetricRowCard}" Margin="0,0,0,8">
                                 <Grid>
-                                    <TextBlock Text="Alt %25 (Q1 - Alt Çeyrek Dilimi)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                    <TextBlock Text="{Binding Percentiles[%25 (Q1 - Alt Çeyrek)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="#F59E0B"/>
+                                    <TextBlock Text="Alt %25 (Q1 - Alt Ã‡eyrek Dilimi)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Text="{Binding Percentiles[%25 (Q1 - Alt Ã‡eyrek)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource Warning}"/>
                                 </Grid>
                             </Border>
 
                             <Border Style="{StaticResource MetricRowCard}" Margin="0,0,0,8">
                                 <Grid>
-                                    <TextBlock Text="Alt %10 (Taban Puan Sınırı)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                    <TextBlock Text="{Binding Percentiles[%10 (Alt Sınır)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource Error}"/>
+                                    <TextBlock Text="Alt %10 (Taban Puan SÄ±nÄ±rÄ±)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Text="{Binding Percentiles[%10 (Alt SÄ±nÄ±r)], StringFormat='{}{0:F1} Puan'}" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource Error}"/>
                                 </Grid>
                             </Border>
                         </StackPanel>
@@ -353,8 +353,8 @@
                 </ScrollViewer>
             </TabItem>
 
-            <!-- TAB 4: AKILLI PEDAGOJİK DEĞERLENDİRME VE RAPOR METNİ -->
-            <TabItem Header="🧠 Akıllı Değerlendirme &amp; Rapor Metni">
+            <!-- TAB 4: AKILLI PEDAGOJÄ°K DEÄERLENDÄ°RME VE RAPOR METNÄ° -->
+            <TabItem Header="ğŸ§  AkÄ±llÄ± DeÄŸerlendirme &amp; Rapor Metni">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -362,8 +362,8 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Margin="0,0,0,12">
-                        <TextBlock Text="Otomatik Sınav ve Ölçme Değerlendirme Çıktısı" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
-                        <TextBlock Text="Sınavın pedagojik zorluk, ayırt edicilik ve standart sapma analizini özetleyen akademik rapor metni" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
+                        <TextBlock Text="Otomatik SÄ±nav ve Ã–lÃ§me DeÄŸerlendirme Ã‡Ä±ktÄ±sÄ±" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
+                        <TextBlock Text="SÄ±navÄ±n pedagojik zorluk, ayÄ±rt edicilik ve standart sapma analizini Ã¶zetleyen akademik rapor metni" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
                     </StackPanel>
 
                     <Border Grid.Row="1" Background="{DynamicResource AltRowBg}" CornerRadius="12" Padding="18">

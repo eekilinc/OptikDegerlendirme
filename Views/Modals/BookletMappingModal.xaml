@@ -1,4 +1,4 @@
-<UserControl x:Class="OptikFormApp.Views.Modals.BookletMappingModal"
+﻿<UserControl x:Class="OptikFormApp.Views.Modals.BookletMappingModal"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -44,14 +44,14 @@
                     </Border.Background>
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="🔄 Kitapçık Eşleme Matrisi" FontSize="22" FontWeight="Bold" Foreground="White"/>
-                            <TextBlock Text="Kaynak kitapçıktan hedef kitapçığı otomatik türetin" FontSize="12" Foreground="#E0E7FF" Margin="0,4,0,0"/>
+                            <TextBlock Text="ğŸ”„ KitapÃ§Ä±k EÅŸleme Matrisi" FontSize="22" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Kaynak kitapÃ§Ä±ktan hedef kitapÃ§Ä±ÄŸÄ± otomatik tÃ¼retin" FontSize="12" Foreground="{DynamicResource AccentBgLight}" Margin="0,4,0,0"/>
                         </StackPanel>
                         <Button Command="{Binding CloseBookletMappingCommand}"
                                 HorizontalAlignment="Right" VerticalAlignment="Top"
                                 Background="#20FFFFFF" BorderThickness="0" Foreground="White"
                                 Width="34" Height="34" FontSize="16" Cursor="Hand">
-                            <Button.Content>✕</Button.Content>
+                            <Button.Content>âœ•</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" CornerRadius="17">
@@ -75,7 +75,7 @@
 
                         <!-- Source Booklet -->
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="Kaynak Kitapçık" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
+                            <TextBlock Text="Kaynak KitapÃ§Ä±k" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
                             <ComboBox ItemsSource="{Binding AnswerKeys}" DisplayMemberPath="BookletName" 
                                       SelectedItem="{Binding SelectedSourceAnswerKey, UpdateSourceTrigger=PropertyChanged}"
                                       Padding="10,8" MinHeight="38"/>
@@ -83,23 +83,23 @@
 
                         <!-- Target Booklet Name -->
                         <StackPanel Grid.Column="2">
-                            <TextBlock Text="Türetilecek Kitapçık Adı" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
+                            <TextBlock Text="TÃ¼retilecek KitapÃ§Ä±k AdÄ±" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
                             <TextBox Text="{Binding TargetBookletName, UpdateSourceTrigger=PropertyChanged}"
                                      Padding="10,8" MinHeight="38" FontWeight="Bold" FontSize="14" HorizontalContentAlignment="Center"/>
                         </StackPanel>
                     </Grid>
 
                     <!-- Instruction Box -->
-                    <Border Background="#EEF2FF" CornerRadius="10" Padding="12,10" Margin="0,0,0,14" BorderBrush="#C7D2FE" BorderThickness="1">
+                    <Border Background="{DynamicResource AccentBgLight}" CornerRadius="10" Padding="12,10" Margin="0,0,0,14" BorderBrush="{DynamicResource AccentBgLight}" BorderThickness="1">
                         <StackPanel>
-                            <TextBlock Text="ℹ️ Eşleme Formatı Kılavuzu" FontSize="11" FontWeight="Bold" Foreground="#3730A3" Margin="0,0,0,4"/>
-                            <TextBlock Text="• Ok formatı: 1->5, 2->1, 3->4 (Hedefin 1. sorusu Kaynağın 5. sorusudur)&#x0a;• Liste formatı: 5, 1, 4, 2, 3 (Hedefin sırasıyla kaynak soru numaraları)&#x0a;• Excel'den 2 sütun kopyalayabilirsiniz." 
-                                       FontSize="11" Foreground="#4338CA" LineHeight="16"/>
+                            <TextBlock Text="â„¹ï¸ EÅŸleme FormatÄ± KÄ±lavuzu" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource AccentViolet}" Margin="0,0,0,4"/>
+                            <TextBlock Text="â€¢ Ok formatÄ±: 1->5, 2->1, 3->4 (Hedefin 1. sorusu KaynaÄŸÄ±n 5. sorusudur)&#x0a;â€¢ Liste formatÄ±: 5, 1, 4, 2, 3 (Hedefin sÄ±rasÄ±yla kaynak soru numaralarÄ±)&#x0a;â€¢ Excel'den 2 sÃ¼tun kopyalayabilirsiniz." 
+                                       FontSize="11" Foreground="{DynamicResource AccentViolet}" LineHeight="16"/>
                         </StackPanel>
                     </Border>
 
                     <!-- Input Area -->
-                    <TextBlock Text="Eşleme Listesi / Matris Metni" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
+                    <TextBlock Text="EÅŸleme Listesi / Matris Metni" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
                     <TextBox Text="{Binding MappingInputText, UpdateSourceTrigger=PropertyChanged}"
                              FontFamily="Consolas" FontSize="13" AcceptsReturn="True" 
                              VerticalScrollBarVisibility="Auto" Height="140" Padding="10"
@@ -151,11 +151,11 @@
                 <!-- Footer -->
                 <Border Grid.Row="2" CornerRadius="0,0,24,24" Padding="24,16" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Border}">
                     <Grid>
-                        <Button Content="Vazgeç" Command="{Binding CloseBookletMappingCommand}"
+                        <Button Content="VazgeÃ§" Command="{Binding CloseBookletMappingCommand}"
                                 HorizontalAlignment="Left" Style="{StaticResource OutlineButton}" Padding="18,10"/>
                         
-                        <Button Content="⚡ Anahtarı Türet ve Ekle" Command="{Binding ApplyBookletMappingCommand}"
-                                HorizontalAlignment="Right" Background="#4F46E5" Foreground="White"
+                        <Button Content="âš¡ AnahtarÄ± TÃ¼ret ve Ekle" Command="{Binding ApplyBookletMappingCommand}"
+                                HorizontalAlignment="Right" Background="{DynamicResource AccentPurple}" Foreground="White"
                                 FontWeight="SemiBold" Padding="20,10" Cursor="Hand" BorderThickness="0">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">

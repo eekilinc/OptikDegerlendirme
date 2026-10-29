@@ -1,4 +1,4 @@
-<UserControl x:Class="OptikFormApp.Views.Modals.GeneralConfigModal"
+﻿<UserControl x:Class="OptikFormApp.Views.Modals.GeneralConfigModal"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -73,13 +73,13 @@
                     
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="Sınav ve Puanlama Ayarları" 
+                            <TextBlock Text="SÄ±nav ve Puanlama AyarlarÄ±" 
                                        FontSize="26" 
                                        FontWeight="Bold"
                                        Foreground="White"/>
-                            <TextBlock Text="Okul adını, puan kuralını ve çıktı klasörünü ayarlayın" 
+                            <TextBlock Text="Okul adÄ±nÄ±, puan kuralÄ±nÄ± ve Ã§Ä±ktÄ± klasÃ¶rÃ¼nÃ¼ ayarlayÄ±n" 
                                        FontSize="13" 
-                                       Foreground="#D1FAE5"
+                                       Foreground="{DynamicResource SuccessBgLight}"
                                        Margin="0,6,0,0"
                                        Opacity="0.9"/>
                         </StackPanel>
@@ -95,7 +95,7 @@
                                 FontSize="16" 
                                 Padding="0"
                                 Cursor="Hand">
-                            <Button.Content>✕</Button.Content>
+                            <Button.Content>âœ•</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" 
@@ -135,15 +135,15 @@
                                 <Border Width="40" 
                                         Height="40" 
                                         CornerRadius="10"
-                                        Background="#FEF3C7"
+                                        Background="{DynamicResource WarningBgLight}"
                                         Margin="0,0,12,0">
-                                    <TextBlock Text="🏫" 
+                                    <TextBlock Text="ğŸ«" 
                                                FontSize="20" 
                                                HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"/>
                                 </Border>
                                 <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Okul / Kurum Adı" 
+                                    <TextBlock Text="Okul / Kurum AdÄ±" 
                                                FontSize="15" 
                                                FontWeight="SemiBold">
                                         <TextBlock.Style>
@@ -203,9 +203,9 @@
                                 <Border Width="40" 
                                         Height="40" 
                                         CornerRadius="10"
-                                        Background="#DBEAFE"
+                                        Background="{DynamicResource AccentBgLight}"
                                         Margin="0,0,12,0">
-                                    <TextBlock Text="📊" 
+                                    <TextBlock Text="ğŸ“Š" 
                                                FontSize="20" 
                                                HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"/>
@@ -228,7 +228,7 @@
                                 </StackPanel>
                             </StackPanel>
 
-                            <TextBlock Text="Net Hesabı Kuralı (Düşüm)" 
+                            <TextBlock Text="Net HesabÄ± KuralÄ± (DÃ¼ÅŸÃ¼m)" 
                                        FontSize="12" 
                                        Margin="0,0,0,8">
                                 <TextBlock.Style>
@@ -262,12 +262,12 @@
                                         </Style.Triggers>
                                     </Style>
                                 </ComboBox.Style>
-                                <ComboBoxItem Content="🟢 Düşüm Yapılmasın (Net = Doğru)"/>
-                                <ComboBoxItem Content="🟡 3 Yanlış 1 Doğru (0.33)"/>
-                                <ComboBoxItem Content="🔴 4 Yanlış 1 Doğru (0.25 - Standart)"/>
+                                <ComboBoxItem Content="ğŸŸ¢ DÃ¼ÅŸÃ¼m YapÄ±lmasÄ±n (Net = DoÄŸru)"/>
+                                <ComboBoxItem Content="ğŸŸ¡ 3 YanlÄ±ÅŸ 1 DoÄŸru (0.33)"/>
+                                <ComboBoxItem Content="ğŸ”´ 4 YanlÄ±ÅŸ 1 DoÄŸru (0.25 - Standart)"/>
                             </ComboBox>
 
-                            <!-- Net Katsayı + Taban Puan -->
+                            <!-- Net KatsayÄ± + Taban Puan -->
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -291,7 +291,7 @@
                                         </Style>
                                     </Border.Style>
                                     <StackPanel>
-                                        <TextBlock Text="Net Katsayısı" 
+                                        <TextBlock Text="Net KatsayÄ±sÄ±" 
                                                    FontSize="12">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
@@ -304,7 +304,7 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                        <TextBlock Text="1 net = kaç puan?" 
+                                        <TextBlock Text="1 net = kaÃ§ puan?" 
                                                    FontSize="11" 
                                                    Opacity="0.6" 
                                                    Margin="0,2,0,8">
@@ -362,7 +362,7 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                        <TextBlock Text="Başlangıç puanı" 
+                                        <TextBlock Text="BaÅŸlangÄ±Ã§ puanÄ±" 
                                                    FontSize="11" 
                                                    Opacity="0.6" 
                                                    Margin="0,2,0,8">
@@ -414,15 +414,15 @@
                                 <Border Width="40" 
                                         Height="40" 
                                         CornerRadius="10"
-                                        Background="#EDE9FE"
+                                        Background="{DynamicResource AccentBgLight}"
                                         Margin="0,0,12,0">
-                                    <TextBlock Text="🎓" 
+                                    <TextBlock Text="ğŸ“" 
                                                FontSize="20" 
                                                HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"/>
                                 </Border>
                                 <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Harf Notu &amp; Değerlendirme Sistemi" 
+                                    <TextBlock Text="Harf Notu &amp; DeÄŸerlendirme Sistemi" 
                                                FontSize="15" 
                                                FontWeight="SemiBold">
                                         <TextBlock.Style>
@@ -436,7 +436,7 @@
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
-                                    <TextBlock Text="Çan eğrisi (BDS) veya mutlak katalog seçimi" 
+                                    <TextBlock Text="Ã‡an eÄŸrisi (BDS) veya mutlak katalog seÃ§imi" 
                                                FontSize="12" 
                                                Opacity="0.7">
                                         <TextBlock.Style>
@@ -453,7 +453,7 @@
                                 </StackPanel>
                             </StackPanel>
 
-                            <TextBlock Text="Değerlendirme Modu" 
+                            <TextBlock Text="DeÄŸerlendirme Modu" 
                                        FontSize="12" 
                                        Margin="0,0,0,6">
                                 <TextBlock.Style>
@@ -473,8 +473,8 @@
                                       Margin="0,0,0,14"
                                       BorderThickness="1"
                                       BorderBrush="{DynamicResource Border}">
-                                <ComboBoxItem Content="📊 Bağıl Değerlendirme (YÖK Çan Eğrisi / T-Skor)"/>
-                                <ComboBoxItem Content="📋 Mutlak Değerlendirme (Katalog Puan Aralıkları)"/>
+                                <ComboBoxItem Content="ğŸ“Š BaÄŸÄ±l DeÄŸerlendirme (YÃ–K Ã‡an EÄŸrisi / T-Skor)"/>
+                                <ComboBoxItem Content="ğŸ“‹ Mutlak DeÄŸerlendirme (Katalog Puan AralÄ±klarÄ±)"/>
                             </ComboBox>
 
                             <Grid>
@@ -483,8 +483,8 @@
                                     <ColumnDefinition Width="100"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                    <TextBlock Text="Bağıl Barajı (HBN Alt Sınırı)" FontSize="12" FontWeight="SemiBold"/>
-                                    <TextBlock Text="Bu puanın altı çana katılmaz, doğrudan FF alır" FontSize="11" Opacity="0.7"/>
+                                    <TextBlock Text="BaÄŸÄ±l BarajÄ± (HBN Alt SÄ±nÄ±rÄ±)" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Bu puanÄ±n altÄ± Ã§ana katÄ±lmaz, doÄŸrudan FF alÄ±r" FontSize="11" Opacity="0.7"/>
                                 </StackPanel>
                                 <TextBox Grid.Column="1" 
                                          Text="{Binding RelativeThreshold, UpdateSourceTrigger=PropertyChanged}"
@@ -493,9 +493,9 @@
                                          VerticalContentAlignment="Center"
                                          FontWeight="Bold" 
                                          FontSize="14" 
-                                         Foreground="#8B5CF6"
+                                         Foreground="{DynamicResource AccentPurple}"
                                          Background="White"
-                                         BorderBrush="#8B5CF6"
+                                         BorderBrush="{DynamicResource AccentPurple}"
                                          BorderThickness="1.5"/>
                             </Grid>
                         </StackPanel>
@@ -522,15 +522,15 @@
                                 <Border Width="40" 
                                         Height="40" 
                                         CornerRadius="10"
-                                        Background="#F3E8FF"
+                                        Background="{DynamicResource AccentBgLight}"
                                         Margin="0,0,12,0">
-                                    <TextBlock Text="📁" 
+                                    <TextBlock Text="ğŸ“" 
                                                FontSize="20" 
                                                HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"/>
                                 </Border>
                                 <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Varsayılan Excel Klasörü" 
+                                    <TextBlock Text="VarsayÄ±lan Excel KlasÃ¶rÃ¼" 
                                                FontSize="15" 
                                                FontWeight="SemiBold">
                                         <TextBlock.Style>
@@ -574,7 +574,7 @@
                                     </TextBox.Style>
                                 </TextBox>
                                 <Button Grid.Column="2" 
-                                        Content="📂 Seç" 
+                                        Content="ğŸ“‚ SeÃ§" 
                                         Command="{Binding SelectFolderCommand}"
                                         Padding="16,10" 
                                         Background="{DynamicResource Accent}" 
@@ -618,8 +618,8 @@
                     </Border.Style>
                     <Grid>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="💡" FontSize="16" Margin="0,0,8,0"/>
-                            <TextBlock Text="Ayarlar her açılışta otomatik yüklenir" 
+                            <TextBlock Text="ğŸ’¡" FontSize="16" Margin="0,0,8,0"/>
+                            <TextBlock Text="Ayarlar her aÃ§Ä±lÄ±ÅŸta otomatik yÃ¼klenir" 
                                        FontSize="12"
                                        VerticalAlignment="Center">
                                 <TextBlock.Style>

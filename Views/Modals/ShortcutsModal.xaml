@@ -1,4 +1,4 @@
-<UserControl x:Class="OptikFormApp.Views.Modals.ShortcutsModal"
+﻿<UserControl x:Class="OptikFormApp.Views.Modals.ShortcutsModal"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -73,13 +73,13 @@
                     
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="⌨️ Klavye Kısayolları" 
+                            <TextBlock Text="âŒ¨ï¸ Klavye KÄ±sayollarÄ±" 
                                        FontSize="26" 
                                        FontWeight="Bold"
                                        Foreground="White"/>
-                            <TextBlock Text="Uygulamayı daha hızlı kullanmak için kısayolları öğrenin" 
+                            <TextBlock Text="UygulamayÄ± daha hÄ±zlÄ± kullanmak iÃ§in kÄ±sayollarÄ± Ã¶ÄŸrenin" 
                                        FontSize="13" 
-                                       Foreground="#BFDBFE"
+                                       Foreground="{DynamicResource AccentBgLight}"
                                        Margin="0,6,0,0"
                                        Opacity="0.9"/>
                         </StackPanel>
@@ -95,7 +95,7 @@
                                 FontSize="16" 
                                 Padding="0"
                                 Cursor="Hand">
-                            <Button.Content>✕</Button.Content>
+                            <Button.Content>âœ•</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" 
@@ -124,14 +124,14 @@
                             <Border Width="36" 
                                     Height="36" 
                                     CornerRadius="8"
-                                    Background="#DBEAFE"
+                                    Background="{DynamicResource AccentBgLight}"
                                     Margin="0,0,10,0">
-                                <TextBlock Text="📂" 
+                                <TextBlock Text="ğŸ“‚" 
                                            FontSize="18" 
                                            HorizontalAlignment="Center" 
                                            VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock Text="Dosya İşlemleri" 
+                            <TextBlock Text="Dosya Ä°ÅŸlemleri" 
                                        FontSize="14" 
                                        FontWeight="Bold"
                                        VerticalAlignment="Center">
@@ -170,8 +170,8 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Background="#EFF6FF" 
-                                        BorderBrush="#BFDBFE" 
+                                <Border Background="{DynamicResource HoverBg}" 
+                                        BorderBrush="{DynamicResource AccentBgLight}" 
                                         BorderThickness="1" 
                                         CornerRadius="6" 
                                         Padding="8,4" 
@@ -183,7 +183,7 @@
                                                Foreground="{DynamicResource Accent}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
-                                           Text="TXT Dosyası Yükle" 
+                                           Text="TXT DosyasÄ± YÃ¼kle" 
                                            FontSize="13" 
                                            VerticalAlignment="Center">
                                     <TextBlock.Style>
@@ -221,8 +221,8 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Background="#EFF6FF" 
-                                        BorderBrush="#BFDBFE" 
+                                <Border Background="{DynamicResource HoverBg}" 
+                                        BorderBrush="{DynamicResource AccentBgLight}" 
                                         BorderThickness="1" 
                                         CornerRadius="6" 
                                         Padding="8,4" 
@@ -234,7 +234,7 @@
                                                Foreground="{DynamicResource Accent}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
-                                           Text="Sınavı Kaydet" 
+                                           Text="SÄ±navÄ± Kaydet" 
                                            FontSize="13" 
                                            VerticalAlignment="Center">
                                     <TextBlock.Style>
@@ -272,8 +272,8 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Background="#FFF7ED" 
-                                        BorderBrush="#FED7AA" 
+                                <Border Background="{DynamicResource WarningBgLight}" 
+                                        BorderBrush="{DynamicResource WarningBgLight}" 
                                         BorderThickness="1" 
                                         CornerRadius="6" 
                                         Padding="8,4" 
@@ -282,7 +282,7 @@
                                                FontFamily="Consolas" 
                                                FontSize="12" 
                                                FontWeight="Bold" 
-                                               Foreground="#EA580C"/>
+                                               Foreground="{DynamicResource Warning}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
                                            Text="Excel Raporu Al" 
@@ -323,20 +323,20 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Background="#F0FDF4" 
-                                        BorderBrush="#BBF7D0" 
+                                <Border Background="{DynamicResource SuccessBgLight}" 
+                                        BorderBrush="{DynamicResource SuccessBgLight}" 
                                         BorderThickness="1" 
                                         CornerRadius="6" 
                                         Padding="8,4" 
                                         Margin="0,0,12,0">
-                                    <TextBlock Text="Ctrl+⇧+C" 
+                                    <TextBlock Text="Ctrl+â‡§+C" 
                                                FontFamily="Consolas" 
                                                FontSize="12" 
                                                FontWeight="Bold" 
-                                               Foreground="#16A34A"/>
+                                               Foreground="{DynamicResource Success}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
-                                           Text="CSV Dışa Aktar" 
+                                           Text="CSV DÄ±ÅŸa Aktar" 
                                            FontSize="13" 
                                            VerticalAlignment="Center">
                                     <TextBlock.Style>
@@ -373,8 +373,8 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Background="#FDF4FF" 
-                                        BorderBrush="#E9D5FF" 
+                                <Border Background="{DynamicResource AccentBgLight}" 
+                                        BorderBrush="{DynamicResource AccentBgLight}" 
                                         BorderThickness="1" 
                                         CornerRadius="6" 
                                         Padding="8,4" 
@@ -383,7 +383,7 @@
                                                FontFamily="Consolas" 
                                                FontSize="12" 
                                                FontWeight="Bold" 
-                                               Foreground="#7C3AED"/>
+                                               Foreground="{DynamicResource AccentViolet}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
                                            Text="Toplu PDF Karne" 
@@ -410,14 +410,14 @@
                             <Border Width="36" 
                                     Height="36" 
                                     CornerRadius="8"
-                                    Background="#F3E8FF"
+                                    Background="{DynamicResource AccentBgLight}"
                                     Margin="0,0,10,0">
-                                <TextBlock Text="⚡" 
+                                <TextBlock Text="âš¡" 
                                            FontSize="18" 
                                            HorizontalAlignment="Center" 
                                            VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock Text="İşlemler" 
+                            <TextBlock Text="Ä°ÅŸlemler" 
                                        FontSize="14" 
                                        FontWeight="Bold"
                                        VerticalAlignment="Center">
@@ -455,8 +455,8 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Background="#F5F3FF" 
-                                        BorderBrush="#DDD6FE" 
+                                <Border Background="{DynamicResource AccentBgLight}" 
+                                        BorderBrush="{DynamicResource AccentBgLight}" 
                                         BorderThickness="1" 
                                         CornerRadius="6" 
                                         Padding="8,4" 
@@ -465,10 +465,10 @@
                                                FontFamily="Consolas" 
                                                FontSize="12" 
                                                FontWeight="Bold" 
-                                               Foreground="#7C3AED"/>
+                                               Foreground="{DynamicResource AccentViolet}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
-                                           Text="Puanları Hesapla" 
+                                           Text="PuanlarÄ± Hesapla" 
                                            FontSize="13" 
                                            VerticalAlignment="Center">
                                     <TextBlock.Style>
@@ -506,8 +506,8 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Background="#F0F9FF" 
-                                        BorderBrush="#BAE6FD" 
+                                <Border Background="{DynamicResource AccentBgLight}" 
+                                        BorderBrush="{DynamicResource AccentBgLight}" 
                                         BorderThickness="1" 
                                         CornerRadius="6" 
                                         Padding="8,4" 
@@ -516,10 +516,10 @@
                                                FontFamily="Consolas" 
                                                FontSize="12" 
                                                FontWeight="Bold" 
-                                               Foreground="#0284C7"/>
+                                               Foreground="{DynamicResource Accent}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
-                                           Text="Bu Pencereyi Aç" 
+                                           Text="Bu Pencereyi AÃ§" 
                                            FontSize="13" 
                                            VerticalAlignment="Center">
                                     <TextBlock.Style>
@@ -557,8 +557,8 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Background="#FEF3C7" 
-                                        BorderBrush="#FDE68A" 
+                                <Border Background="{DynamicResource WarningBgLight}" 
+                                        BorderBrush="{DynamicResource WarningBgLight}" 
                                         BorderThickness="1" 
                                         CornerRadius="6" 
                                         Padding="8,4" 
@@ -567,7 +567,7 @@
                                                FontFamily="Consolas" 
                                                FontSize="12" 
                                                FontWeight="Bold" 
-                                               Foreground="#D97706"/>
+                                               Foreground="{DynamicResource AccentOrange}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
                                            Text="Geri Al (Undo)" 
@@ -607,8 +607,8 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Background="#FCE7F3" 
-                                        BorderBrush="#FBCFE8" 
+                                <Border Background="{DynamicResource ErrorBgLight}" 
+                                        BorderBrush="{DynamicResource AccentBgLight}" 
                                         BorderThickness="1" 
                                         CornerRadius="6" 
                                         Padding="8,4" 
@@ -617,7 +617,7 @@
                                                FontFamily="Consolas" 
                                                FontSize="12" 
                                                FontWeight="Bold" 
-                                               Foreground="#DB2777"/>
+                                               Foreground="{DynamicResource Error}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
                                            Text="Yenile (Redo)" 
@@ -658,8 +658,8 @@
                     </Border.Style>
                     <Grid>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="💡" FontSize="16" Margin="0,0,8,0"/>
-                            <TextBlock Text="Tüm kısayollar Dosya menüsünde de gösterilmektedir" 
+                            <TextBlock Text="ğŸ’¡" FontSize="16" Margin="0,0,8,0"/>
+                            <TextBlock Text="TÃ¼m kÄ±sayollar Dosya menÃ¼sÃ¼nde de gÃ¶sterilmektedir" 
                                        FontSize="12"
                                        VerticalAlignment="Center">
                                 <TextBlock.Style>

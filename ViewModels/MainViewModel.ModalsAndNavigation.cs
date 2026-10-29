@@ -61,6 +61,18 @@ namespace OptikFormApp.ViewModels
                 res["Warning"] = cc.ConvertFromString("#F59E0B");     // Amber-600
                 res["Error"] = cc.ConvertFromString("#EF4444");       // Red-600
                 
+                res["AccentBgLight"] = cc.ConvertFromString("#1E1B4B"); // Dark blue-purple
+                res["SuccessBgLight"] = cc.ConvertFromString("#064E3B"); // Dark green
+                res["WarningBgLight"] = cc.ConvertFromString("#451A03"); // Dark orange
+                res["ErrorBgLight"] = cc.ConvertFromString("#450A0A"); // Dark red
+                res["AccentPurple"] = cc.ConvertFromString("#A78BFA");
+                res["AccentViolet"] = cc.ConvertFromString("#7C3AED");
+                res["AccentOrange"] = cc.ConvertFromString("#D97706");
+                res["AccentGreen"] = cc.ConvertFromString("#059669");
+                res["AccentRed"] = cc.ConvertFromString("#B91C1C");
+                res["AccentCyan"] = cc.ConvertFromString("#06B6D4");
+                res["AccentTeal"] = cc.ConvertFromString("#14B8A6");
+                
                 res["GlassCardBgColor"] = cc.ConvertFromString("#FFFFFF");
                 res["GlassCardBorderColor"] = cc.ConvertFromString("#FFFFFF");
                 res["ShadowColor"] = cc.ConvertFromString("#000000");
@@ -82,6 +94,18 @@ namespace OptikFormApp.ViewModels
                 res["Warning"] = cc.ConvertFromString("#F59E0B");     // Amber-600
                 res["Error"] = cc.ConvertFromString("#EF4444");       // Red-600
                 
+                res["AccentBgLight"] = cc.ConvertFromString("#DBEAFE"); // Light blue bg
+                res["SuccessBgLight"] = cc.ConvertFromString("#DCFCE7"); // Light green bg
+                res["WarningBgLight"] = cc.ConvertFromString("#FEF3C7"); // Light orange bg
+                res["ErrorBgLight"] = cc.ConvertFromString("#FEE2E2"); // Light red bg
+                res["AccentPurple"] = cc.ConvertFromString("#8B5CF6");
+                res["AccentViolet"] = cc.ConvertFromString("#7C3AED");
+                res["AccentOrange"] = cc.ConvertFromString("#D97706");
+                res["AccentGreen"] = cc.ConvertFromString("#059669");
+                res["AccentRed"] = cc.ConvertFromString("#B91C1C");
+                res["AccentCyan"] = cc.ConvertFromString("#06B6D4");
+                res["AccentTeal"] = cc.ConvertFromString("#14B8A6");
+                
                 res["GlassCardBgColor"] = cc.ConvertFromString("#FFFFFF");
                 res["GlassCardBorderColor"] = cc.ConvertFromString("#FFFFFF");
                 res["ShadowColor"] = cc.ConvertFromString("#000000");
@@ -102,6 +126,17 @@ namespace OptikFormApp.ViewModels
             res["WarningColor"] = getColor("Warning");
             res["ErrorColor"] = getColor("Error");
             res["ShadowColorValue"] = getColor("ShadowColor");
+            res["AccentBgLightColor"] = getColor("AccentBgLight");
+            res["SuccessBgLightColor"] = getColor("SuccessBgLight");
+            res["WarningBgLightColor"] = getColor("WarningBgLight");
+            res["ErrorBgLightColor"] = getColor("ErrorBgLight");
+            res["AccentPurpleColor"] = getColor("AccentPurple");
+            res["AccentVioletColor"] = getColor("AccentViolet");
+            res["AccentOrangeColor"] = getColor("AccentOrange");
+            res["AccentGreenColor"] = getColor("AccentGreen");
+            res["AccentRedColor"] = getColor("AccentRed");
+            res["AccentCyanColor"] = getColor("AccentCyan");
+            res["AccentTealColor"] = getColor("AccentTeal");
 
             res[SystemColors.MenuBrushKey] = res["CardBg"];
             res[SystemColors.MenuTextBrushKey] = res["TextMain"];

@@ -18,4 +18,18 @@
     <SolidColorBrush x:Key="GlassCardBgColor" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="GlassCardBorderColor" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="ShadowColor" Color="#000000"/>
+    <!-- Color resources for Color= attributes -->
+    <Color x:Key="AppBgColor">#F8FAFC</Color>
+    <Color x:Key="CardBgColor">#FFFFFF</Color>
+    <Color x:Key="TextMainColor">#1E293B</Color>
+    <Color x:Key="TextMutedColor">#475569</Color>
+    <Color x:Key="BorderColor">#E2E8F0</Color>
+    <Color x:Key="HeaderBgColor">#F1F5F9</Color>
+    <Color x:Key="HoverBgColor">#EFF6FF</Color>
+    <Color x:Key="AccentColor">#3B82F6</Color>
+    <Color x:Key="AccentHoverColor">#2563EB</Color>
+    <Color x:Key="SuccessColor">#10B981</Color>
+    <Color x:Key="WarningColor">#F59E0B</Color>
+    <Color x:Key="ErrorColor">#EF4444</Color>
+    <Color x:Key="ShadowColorValue">#000000</Color>
 </ResourceDictionary>

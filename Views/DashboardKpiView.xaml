@@ -17,7 +17,7 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect Color="#000000" Opacity="0.06" BlurRadius="16" ShadowDepth="3"/>
+                    <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.06" BlurRadius="16" ShadowDepth="3"/>
                 </Setter.Value>
             </Setter>
         </Style>

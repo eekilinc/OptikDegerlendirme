@@ -87,6 +87,22 @@ namespace OptikFormApp.ViewModels
                 res["ShadowColor"] = cc.ConvertFromString("#000000");
             }
             
+            // Color kaynaklarini brush'lardan turet (Color= attribute'lari icin)
+            Func<string, Color> getColor = key => ((SolidColorBrush)res[key]).Color;
+            res["AppBgColor"] = getColor("AppBg");
+            res["CardBgColor"] = getColor("CardBg");
+            res["TextMainColor"] = getColor("TextMain");
+            res["TextMutedColor"] = getColor("TextMuted");
+            res["BorderColor"] = getColor("Border");
+            res["HeaderBgColor"] = getColor("HeaderBg");
+            res["HoverBgColor"] = getColor("HoverBg");
+            res["AccentColor"] = getColor("Accent");
+            res["AccentHoverColor"] = getColor("AccentHover");
+            res["SuccessColor"] = getColor("Success");
+            res["WarningColor"] = getColor("Warning");
+            res["ErrorColor"] = getColor("Error");
+            res["ShadowColorValue"] = getColor("ShadowColor");
+
             res[SystemColors.MenuBrushKey] = res["CardBg"];
             res[SystemColors.MenuTextBrushKey] = res["TextMain"];
             res[SystemColors.WindowBrushKey] = res["AppBg"];

@@ -42,7 +42,7 @@
                         Padding="28,24">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#F59E0B" Offset="0"/>
+                            <GradientStop Color="{DynamicResource WarningColor}" Offset="0"/>
                             <GradientStop Color="#D97706" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>

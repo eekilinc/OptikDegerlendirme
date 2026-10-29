@@ -20,7 +20,7 @@
                 Padding="0">
             
             <Border.Effect>
-                <DropShadowEffect Color="#000000" 
+                <DropShadowEffect Color="{DynamicResource ShadowColorValue}" 
                                   Opacity="0.25" 
                                   BlurRadius="30" 
                                   ShadowDepth="8"/>

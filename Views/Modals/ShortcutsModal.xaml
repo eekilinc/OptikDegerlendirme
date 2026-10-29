@@ -66,8 +66,8 @@
                         Padding="28,24">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#3B82F6" Offset="0"/>
-                            <GradientStop Color="#2563EB" Offset="1"/>
+                            <GradientStop Color="{DynamicResource AccentColor}" Offset="0"/>
+                            <GradientStop Color="{DynamicResource AccentHoverColor}" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
                     

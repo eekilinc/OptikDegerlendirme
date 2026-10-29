@@ -57,7 +57,7 @@
                         </LinearGradientBrush>
                     </Border.Background>
                     <Border.BorderBrush>
-                        <SolidColorBrush Color="#E2E8F0" Opacity="0.3"/>
+                        <SolidColorBrush Color="{DynamicResource BorderColor}" Opacity="0.3"/>
                     </Border.BorderBrush>
                     
                     <Grid>

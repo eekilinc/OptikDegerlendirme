@@ -74,7 +74,7 @@
         <Style x:Key="PremiumModalContainer" TargetType="Grid">
             <Setter Property="Background">
                 <Setter.Value>
-                    <SolidColorBrush Color="#000000" Opacity="0.5"/>
+                    <SolidColorBrush Color="{DynamicResource ShadowColorValue}" Opacity="0.5"/>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -90,14 +90,14 @@
             </Setter>
             <Setter Property="BorderBrush">
                 <Setter.Value>
-                    <SolidColorBrush Color="#FFFFFF" Opacity="0.3"/>
+                    <SolidColorBrush Color="{DynamicResource CardBgColor}" Opacity="0.3"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="16"/>
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect Color="#000000" Opacity="0.3" BlurRadius="20" ShadowDepth="5"/>
+                    <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.3" BlurRadius="20" ShadowDepth="5"/>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -106,19 +106,19 @@
         <Style x:Key="GlassCard" TargetType="Border">
             <Setter Property="Background">
                 <Setter.Value>
-                    <SolidColorBrush Color="#FFFFFF" Opacity="0.05"/>
+                    <SolidColorBrush Color="{DynamicResource CardBgColor}" Opacity="0.05"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="BorderBrush">
                 <Setter.Value>
-                    <SolidColorBrush Color="#FFFFFF" Opacity="0.15"/>
+                    <SolidColorBrush Color="{DynamicResource CardBgColor}" Opacity="0.15"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="12"/>
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect Color="#000000" Opacity="0.1" BlurRadius="8" ShadowDepth="2"/>
+                    <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.1" BlurRadius="8" ShadowDepth="2"/>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -128,13 +128,13 @@
             <Setter Property="Opacity" Value="0.85"/>
             <Setter Property="BorderBrush">
                 <Setter.Value>
-                    <SolidColorBrush Color="#FFFFFF" Opacity="0.3"/>
+                    <SolidColorBrush Color="{DynamicResource CardBgColor}" Opacity="0.3"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="15" ShadowDepth="3"/>
+                    <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.2" BlurRadius="15" ShadowDepth="3"/>
                 </Setter.Value>
             </Setter>
         </Style>

@@ -55,7 +55,7 @@
             </LinearGradientBrush>
         </Border.Background>
         <Border.Effect>
-            <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="15" ShadowDepth="3"/>
+            <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.2" BlurRadius="15" ShadowDepth="3"/>
         </Border.Effect>
         
         <Grid Margin="15">

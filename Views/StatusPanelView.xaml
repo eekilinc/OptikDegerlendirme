@@ -49,7 +49,7 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Background="{DynamicResource CardBg}" CornerRadius="8" Padding="15,12" Margin="0,0,10,0">
-                <Border.Effect><DropShadowEffect Color="#000000" Opacity="0.03" BlurRadius="5" ShadowDepth="1"/></Border.Effect>
+                <Border.Effect><DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.03" BlurRadius="5" ShadowDepth="1"/></Border.Effect>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Border Width="24" Height="24" CornerRadius="4" Background="{DynamicResource AltRowBg}" Margin="0,0,12,0" Padding="2">
                         <Image Source="/Assets/app_logo.png" Stretch="Uniform"/>
@@ -73,7 +73,7 @@
             </Border>
 
             <Border Grid.Column="1" Background="{DynamicResource CardBg}" CornerRadius="8" Padding="15,10">
-                <Border.Effect><DropShadowEffect Color="#000000" Opacity="0.03" BlurRadius="5" ShadowDepth="1"/></Border.Effect>
+                <Border.Effect><DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.03" BlurRadius="5" ShadowDepth="1"/></Border.Effect>
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                     <TextBlock Text="📄 İşlem Kayıtları" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,5"/>

@@ -7,7 +7,7 @@
              d:DesignHeight="80" d:DesignWidth="1200">
     <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="16" Padding="16,12" Margin="0,0,0,16">
         <Border.Effect>
-            <DropShadowEffect Color="#000000" Opacity="0.04" BlurRadius="16" ShadowDepth="2"/>
+            <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.04" BlurRadius="16" ShadowDepth="2"/>
         </Border.Effect>
         
         <Grid>

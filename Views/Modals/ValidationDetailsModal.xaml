@@ -10,7 +10,7 @@
                 Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="16"
                 Padding="25">
             <Border.Effect>
-                <DropShadowEffect Color="#000000" Opacity="0.3" BlurRadius="20" ShadowDepth="5"/>
+                <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.3" BlurRadius="20" ShadowDepth="5"/>
             </Border.Effect>
             
             <Grid>

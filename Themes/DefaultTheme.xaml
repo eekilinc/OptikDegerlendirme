@@ -103,16 +103,4 @@
     <Color x:Key="AccentViolet6Color">#4C1D95</Color>
     <Color x:Key="Accent7Color">#3B5998</Color>
     
-    <!-- Ek Color kaynaklari -->
-    <Color x:Key="AccentBgLightColor">#DBEAFE</Color>
-    <Color x:Key="SuccessBgLightColor">#DCFCE7</Color>
-    <Color x:Key="WarningBgLightColor">#FEF3C7</Color>
-    <Color x:Key="ErrorBgLightColor">#FEE2E2</Color>
-    <Color x:Key="AccentPurpleColor">#8B5CF6</Color>
-    <Color x:Key="AccentVioletColor">#7C3AED</Color>
-    <Color x:Key="AccentOrangeColor">#D97706</Color>
-    <Color x:Key="AccentGreenColor">#059669</Color>
-    <Color x:Key="AccentRedColor">#B91C1C</Color>
-    <Color x:Key="AccentCyanColor">#06B6D4</Color>
-    <Color x:Key="AccentTealColor">#14B8A6</Color>
 </ResourceDictionary>

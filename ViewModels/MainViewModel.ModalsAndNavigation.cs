@@ -70,7 +70,7 @@ namespace OptikFormApp.ViewModels
                 res["AppBg"] = cc.ConvertFromString("#F8FAFC");      // Slate-50
                 res["CardBg"] = cc.ConvertFromString("#FFFFFF");       // White
                 res["TextMain"] = cc.ConvertFromString("#1E293B");    // Slate-800
-                res["TextMuted"] = cc.ConvertFromString("#64748B");  // Slate-500
+                res["TextMuted"] = cc.ConvertFromString("#475569");  // Slate-600 (better contrast)
                 res["Border"] = cc.ConvertFromString("#E2E8F0");     // Slate-200
                 res["HeaderBg"] = cc.ConvertFromString("#F1F5F9");    // Slate-100
                 res["AltRowBg"] = cc.ConvertFromString("#F8FAFC");   // Slate-50

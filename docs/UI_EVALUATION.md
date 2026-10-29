@@ -57,9 +57,10 @@ Uygulama WPF tabanlı, modern "glassmorphism" (cam efekti) ve gradient temalı b
 3. [~] Erişilebilirlik: FocusVisualStyle eklendi (AutomationProperties.Name ve kontrast düzeltme ileride)
 4. [x] Ölü servisler kaldırıldı (ThemeService, ResponsiveDesignService)
 5. [x] Modal BlurEffect kaldırıldı (performans)
-6. [ ] Vektör ikonlara geçiş (Path tabanlı) — ertelendi (büyük iş)
-7. [ ] Responsive layout (Grid column genişlikleri) — ertelendi
+6. [x] Vektör ikonlar: yalnızca app_logo.png kullanılıyor (3 yer), vector migration N/A
+7. [x] Responsive layout: sidebar MinWidth/MaxWidth adaptive yapıldı
 8. [x] DataGrid virtualization açıkça etkinleştirildi
+9. [x] Erişilebilirlik: kontrast iyileştirildi (TextMuted #475569), FocusVisualStyle + AutomationProperties.Name eklendi
 
 ## Sonuç
 Arayüz görsel olarak modern ve profesyonel; temel yapı sağlam. Asıl sorunlar erişilebilirlik, design-time desteği ve ölü/paralel servisler. Bu maddeler bir "UI refinement" sprint'inde ele alınabilir.

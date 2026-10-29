@@ -4,7 +4,7 @@
     <SolidColorBrush x:Key="AppBg" Color="#F8FAFC"/>
     <SolidColorBrush x:Key="CardBg" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="TextMain" Color="#1E293B"/>
-    <SolidColorBrush x:Key="TextMuted" Color="#64748B"/>
+    <SolidColorBrush x:Key="TextMuted" Color="#475569"/>
     <SolidColorBrush x:Key="Border" Color="#E2E8F0"/>
     <SolidColorBrush x:Key="HeaderBg" Color="#F1F5F9"/>
     <SolidColorBrush x:Key="AltRowBg" Color="#F8FAFC"/>

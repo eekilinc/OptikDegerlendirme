@@ -45,8 +45,8 @@
                         Padding="28,24">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="{DynamicResource Error}" Offset="0"/>
-                            <GradientStop Color="{DynamicResource Error}" Offset="1"/>
+                            <GradientStop Color="{DynamicResource ErrorColor}" Offset="0"/>
+                            <GradientStop Color="{DynamicResource ErrorColor}" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
                     <Grid>

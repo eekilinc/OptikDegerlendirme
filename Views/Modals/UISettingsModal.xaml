@@ -71,8 +71,8 @@
                             <Setter Property="Background">
                                 <Setter.Value>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="{DynamicResource AccentPurple}" Offset="0"/>
-                                        <GradientStop Color="{DynamicResource AccentViolet}" Offset="1"/>
+                                        <GradientStop Color="{DynamicResource AccentPurpleColor}" Offset="0"/>
+                                        <GradientStop Color="{DynamicResource AccentVioletColor}" Offset="1"/>
                                     </LinearGradientBrush>
                                 </Setter.Value>
                             </Setter>

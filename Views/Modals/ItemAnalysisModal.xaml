@@ -43,7 +43,7 @@
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                             <GradientStop Color="{DynamicResource WarningColor}" Offset="0"/>
-                            <GradientStop Color="{DynamicResource AccentOrange}" Offset="1"/>
+                            <GradientStop Color="{DynamicResource AccentOrangeColor}" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
                     <Grid>

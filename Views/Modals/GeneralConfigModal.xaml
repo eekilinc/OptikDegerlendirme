@@ -67,7 +67,7 @@
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                             <GradientStop Color="{DynamicResource SuccessColor}" Offset="0"/>
-                            <GradientStop Color="{DynamicResource AccentGreen}" Offset="1"/>
+                            <GradientStop Color="{DynamicResource AccentGreenColor}" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
                     

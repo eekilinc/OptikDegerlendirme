@@ -52,8 +52,8 @@
                         BorderThickness="0,0,0,1">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="{DynamicResource AccentCyan}" Offset="0"/>
-                            <GradientStop Color="{DynamicResource Accent}" Offset="1"/>
+                            <GradientStop Color="{DynamicResource AccentCyanColor}" Offset="0"/>
+                            <GradientStop Color="{DynamicResource AccentColor}" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
                     <Border.BorderBrush>

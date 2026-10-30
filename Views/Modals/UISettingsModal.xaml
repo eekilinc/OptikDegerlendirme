@@ -536,7 +536,7 @@
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" 
-                                                            To="{DynamicResource AccentPurple}" Duration="0:0:0.2"/>
+                                                            To="{DynamicResource AccentPurpleColor}" Duration="0:0:0.2"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </EventTrigger>
@@ -544,7 +544,7 @@
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" 
-                                                            To="{DynamicResource AccentPurple}" Duration="0:0:0.2"/>
+                                                            To="{DynamicResource AccentPurpleColor}" Duration="0:0:0.2"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </EventTrigger>

@@ -17,7 +17,7 @@
             <!-- Courses Header -->
             <Grid Grid.Row="0" Margin="0,0,0,12">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="ğŸ“š" FontSize="15" Margin="0,0,6,0"/>
+                    <TextBlock Text="📚" FontSize="15" Margin="0,0,6,0"/>
                     <TextBlock Text="Derslerim" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
                 </StackPanel>
                 <Button Command="{Binding ShowAddCourseCommand}" HorizontalAlignment="Right" 
@@ -45,9 +45,9 @@
                                     <TextBlock Text="{Binding Name}" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                    <Button Content="âœ" Command="{Binding DataContext.OpenRenameCourseCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                    <Button Content="✏" Command="{Binding DataContext.OpenRenameCourseCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
                                             CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextMuted}" FontSize="12" Padding="6,0" Cursor="Hand" ToolTip="Dersi Düzenle"/>
-                                    <Button Content="ğŸ—‘" Command="{Binding DataContext.DeleteCourseCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                    <Button Content="🗑" Command="{Binding DataContext.DeleteCourseCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
                                             CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource Error}" FontSize="12" Padding="6,0" Cursor="Hand" ToolTip="Bu dersi sil"/>
                                 </StackPanel>
                             </Grid>
@@ -84,8 +84,8 @@
             <StackPanel Grid.Row="2" Margin="0,14,0,10">
                 <Border Height="1" Background="{DynamicResource Border}" Margin="0,0,0,12"/>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="ğŸ“" FontSize="14" Margin="0,0,6,0"/>
-                    <TextBlock Text="Sınav GeçmiÅŸi" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
+                    <TextBlock Text="📁" FontSize="14" Margin="0,0,6,0"/>
+                    <TextBlock Text="Sınav Geçmişi" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
                 </StackPanel>
                 <TextBlock Text="{Binding SelectedCourse.Name}" FontSize="11" Foreground="{DynamicResource TextMuted}" TextTrimming="CharacterEllipsis" Margin="20,2,0,0"/>
             </StackPanel>
@@ -106,9 +106,9 @@
                                     <TextBlock Text="{Binding DisplayDate}" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,2,0,0"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                    <Button Content="âœ" Command="{Binding DataContext.OpenRenameExamCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                    <Button Content="✏" Command="{Binding DataContext.OpenRenameExamCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
                                             CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextMuted}" FontSize="11" Padding="5,0" Cursor="Hand" ToolTip="Sınavı Düzenle"/>
-                                    <Button Content="ğŸ—‘" Command="{Binding DataContext.DeleteExamCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                    <Button Content="🗑" Command="{Binding DataContext.DeleteExamCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
                                             CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource Error}" FontSize="11" Padding="5,0" Cursor="Hand" ToolTip="Bu sınavı sil"/>
                                 </StackPanel>
                             </Grid>

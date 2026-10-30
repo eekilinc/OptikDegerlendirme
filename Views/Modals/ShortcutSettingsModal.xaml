@@ -51,14 +51,14 @@
                                       FontSize="20" 
                                       FontWeight="Bold" 
                                       Foreground="{DynamicResource Border}"/>
-                            <TextBlock Text="Kısayol tuÅŸlarını özelleÅŸtirin" 
+                            <TextBlock Text="Kısayol tuşlarını özelleştirin" 
                                       FontSize="13" 
                                       Foreground="{DynamicResource TextMuted}"
                                       Margin="0,4,0,0"/>
                         </StackPanel>
                         
                         <Button Grid.Column="1" 
-                               Content="âœ•" 
+                               Content="✕" 
                                Command="{Binding CloseShortcutSettingsCommand}"
                                Style="{StaticResource OutlineButton}"
                                FontSize="16"

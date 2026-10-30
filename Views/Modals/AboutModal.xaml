@@ -1,4 +1,4 @@
-<UserControl x:Class="OptikFormApp.Views.Modals.AboutModal"
+﻿<UserControl x:Class="OptikFormApp.Views.Modals.AboutModal"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -22,7 +22,7 @@
                     <Setter Property="Background" Value="{DynamicResource CardBg}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
+                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -377,7 +377,7 @@
                                             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>

@@ -40,7 +40,7 @@
                     <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
+                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -73,11 +73,11 @@
                     
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="ğŸ“ Cevap Anahtarı Yönetimi" 
+                            <TextBlock Text="📝 Cevap Anahtarı Yönetimi" 
                                        FontSize="26" 
                                        FontWeight="Bold"
                                        Foreground="White"/>
-                            <TextBlock Text="Kitapçık türlerine göre cevap ÅŸablonlarını yönetin" 
+                            <TextBlock Text="Kitapçık türlerine göre cevap şablonlarını yönetin" 
                                        FontSize="13" 
                                        Foreground="{DynamicResource AccentBgLight}"
                                        Margin="0,6,0,0"
@@ -95,7 +95,7 @@
                                 FontSize="16" 
                                 Padding="0"
                                 Cursor="Hand">
-                            <Button.Content>âœ•</Button.Content>
+                            <Button.Content>✕</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" 
@@ -131,8 +131,8 @@
                             </Style>
                         </Border.Style>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="ğŸ’¡" FontSize="16" Margin="0,0,10,0"/>
-                            <TextBlock Text="Her kitapçık türü için ayrı cevap anahtarı tanımlayabilirsiniz. Ã–ÄŸrencilerin kitapçık türü otomatik olarak algılanır." 
+                            <TextBlock Text="💡" FontSize="16" Margin="0,0,10,0"/>
+                            <TextBlock Text="Her kitapçık türü için ayrı cevap anahtarı tanımlayabilirsiniz. Öğrencilerin kitapçık türü otomatik olarak algılanır." 
                                        FontSize="12"
                                        TextWrapping="Wrap"
                                        VerticalAlignment="Center">
@@ -249,7 +249,7 @@
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
                                                                     <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                                                    <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                                     <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                                                                 </DataTrigger>
                                                             </Style.Triggers>
@@ -275,7 +275,7 @@
                                                         Margin="0,0,0,8"
                                                         Cursor="Hand"
                                                         ToolTip="Detaylı soru düzenleyici">
-                                                    <Button.Content>ğŸ” Detaylı</Button.Content>
+                                                    <Button.Content>🔍 Detaylı</Button.Content>
                                                     <Button.Template>
                                                         <ControlTemplate TargetType="Button">
                                                             <Border Background="{TemplateBinding Background}" 
@@ -299,7 +299,7 @@
                                                         FontSize="12"
                                                         FontWeight="SemiBold"
                                                         Cursor="Hand">
-                                                    <Button.Content>ğŸ—‘ï¸ Sil</Button.Content>
+                                                    <Button.Content>🗑️ Sil</Button.Content>
                                                     <Button.Template>
                                                         <ControlTemplate TargetType="Button">
                                                             <Border Background="{TemplateBinding Background}" 
@@ -346,7 +346,7 @@
                                     CornerRadius="4"
                                     Background="{DynamicResource AccentPurple}"
                                     Margin="0,0,10,0"/>
-                            <TextBlock Text="DeÄŸiÅŸiklikler otomatik kaydedilir" 
+                            <TextBlock Text="Değişiklikler otomatik kaydedilir" 
                                        FontSize="12"
                                        VerticalAlignment="Center">
                                 <TextBlock.Style>

@@ -28,11 +28,11 @@
                 <Border Grid.Row="0" Background="{DynamicResource Accent}" CornerRadius="16,16,0,0" Padding="25,20">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Border Background="White" CornerRadius="10" Width="40" Height="40" Padding="8" Margin="0,0,15,0">
-                            <TextBlock Text="ğŸ’¾" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Text="💾" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel>
                             <TextBlock Text="Sınavı Kaydet" FontSize="20" FontWeight="Bold" Foreground="White"/>
-                            <TextBlock Text="DeÄŸerlendirme verilerini kaydedin" FontSize="13" Foreground="White" Opacity="0.9" Margin="0,2,0,0"/>
+                            <TextBlock Text="Değerlendirme verilerini kaydedin" FontSize="13" Foreground="White" Opacity="0.9" Margin="0,2,0,0"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -86,7 +86,7 @@
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="ğŸ“š" Margin="0,0,8,0"/>
+                                            <TextBlock Text="📚" Margin="0,0,8,0"/>
                                             <TextBlock Text="{Binding Code}" FontWeight="SemiBold" Margin="0,0,5,0"/>
                                             <TextBlock Text="-" Foreground="{DynamicResource TextMuted}" Margin="0,0,5,0"/>
                                             <TextBlock Text="{Binding Name}"/>
@@ -123,7 +123,7 @@
                         
                         <!-- Delete Course Button -->
                         <Button Grid.Column="2" 
-                                Content="ğŸ—‘ï¸ Sil" 
+                                Content="🗑️ Sil" 
                                 Command="{Binding DeleteSelectedCourseInlineCommand}"
                                 VerticalAlignment="Bottom"
                                 Margin="8,0,0,0"
@@ -258,8 +258,8 @@
                     <!-- Student Count Info -->
                     <Border Background="{DynamicResource AltRowBg}" CornerRadius="8" Padding="12,8" Margin="0,0,0,5">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="ğŸ‘¥" Margin="0,0,8,0"/>
-                            <TextBlock Text="Kaydedilecek Ã–ÄŸrenci:" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,5,0"/>
+                            <TextBlock Text="👥" Margin="0,0,8,0"/>
+                            <TextBlock Text="Kaydedilecek Öğrenci:" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,5,0"/>
                             <TextBlock Text="{Binding Students.Count, FallbackValue=0}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource Accent}"/>
                         </StackPanel>
                     </Border>
@@ -281,7 +281,7 @@
                                 Padding="20,10" FontSize="13"/>
                         
                         <Button Grid.Column="2" 
-                                Content="ğŸ’¾ Sınavı Kaydet" 
+                                Content="💾 Sınavı Kaydet" 
                                 Command="{Binding ConfirmSaveExamCommand}" 
                                 IsEnabled="{Binding Students.Count}" 
                                 Background="{DynamicResource Accent}" 

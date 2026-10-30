@@ -20,7 +20,7 @@
                     <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
+                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -56,7 +56,7 @@
                     </Border.BorderBrush>
                     
                     <Grid>
-                        <TextBlock Text="ğŸ¯ BaÅŸarı Tahmini" 
+                        <TextBlock Text="🎯 Başarı Tahmini" 
                                    FontSize="26" 
                                    FontWeight="Bold" 
                                    Foreground="White"
@@ -74,7 +74,7 @@
                                 Padding="0"
                                 Margin="0,0,28,0"
                                 Cursor="Hand">
-                            <Button.Content>âœ•</Button.Content>
+                            <Button.Content>✕</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" 
@@ -121,7 +121,7 @@
                             </Style>
                         </Border.Style>
                         <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="Toplam Ã–ÄŸrenci" 
+                            <TextBlock Text="Toplam Öğrenci" 
                                        FontSize="11" 
                                        Margin="0,0,0,6">
                                 <TextBlock.Style>
@@ -143,7 +143,7 @@
                                         <Setter Property="Foreground" Value="{DynamicResource Success}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -418,13 +418,13 @@
                                         <Setter Property="Background" Value="#3010B981"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                        <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </DataGrid.RowStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Ã–ÄŸrenci No" 
+                            <DataGridTextColumn Header="Öğrenci No" 
                                                 Binding="{Binding StudentId}" 
                                                 Width="100"/>
                             <DataGridTextColumn Header="Ad Soyad" 
@@ -436,7 +436,7 @@
                             <DataGridTextColumn Header="Tahmini Puan" 
                                                 Binding="{Binding PredictedScore, StringFormat={}{0:F1}}" 
                                                 Width="90"/>
-                            <DataGridTextColumn Header="Geçme OlasılıÄŸı" 
+                            <DataGridTextColumn Header="Geçme Olasılığı" 
                                                 Binding="{Binding GradeProbability, StringFormat={}{0:P0}}" 
                                                 Width="110"/>
                             <DataGridTextColumn Header="Güven" 
@@ -468,7 +468,7 @@
                         </Style>
                     </Border.Style>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="ğŸ”„ Yeniden Tahmin Et" 
+                        <Button Content="🔄 Yeniden Tahmin Et" 
                                 Command="{Binding RunSuccessPredictionCommand}"
                                 Padding="18,10"
                                 Background="Transparent"

@@ -20,7 +20,7 @@
                     <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
+                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -50,11 +50,11 @@
                     
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="ğŸ“‹ Sınav Şablonları" 
+                            <TextBlock Text="📋 Sınav Şablonları" 
                                        FontSize="26" 
                                        FontWeight="Bold"
                                        Foreground="White"/>
-                            <TextBlock Text="KaydedilmiÅŸ ayarlarınızı ÅŸablon olarak kullanın" 
+                            <TextBlock Text="Kaydedilmiş ayarlarınızı şablon olarak kullanın" 
                                        FontSize="13" 
                                        Foreground="{DynamicResource AccentBgLight}"
                                        Margin="0,6,0,0"
@@ -72,7 +72,7 @@
                                 FontSize="16" 
                                 Padding="0"
                                 Cursor="Hand">
-                            <Button.Content>âœ•</Button.Content>
+                            <Button.Content>✕</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" 
@@ -118,12 +118,12 @@
                                             CornerRadius="10"
                                             Background="{DynamicResource AccentPurple}"
                                             Margin="0,0,12,0">
-                                        <TextBlock Text="ğŸ’¾" 
+                                        <TextBlock Text="💾" 
                                                    FontSize="20" 
                                                    HorizontalAlignment="Center" 
                                                    VerticalAlignment="Center"/>
                                     </Border>
-                                    <TextBlock Text="Yeni Şablon OluÅŸtur" 
+                                    <TextBlock Text="Yeni Şablon Oluştur" 
                                                FontSize="16" 
                                                FontWeight="SemiBold"
                                                VerticalAlignment="Center">
@@ -167,7 +167,7 @@
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                                     <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                                    <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                     <Setter Property="BorderBrush" Value="{DynamicResource AccentViolet}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -175,7 +175,7 @@
                                     </TextBox.Style>
                                 </TextBox>
                                 
-                                <TextBlock Text="Açıklama (isteÄŸe baÄŸlı)" 
+                                <TextBlock Text="Açıklama (isteğe bağlı)" 
                                            FontSize="12" 
                                            Margin="0,0,0,6">
                                     <TextBlock.Style>
@@ -202,7 +202,7 @@
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                                     <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                                    <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                     <Setter Property="BorderBrush" Value="{DynamicResource AccentViolet}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -210,7 +210,7 @@
                                     </TextBox.Style>
                                 </TextBox>
                                 
-                                <Button Content="âœ¨ Şablon Olarak Kaydet" 
+                                <Button Content="✨ Şablon Olarak Kaydet" 
                                         Command="{Binding SaveAsTemplateCommand}"
                                         Background="{DynamicResource AccentPurple}" 
                                         Foreground="White"
@@ -241,7 +241,7 @@
                                     CornerRadius="8"
                                     Background="{DynamicResource AccentBgLight}"
                                     Margin="0,0,10,0">
-                                <TextBlock Text="ğŸ“‚" 
+                                <TextBlock Text="📂" 
                                            FontSize="18" 
                                            HorizontalAlignment="Center" 
                                            VerticalAlignment="Center"/>
@@ -255,7 +255,7 @@
                                         <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -298,7 +298,7 @@
                                                             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
-                                                                    <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
@@ -337,7 +337,7 @@
                                             </StackPanel>
                                             
                                             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                <Button Content="ğŸ“‚ Yükle" 
+                                                <Button Content="📂 Yükle" 
                                                         Command="{Binding DataContext.LoadTemplateCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                         CommandParameter="{Binding Id}"
                                                         Background="{DynamicResource AccentPurple}" 
@@ -359,7 +359,7 @@
                                                         </ControlTemplate>
                                                     </Button.Template>
                                                 </Button>
-                                                <Button Content="ğŸ—‘ï¸" 
+                                                <Button Content="🗑️" 
                                                         Command="{Binding DataContext.DeleteTemplateCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                         CommandParameter="{Binding Id}"
                                                         Background="{DynamicResource Error}" 
@@ -386,7 +386,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                         
-                        <TextBlock Text="Henüz kaydedilmiÅŸ ÅŸablon yok." 
+                        <TextBlock Text="Henüz kaydedilmiş şablon yok." 
                                    FontSize="13" 
                                    HorizontalAlignment="Center" 
                                    Margin="0,24"
@@ -423,7 +423,7 @@
                         </Style>
                     </Border.Style>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Content="ğŸ“¤ DıÅŸa Aktar" 
+                        <Button Content="📤 Dışa Aktar" 
                                 Command="{Binding ExportTemplateCommand}"
                                 Background="White"
                                 Foreground="{DynamicResource TextMain}"
@@ -439,7 +439,7 @@
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                             <Setter Property="Background" Value="{DynamicResource Border}"/>
-                                            <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                             <Setter Property="BorderBrush" Value="{DynamicResource TextMuted}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -458,7 +458,7 @@
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
-                        <Button Content="ğŸ“¥ İçe Aktar" 
+                        <Button Content="📥 İçe Aktar" 
                                 Command="{Binding ImportTemplateCommand}"
                                 Background="{DynamicResource AccentPurple}"
                                 Foreground="White"

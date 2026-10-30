@@ -18,7 +18,7 @@
                     <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
+                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -44,14 +44,14 @@
                     </Border.Background>
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="ğŸ”„ Kitapçık EÅŸleme Matrisi" FontSize="22" FontWeight="Bold" Foreground="White"/>
-                            <TextBlock Text="Kaynak kitapçıktan hedef kitapçıÄŸı otomatik türetin" FontSize="12" Foreground="{DynamicResource AccentBgLight}" Margin="0,4,0,0"/>
+                            <TextBlock Text="🔄 Kitapçık Eşleme Matrisi" FontSize="22" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Kaynak kitapçıktan hedef kitapçığı otomatik türetin" FontSize="12" Foreground="{DynamicResource AccentBgLight}" Margin="0,4,0,0"/>
                         </StackPanel>
                         <Button Command="{Binding CloseBookletMappingCommand}"
                                 HorizontalAlignment="Right" VerticalAlignment="Top"
                                 Background="#20FFFFFF" BorderThickness="0" Foreground="White"
                                 Width="34" Height="34" FontSize="16" Cursor="Hand">
-                            <Button.Content>âœ•</Button.Content>
+                            <Button.Content>✕</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" CornerRadius="17">
@@ -92,14 +92,14 @@
                     <!-- Instruction Box -->
                     <Border Background="{DynamicResource AccentBgLight}" CornerRadius="10" Padding="12,10" Margin="0,0,0,14" BorderBrush="{DynamicResource AccentBgLight}" BorderThickness="1">
                         <StackPanel>
-                            <TextBlock Text="â„¹ï¸ EÅŸleme Formatı Kılavuzu" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource AccentViolet}" Margin="0,0,0,4"/>
-                            <TextBlock Text="â€¢ Ok formatı: 1->5, 2->1, 3->4 (Hedefin 1. sorusu KaynaÄŸın 5. sorusudur)&#x0a;â€¢ Liste formatı: 5, 1, 4, 2, 3 (Hedefin sırasıyla kaynak soru numaraları)&#x0a;â€¢ Excel'den 2 sütun kopyalayabilirsiniz." 
+                            <TextBlock Text="ℹ️ Eşleme Formatı Kılavuzu" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource AccentViolet}" Margin="0,0,0,4"/>
+                            <TextBlock Text="• Ok formatı: 1->5, 2->1, 3->4 (Hedefin 1. sorusu Kaynağın 5. sorusudur)&#x0a;• Liste formatı: 5, 1, 4, 2, 3 (Hedefin sırasıyla kaynak soru numaraları)&#x0a;• Excel'den 2 sütun kopyalayabilirsiniz." 
                                        FontSize="11" Foreground="{DynamicResource AccentViolet}" LineHeight="16"/>
                         </StackPanel>
                     </Border>
 
                     <!-- Input Area -->
-                    <TextBlock Text="EÅŸleme Listesi / Matris Metni" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
+                    <TextBlock Text="Eşleme Listesi / Matris Metni" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
                     <TextBox Text="{Binding MappingInputText, UpdateSourceTrigger=PropertyChanged}"
                              FontFamily="Consolas" FontSize="13" AcceptsReturn="True" 
                              VerticalScrollBarVisibility="Auto" Height="140" Padding="10"
@@ -154,7 +154,7 @@
                         <Button Content="Vazgeç" Command="{Binding CloseBookletMappingCommand}"
                                 HorizontalAlignment="Left" Style="{StaticResource OutlineButton}" Padding="18,10"/>
                         
-                        <Button Content="âš¡ Anahtarı Türet ve Ekle" Command="{Binding ApplyBookletMappingCommand}"
+                        <Button Content="⚡ Anahtarı Türet ve Ekle" Command="{Binding ApplyBookletMappingCommand}"
                                 HorizontalAlignment="Right" Background="{DynamicResource AccentPurple}" Foreground="White"
                                 FontWeight="SemiBold" Padding="20,10" Cursor="Hand" BorderThickness="0">
                             <Button.Template>

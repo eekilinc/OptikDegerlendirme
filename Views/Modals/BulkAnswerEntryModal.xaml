@@ -19,7 +19,7 @@
                     <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
+                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -49,7 +49,7 @@
                     
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="ğŸ“‹ Toplu Cevap GiriÅŸi" 
+                            <TextBlock Text="📋 Toplu Cevap Girişi" 
                                        FontSize="20" 
                                        FontWeight="Bold"
                                        Foreground="White"/>
@@ -70,7 +70,7 @@
                                 FontSize="14" 
                                 Padding="0"
                                 Cursor="Hand">
-                            <Button.Content>âœ•</Button.Content>
+                            <Button.Content>✕</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" 
@@ -95,7 +95,7 @@
                             Background="{DynamicResource AccentBgLight}"
                             BorderBrush="{DynamicResource AccentBgLight}"
                             BorderThickness="1">
-                        <TextBlock Text="ğŸ’¡ Her satıra bir soru: '1 A' veya '5 C' ÅŸeklinde yazın. BoÅŸluk veya tire ile ayırabilirsiniz."
+                        <TextBlock Text="💡 Her satıra bir soru: '1 A' veya '5 C' şeklinde yazın. Boşluk veya tire ile ayırabilirsiniz."
                                    FontSize="12"
                                    TextWrapping="Wrap"
                                    Foreground="{DynamicResource AccentViolet}"/>
@@ -125,7 +125,7 @@
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                         <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                        <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                         <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                                     </DataTrigger>
                                     <Trigger Property="IsFocused" Value="True">
@@ -137,7 +137,7 @@
                     </TextBox>
                     
                     <!-- Preview -->
-                    <TextBlock Text="{Binding BulkAnswerPreview, StringFormat='Ã–nizleme: {0}'}" 
+                    <TextBlock Text="{Binding BulkAnswerPreview, StringFormat='Önizleme: {0}'}" 
                                FontSize="11"
                                Margin="0,12,0,0"
                                FontStyle="Italic"
@@ -178,7 +178,7 @@
                             </Button.Template>
                         </Button>
                         
-                        <Button Content="âœ… Uygula" 
+                        <Button Content="✅ Uygula" 
                                 Command="{Binding ApplyBulkAnswerEntryCommand}"
                                 Padding="20,10"
                                 Background="{DynamicResource AccentPurple}"

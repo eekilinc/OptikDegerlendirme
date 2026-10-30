@@ -8,12 +8,12 @@
 
     <DockPanel Background="{DynamicResource CardBg}" LastChildFill="True">
 
-        <!-- BaÅŸlık Bölümü - DockPanel.Dock=Top -->
+        <!-- Başlık Bölümü - DockPanel.Dock=Top -->
         <StackPanel DockPanel.Dock="Top" Margin="25,25,25,15">
 
             <!-- Header Section - Kompakt -->
             <StackPanel Margin="0,0,0,15">
-                <TextBlock Text="ğŸ“Š Soru Zorluk Seviyesi Analizi"
+                <TextBlock Text="📊 Soru Zorluk Seviyesi Analizi"
                           FontSize="20" FontWeight="Bold"
                           Foreground="{DynamicResource TextMain}" Margin="0,0,0,10"/>
 
@@ -25,7 +25,7 @@
                             <SolidColorBrush Color="{DynamicResource SuccessColor}"/>
                         </Border.Background>
                         <StackPanel>
-                            <TextBlock Text="ğŸŸ¢" FontSize="18" HorizontalAlignment="Center"/>
+                            <TextBlock Text="🟢" FontSize="18" HorizontalAlignment="Center"/>
                             <TextBlock Text="{Binding QuestionDifficulties, Converter={StaticResource DifficultyCountConverter}, ConverterParameter='Kolay'}"
                                       FontSize="22" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
                             <TextBlock Text="Kolay" FontSize="10" Foreground="{DynamicResource SuccessBgLight}" HorizontalAlignment="Center"/>
@@ -38,7 +38,7 @@
                             <SolidColorBrush Color="{DynamicResource WarningColor}"/>
                         </Border.Background>
                         <StackPanel>
-                            <TextBlock Text="ğŸŸ¡" FontSize="18" HorizontalAlignment="Center"/>
+                            <TextBlock Text="🟡" FontSize="18" HorizontalAlignment="Center"/>
                             <TextBlock Text="{Binding QuestionDifficulties, Converter={StaticResource DifficultyCountConverter}, ConverterParameter='Orta'}"
                                       FontSize="22" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
                             <TextBlock Text="Orta" FontSize="10" Foreground="{DynamicResource WarningBgLight}" HorizontalAlignment="Center"/>
@@ -51,23 +51,23 @@
                             <SolidColorBrush Color="{DynamicResource ErrorColor}"/>
                         </Border.Background>
                         <StackPanel>
-                            <TextBlock Text="ğŸ”´" FontSize="18" HorizontalAlignment="Center"/>
+                            <TextBlock Text="🔴" FontSize="18" HorizontalAlignment="Center"/>
                             <TextBlock Text="{Binding QuestionDifficulties, Converter={StaticResource DifficultyCountConverter}, ConverterParameter='Zor'}"
                                       FontSize="22" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
                             <TextBlock Text="Zor" FontSize="10" Foreground="{DynamicResource ErrorBgLight}" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
 
-                    <!-- Ã‡ok Zor -->
+                    <!-- Çok Zor -->
                     <Border CornerRadius="8" Padding="12,10" Margin="0,0,6,0" MinWidth="90">
                         <Border.Background>
                             <SolidColorBrush Color="{DynamicResource TextMutedColor}"/>
                         </Border.Background>
                         <StackPanel>
-                            <TextBlock Text="âš«" FontSize="18" HorizontalAlignment="Center"/>
-                            <TextBlock Text="{Binding QuestionDifficulties, Converter={StaticResource DifficultyCountConverter}, ConverterParameter='Ã‡ok Zor'}"
+                            <TextBlock Text="⚫" FontSize="18" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding QuestionDifficulties, Converter={StaticResource DifficultyCountConverter}, ConverterParameter='Çok Zor'}"
                                       FontSize="22" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Ã‡ok Zor" FontSize="10" Foreground="{DynamicResource Border}" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Çok Zor" FontSize="10" Foreground="{DynamicResource Border}" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
 
@@ -78,7 +78,7 @@
                             <SolidColorBrush Color="{DynamicResource HoverBgColor}"/>
                         </Border.Background>
                         <StackPanel>
-                            <TextBlock Text="ğŸ“Š" FontSize="18" HorizontalAlignment="Center"/>
+                            <TextBlock Text="📊" FontSize="18" HorizontalAlignment="Center"/>
                             <TextBlock Text="{Binding QuestionDifficulties.Count}"
                                       FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Accent}" HorizontalAlignment="Center"/>
                             <TextBlock Text="Toplam" FontSize="10" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center"/>
@@ -89,8 +89,8 @@
                 <!-- Distribution Summary - Kompakt -->
                 <Border Background="{DynamicResource AltRowBg}" CornerRadius="6" Padding="8" Margin="0,10,0,0">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="ğŸ“ˆ" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="DaÄŸılım:" FontSize="11" FontWeight="SemiBold"
+                        <TextBlock Text="📈" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Dağılım:" FontSize="11" FontWeight="SemiBold"
                                   Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding DifficultyDistribution}"
                                   FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
@@ -108,7 +108,7 @@
                     <RowDefinition Height="*" MinHeight="350"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Text="ğŸ“‹ Soru Bazında Detaylı Analiz"
+                <TextBlock Grid.Row="0" Text="📋 Soru Bazında Detaylı Analiz"
                           FontSize="18" FontWeight="Bold"
                           Foreground="{DynamicResource TextMain}" Margin="0,0,0,20"/>
 
@@ -157,7 +157,7 @@
                                                 </Border>
                                             </StackPanel>
                                             
-                                            <!-- BaÅŸarı Oranı -->
+                                            <!-- Başarı Oranı -->
                                             <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding SuccessRate, StringFormat=F1}" FontSize="16" FontWeight="Bold" 
                                                           Foreground="{Binding DifficultyColor}" HorizontalAlignment="Center"/>
@@ -165,11 +165,11 @@
                                                           HorizontalAlignment="Center"/>
                                             </StackPanel>
                                             
-                                            <!-- DoÄŸru Sayısı -->
+                                            <!-- Doğru Sayısı -->
                                             <StackPanel Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding CorrectAnswers}" FontSize="16" FontWeight="SemiBold" 
                                                           Foreground="{DynamicResource Success}" HorizontalAlignment="Center"/>
-                                                <TextBlock Text="DoÄŸru" FontSize="11" Foreground="{DynamicResource TextMuted}" 
+                                                <TextBlock Text="Doğru" FontSize="11" Foreground="{DynamicResource TextMuted}" 
                                                           HorizontalAlignment="Center"/>
                                             </StackPanel>
                                             

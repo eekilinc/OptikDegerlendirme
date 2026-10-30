@@ -21,7 +21,7 @@
                     <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
+                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -51,11 +51,11 @@
                     </Border.Background>
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="ğŸ¯ Konu / Kazanım Yönetimi" 
+                            <TextBlock Text="🎯 Konu / Kazanım Yönetimi" 
                                        FontSize="26" 
                                        FontWeight="Bold"
                                        Foreground="White"/>
-                            <TextBlock Text="Soru numaralarına göre konu baÅŸlıklarını tanımlayın" 
+                            <TextBlock Text="Soru numaralarına göre konu başlıklarını tanımlayın" 
                                        FontSize="13" 
                                        Foreground="{DynamicResource SuccessBgLight}"
                                        Margin="0,6,0,0"
@@ -72,7 +72,7 @@
                                 FontSize="18" 
                                 Padding="0"
                                 Cursor="Hand">
-                            <Button.Content>âœ•</Button.Content>
+                            <Button.Content>✕</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" 
@@ -142,7 +142,7 @@
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                                 <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                                <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 <Setter Property="BorderBrush" Value="{DynamicResource Success}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -177,7 +177,7 @@
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                                 <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                                <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 <Setter Property="BorderBrush" Value="{DynamicResource Success}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -190,7 +190,7 @@
                             </ComboBox>
                         </StackPanel>
                         <StackPanel Grid.Column="4">
-                            <TextBlock Text="Soru No (Ã–rn: 1-5)" 
+                            <TextBlock Text="Soru No (Örn: 1-5)" 
                                        FontSize="12" 
                                        Margin="0,0,0,6">
                                 <TextBlock.Style>
@@ -216,7 +216,7 @@
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                                 <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                                <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 <Setter Property="BorderBrush" Value="{DynamicResource Success}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -294,19 +294,19 @@
                                 <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                        <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </DataGrid.RowStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Konu BaÅŸlıÄŸı" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Konu Başlığı" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Kitapçık" Binding="{Binding BookletName}" Width="90" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Soru AralıÄŸı" Binding="{Binding QuestionNumbersRaw}" Width="130" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Soru Aralığı" Binding="{Binding QuestionNumbersRaw}" Width="130" IsReadOnly="True"/>
                             <DataGridTemplateColumn Width="90">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="ğŸ—‘ï¸ Sil" 
+                                        <Button Content="🗑️ Sil" 
                                                 Command="{Binding DataContext.RemoveLearningOutcomeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                                 CommandParameter="{Binding}" 
                                                 Background="Transparent" 

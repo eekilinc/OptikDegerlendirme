@@ -40,7 +40,7 @@
                     <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
+                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -95,7 +95,7 @@
                                 FontSize="16" 
                                 Padding="0"
                                 Cursor="Hand">
-                            <Button.Content>âœ•</Button.Content>
+                            <Button.Content>✕</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" 
@@ -137,7 +137,7 @@
                                         CornerRadius="10"
                                         Background="{DynamicResource WarningBgLight}"
                                         Margin="0,0,12,0">
-                                    <TextBlock Text="ğŸ«" 
+                                    <TextBlock Text="🏫" 
                                                FontSize="20" 
                                                HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"/>
@@ -151,7 +151,7 @@
                                                 <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                        <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -171,7 +171,7 @@
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                                 <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                                <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -205,7 +205,7 @@
                                         CornerRadius="10"
                                         Background="{DynamicResource AccentBgLight}"
                                         Margin="0,0,12,0">
-                                    <TextBlock Text="ğŸ“Š" 
+                                    <TextBlock Text="📊" 
                                                FontSize="20" 
                                                HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"/>
@@ -219,7 +219,7 @@
                                                 <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                        <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -228,7 +228,7 @@
                                 </StackPanel>
                             </StackPanel>
 
-                            <TextBlock Text="Net Hesabı Kuralı (DüÅŸüm)" 
+                            <TextBlock Text="Net Hesabı Kuralı (Düşüm)" 
                                        FontSize="12" 
                                        Margin="0,0,0,8">
                                 <TextBlock.Style>
@@ -256,15 +256,15 @@
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
                                                 <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                                <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </ComboBox.Style>
-                                <ComboBoxItem Content="ğŸŸ¢ DüÅŸüm Yapılmasın (Net = DoÄŸru)"/>
-                                <ComboBoxItem Content="ğŸŸ¡ 3 YanlıÅŸ 1 DoÄŸru (0.33)"/>
-                                <ComboBoxItem Content="ğŸ”´ 4 YanlıÅŸ 1 DoÄŸru (0.25 - Standart)"/>
+                                <ComboBoxItem Content="🟢 Düşüm Yapılmasın (Net = Doğru)"/>
+                                <ComboBoxItem Content="🟡 3 Yanlış 1 Doğru (0.33)"/>
+                                <ComboBoxItem Content="🔴 4 Yanlış 1 Doğru (0.25 - Standart)"/>
                             </ComboBox>
 
                             <!-- Net Katsayı + Taban Puan -->
@@ -362,7 +362,7 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                        <TextBlock Text="BaÅŸlangıç puanı" 
+                                        <TextBlock Text="Başlangıç puanı" 
                                                    FontSize="11" 
                                                    Opacity="0.6" 
                                                    Margin="0,2,0,8">
@@ -416,13 +416,13 @@
                                         CornerRadius="10"
                                         Background="{DynamicResource AccentBgLight}"
                                         Margin="0,0,12,0">
-                                    <TextBlock Text="ğŸ“" 
+                                    <TextBlock Text="🎓" 
                                                FontSize="20" 
                                                HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"/>
                                 </Border>
                                 <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Harf Notu &amp; DeÄŸerlendirme Sistemi" 
+                                    <TextBlock Text="Harf Notu &amp; Değerlendirme Sistemi" 
                                                FontSize="15" 
                                                FontWeight="SemiBold">
                                         <TextBlock.Style>
@@ -430,13 +430,13 @@
                                                 <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                        <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
-                                    <TextBlock Text="Ã‡an eÄŸrisi (BDS) veya mutlak katalog seçimi" 
+                                    <TextBlock Text="Çan eğrisi (BDS) veya mutlak katalog seçimi" 
                                                FontSize="12" 
                                                Opacity="0.7">
                                         <TextBlock.Style>
@@ -453,7 +453,7 @@
                                 </StackPanel>
                             </StackPanel>
 
-                            <TextBlock Text="DeÄŸerlendirme Modu" 
+                            <TextBlock Text="Değerlendirme Modu" 
                                        FontSize="12" 
                                        Margin="0,0,0,6">
                                 <TextBlock.Style>
@@ -473,8 +473,8 @@
                                       Margin="0,0,0,14"
                                       BorderThickness="1"
                                       BorderBrush="{DynamicResource Border}">
-                                <ComboBoxItem Content="ğŸ“Š BaÄŸıl DeÄŸerlendirme (YÃ–K Ã‡an EÄŸrisi / T-Skor)"/>
-                                <ComboBoxItem Content="ğŸ“‹ Mutlak DeÄŸerlendirme (Katalog Puan Aralıkları)"/>
+                                <ComboBoxItem Content="📊 Bağıl Değerlendirme (YÖK Çan Eğrisi / T-Skor)"/>
+                                <ComboBoxItem Content="📋 Mutlak Değerlendirme (Katalog Puan Aralıkları)"/>
                             </ComboBox>
 
                             <Grid>
@@ -483,8 +483,8 @@
                                     <ColumnDefinition Width="100"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                    <TextBlock Text="BaÄŸıl Barajı (HBN Alt Sınırı)" FontSize="12" FontWeight="SemiBold"/>
-                                    <TextBlock Text="Bu puanın altı çana katılmaz, doÄŸrudan FF alır" FontSize="11" Opacity="0.7"/>
+                                    <TextBlock Text="Bağıl Barajı (HBN Alt Sınırı)" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Bu puanın altı çana katılmaz, doğrudan FF alır" FontSize="11" Opacity="0.7"/>
                                 </StackPanel>
                                 <TextBox Grid.Column="1" 
                                          Text="{Binding RelativeThreshold, UpdateSourceTrigger=PropertyChanged}"
@@ -524,7 +524,7 @@
                                         CornerRadius="10"
                                         Background="{DynamicResource AccentBgLight}"
                                         Margin="0,0,12,0">
-                                    <TextBlock Text="ğŸ“" 
+                                    <TextBlock Text="📁" 
                                                FontSize="20" 
                                                HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"/>
@@ -538,7 +538,7 @@
                                                 <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                        <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -574,7 +574,7 @@
                                     </TextBox.Style>
                                 </TextBox>
                                 <Button Grid.Column="2" 
-                                        Content="ğŸ“‚ Seç" 
+                                        Content="📂 Seç" 
                                         Command="{Binding SelectFolderCommand}"
                                         Padding="16,10" 
                                         Background="{DynamicResource Accent}" 
@@ -618,8 +618,8 @@
                     </Border.Style>
                     <Grid>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="ğŸ’¡" FontSize="16" Margin="0,0,8,0"/>
-                            <TextBlock Text="Ayarlar her açılıÅŸta otomatik yüklenir" 
+                            <TextBlock Text="💡" FontSize="16" Margin="0,0,8,0"/>
+                            <TextBlock Text="Ayarlar her açılışta otomatik yüklenir" 
                                        FontSize="12"
                                        VerticalAlignment="Center">
                                 <TextBlock.Style>

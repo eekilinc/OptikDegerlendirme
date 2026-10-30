@@ -21,7 +21,7 @@
                     <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
+                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -52,7 +52,7 @@
                     
                     <Grid>
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                            <TextBlock Text="ğŸ“‹" FontSize="20" Margin="0,0,10,0"/>
+                            <TextBlock Text="📋" FontSize="20" Margin="0,0,10,0"/>
                             <StackPanel>
                                 <TextBlock Text="Detaylı Cevap Anahtarı" 
                                            FontSize="16" 
@@ -75,7 +75,7 @@
                                 FontSize="12" 
                                 Padding="0"
                                 Cursor="Hand">
-                            <Button.Content>âœ•</Button.Content>
+                            <Button.Content>✕</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" 
@@ -155,7 +155,7 @@
                                 Background="{DynamicResource TextMuted}" 
                                 Margin="6,0"/>
                         
-                        <Button Content="ğŸ“‹ Toplu GiriÅŸ" 
+                        <Button Content="📋 Toplu Giriş" 
                                 Command="{Binding OpenBulkAnswerEntryCommand}"
                                 Padding="10,5"
                                 Background="{DynamicResource AccentPurple}"
@@ -176,7 +176,7 @@
                             </Button.Template>
                         </Button>
                         
-                        <Button Content="ğŸ“Š Analiz" 
+                        <Button Content="📊 Analiz" 
                                 Command="{Binding AnalyzeAnswerKeyCommand}"
                                 Padding="10,5"
                                 Background="{DynamicResource Warning}"
@@ -291,7 +291,7 @@
                                                     <Setter Property="CaretBrush" Value="{DynamicResource Accent}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
                                                             <Setter Property="Foreground" Value="{DynamicResource AccentBgLight}"/>
                                                             <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
                                                         </DataTrigger>
@@ -324,7 +324,7 @@
                         </Style>
                     </Border.Style>
                     <Grid>
-                        <TextBlock Text="Her kutuya tıklayıp cevabı deÄŸiÅŸtirin. Analiz butonu ile istatistikleri görün." 
+                        <TextBlock Text="Her kutuya tıklayıp cevabı değiştirin. Analiz butonu ile istatistikleri görün." 
                                    FontSize="10"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center">

@@ -40,7 +40,7 @@
                     <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
+                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -73,11 +73,11 @@
                     
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="âŒ¨ï¸ Klavye Kısayolları" 
+                            <TextBlock Text="⌨️ Klavye Kısayolları" 
                                        FontSize="26" 
                                        FontWeight="Bold"
                                        Foreground="White"/>
-                            <TextBlock Text="Uygulamayı daha hızlı kullanmak için kısayolları öÄŸrenin" 
+                            <TextBlock Text="Uygulamayı daha hızlı kullanmak için kısayolları öğrenin" 
                                        FontSize="13" 
                                        Foreground="{DynamicResource AccentBgLight}"
                                        Margin="0,6,0,0"
@@ -95,7 +95,7 @@
                                 FontSize="16" 
                                 Padding="0"
                                 Cursor="Hand">
-                            <Button.Content>âœ•</Button.Content>
+                            <Button.Content>✕</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" 
@@ -126,12 +126,12 @@
                                     CornerRadius="8"
                                     Background="{DynamicResource AccentBgLight}"
                                     Margin="0,0,10,0">
-                                <TextBlock Text="ğŸ“‚" 
+                                <TextBlock Text="📂" 
                                            FontSize="18" 
                                            HorizontalAlignment="Center" 
                                            VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock Text="Dosya İÅŸlemleri" 
+                            <TextBlock Text="Dosya İşlemleri" 
                                        FontSize="14" 
                                        FontWeight="Bold"
                                        VerticalAlignment="Center">
@@ -191,7 +191,7 @@
                                             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -242,7 +242,7 @@
                                             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -293,7 +293,7 @@
                                             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -336,7 +336,7 @@
                                                Foreground="{DynamicResource Success}"/>
                                 </Border>
                                 <TextBlock Grid.Column="1" 
-                                           Text="CSV DıÅŸa Aktar" 
+                                           Text="CSV Dışa Aktar" 
                                            FontSize="13" 
                                            VerticalAlignment="Center">
                                     <TextBlock.Style>
@@ -344,7 +344,7 @@
                                             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -394,7 +394,7 @@
                                             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -412,12 +412,12 @@
                                     CornerRadius="8"
                                     Background="{DynamicResource AccentBgLight}"
                                     Margin="0,0,10,0">
-                                <TextBlock Text="âš¡" 
+                                <TextBlock Text="⚡" 
                                            FontSize="18" 
                                            HorizontalAlignment="Center" 
                                            VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock Text="İÅŸlemler" 
+                            <TextBlock Text="İşlemler" 
                                        FontSize="14" 
                                        FontWeight="Bold"
                                        VerticalAlignment="Center">
@@ -476,7 +476,7 @@
                                             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -527,7 +527,7 @@
                                             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -578,7 +578,7 @@
                                             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -628,7 +628,7 @@
                                             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -658,7 +658,7 @@
                     </Border.Style>
                     <Grid>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="ğŸ’¡" FontSize="16" Margin="0,0,8,0"/>
+                            <TextBlock Text="💡" FontSize="16" Margin="0,0,8,0"/>
                             <TextBlock Text="Tüm kısayollar Dosya menüsünde de gösterilmektedir" 
                                        FontSize="12"
                                        VerticalAlignment="Center">

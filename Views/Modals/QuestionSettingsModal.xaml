@@ -21,7 +21,7 @@
                     <Setter Property="Background" Value="{DynamicResource AppBg}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource TextMain}"/>
+                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -51,11 +51,11 @@
                     </Border.Background>
                     <Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="âš™ï¸ Soru Ayarları" 
+                            <TextBlock Text="⚙️ Soru Ayarları" 
                                        FontSize="26" 
                                        FontWeight="Bold"
                                        Foreground="White"/>
-                            <TextBlock Text="Soru iptali veya çoklu doÄŸru seçeneklerini yönetin" 
+                            <TextBlock Text="Soru iptali veya çoklu doğru seçeneklerini yönetin" 
                                        FontSize="13" 
                                        Foreground="{DynamicResource ErrorBgLight}"
                                        Margin="0,6,0,0"
@@ -72,7 +72,7 @@
                                 FontSize="18" 
                                 Padding="0"
                                 Cursor="Hand">
-                            <Button.Content>âœ•</Button.Content>
+                            <Button.Content>✕</Button.Content>
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" 
@@ -106,8 +106,8 @@
                         </Style>
                     </Border.Style>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="ğŸ’¡" FontSize="16" Margin="0,0,10,0"/>
-                        <TextBlock Text="İptal edilen sorular puanlamaya dahil edilmez. Ã‡oklu doÄŸru seçenekleri için harfleri birleÅŸtirin (örn: AB)" 
+                        <TextBlock Text="💡" FontSize="16" Margin="0,0,10,0"/>
+                        <TextBlock Text="İptal edilen sorular puanlamaya dahil edilmez. Çoklu doğru seçenekleri için harfleri birleştirin (örn: AB)" 
                                    FontSize="12"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center">
@@ -170,7 +170,7 @@
                                 <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                        <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -205,7 +205,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="Ã‡oklu Aktif" Width="90">
+                            <DataGridTemplateColumn Header="Çoklu Aktif" Width="90">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <CheckBox IsChecked="{Binding IsMultipleEnabled, UpdateSourceTrigger=PropertyChanged}" 
@@ -215,12 +215,12 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="Ã‡oklu DoÄŸru Seçenekler" Width="*">
+                            <DataGridTemplateColumn Header="Çoklu Doğru Seçenekler" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBox Text="{Binding MultipleCorrectAnswers, UpdateSourceTrigger=PropertyChanged}" 
                                                  IsEnabled="{Binding IsMultipleEnabled}"
-                                                 ToolTip="Ã–rn: AB (Hem A hem B doÄŸru kabul edilir)" 
+                                                 ToolTip="Örn: AB (Hem A hem B doğru kabul edilir)" 
                                                  Padding="8,4" 
                                                  Margin="5,0"
                                                  BorderThickness="1"
@@ -233,7 +233,7 @@
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
                                                             <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                                            <Setter Property="Foreground" Value="{DynamicResource AppBg}"/>
+                                                            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                                             <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
@@ -266,7 +266,7 @@
                         </Style>
                     </Border.Style>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="âœ“ Kaydet ve Kapat" 
+                        <Button Content="✓ Kaydet ve Kapat" 
                                 Command="{Binding CloseQuestionSettingsCommand}" 
                                 Background="{DynamicResource Error}" 
                                 Foreground="White"

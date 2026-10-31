@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="OptikFormApp.Views.Modals.UISettingsModal"
+<UserControl x:Class="OptikFormApp.Views.Modals.UISettingsModal"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -274,7 +274,7 @@
                                     CornerRadius="12"
                                     Background="{DynamicResource AccentBgLight}"
                                     Margin="0,0,14,0">
-                                <TextBlock Text="📊" 
+                                <TextBlock Text="📐" 
                                            FontSize="22" 
                                            HorizontalAlignment="Center" 
                                            VerticalAlignment="Center"/>
@@ -437,7 +437,7 @@
                             <Setter Property="BorderBrush" Value="{DynamicResource AccentBgLight}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource Accent}"/>
+                                    <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
                                     <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
                                 </DataTrigger>
                             </Style.Triggers>

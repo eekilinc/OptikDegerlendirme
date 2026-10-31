@@ -19,7 +19,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Search Bar -->
-            <Border Grid.Column="0" Background="{DynamicResource AltRowBg}" CornerRadius="10" Padding="15,8" Margin="0,0,12,0">
+            <Border Grid.Column="0" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="15,8" Margin="0,0,12,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -326,7 +326,7 @@
                 </Border>
                 <TextBlock Text="Kayıtlı Öğrenci Bulunamadı" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
                 <TextBlock Text="Henüz bir optik veri dosyası yüklenmemiş veya filtrelere uygun kayıt yok." FontSize="14" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,10,0,25" TextAlignment="Center"/>
-                <Button Content="Dosya Yükle (Ctrl+O)" Command="{Binding LoadTxtCommand}" Style="{StaticResource PipelineButton}" 
+                <Button Content="📂 Veri Yükle (Ctrl+O)" Command="{Binding LoadTxtCommand}" Style="{StaticResource PipelineButton}" 
                         Background="{DynamicResource Accent}" Foreground="White" Padding="25,12" HorizontalAlignment="Center"/>
             </StackPanel>
         </Border>

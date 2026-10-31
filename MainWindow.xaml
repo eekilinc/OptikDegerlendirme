@@ -6,7 +6,7 @@
         xmlns:modals="clr-namespace:OptikFormApp.Views.Modals"
         Title="AĞLASUN MYO Optik Değerlendirme" Height="750" Width="1150" MinWidth="850" MinHeight="600"
         Icon="/Assets/app_logo.png"
-        WindowStartupLocation="CenterScreen" Background="{DynamicResource AppBg}" FontFamily="Segoe UI"
+        WindowStartupLocation="CenterScreen" Background="{DynamicResource AppBg}" FontFamily="Segoe UI Variable, Segoe UI, -apple-system, system-ui, sans-serif"
         AutomationProperties.Name="Optik Değerlendirme Ana Pencere"
         AllowDrop="True"
         Drop="MainWindow_Drop"

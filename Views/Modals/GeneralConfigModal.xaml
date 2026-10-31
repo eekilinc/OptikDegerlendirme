@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="OptikFormApp.Views.Modals.GeneralConfigModal"
+<UserControl x:Class="OptikFormApp.Views.Modals.GeneralConfigModal"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -27,7 +27,7 @@
     </UserControl.Resources>
     
     <Grid Visibility="{Binding IsGeneralConfigOpen, Converter={StaticResource BoolToVis}}" 
-          Background="#CC000000">
+          Background="{DynamicResource ModalBackdrop}">
         
         <!-- Premium Modal -->
         <Border Width="520" 

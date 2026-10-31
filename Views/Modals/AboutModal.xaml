@@ -152,60 +152,120 @@
 
                     <!-- TAB 1: GENEL BAKIŞ -->
                     <TabItem Header="📌 Genel Bakış">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="24,18">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20,16">
                             <StackPanel>
-                                <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="12" Padding="16,14" Margin="0,0,0,16">
-                                    <TextBlock Text="Ağlasun Meslek Yüksekokulu öğretim elemanları için geliştirilmiş; OMR optik okuyucu çıktılarını saniyeler içinde işleyen, YÖK Bağıl Değerlendirme Sistemi (BDS), dinamik Gaussian çan eğrisi, KR-20 güvenilirlik ve psikometrik madde analizlerini tek merkezden sunan yeni nesil akademik değerlendirme platformudur."
-                                               FontSize="12" 
-                                               LineHeight="18"
-                                               TextWrapping="Wrap" 
-                                               Foreground="{DynamicResource TextMain}"/>
+                                <!-- Hero Card -->
+                                <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="14" Padding="18,14" Margin="0,0,0,14">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+                                            <Border Background="{DynamicResource AccentBgLight}" CornerRadius="6" Padding="8,3" Margin="0,0,8,0">
+                                                <TextBlock Text="🏛️ Ağlasun Meslek Yüksekokulu" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource Accent}"/>
+                                            </Border>
+                                            <Border Background="{DynamicResource SuccessBgLight}" CornerRadius="6" Padding="8,3">
+                                                <TextBlock Text="✓ YÖK BDS Uyumlu" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource Success}"/>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <TextBlock Grid.Row="1" Text="Yeni Nesil Optik Sınav Değerlendirme &amp; İstatistik Platformu" 
+                                                   FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
+
+                                        <TextBlock Grid.Row="2" Text="OMR optik tarayıcı çıktılarını (.txt, .dat) saniyeler içinde işleyen, bağıl değerlendirme sistemi (BDS) çan eğrisi notlandırması yapan, güvenilirlik ve madde analizleri üreten kurumsal masaüstü yazılımı." 
+                                                   FontSize="12" LineHeight="18" TextWrapping="Wrap" Foreground="{DynamicResource TextMuted}"/>
+                                    </Grid>
                                 </Border>
 
-                                <TextBlock Text="Öne Çıkan Yetenekler" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,10"/>
+                                <!-- 4 Adımlı İş Akışı -->
+                                <TextBlock Text="Uçtan Uca Değerlendirme Süreci" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="2,0,0,8"/>
+                                
+                                <UniformGrid Columns="4" Margin="0,0,0,14">
+                                    <!-- Adım 1 -->
+                                    <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="10,10" Margin="0,0,4,0">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <Border Width="32" Height="32" CornerRadius="8" Background="{DynamicResource HoverBg}" Margin="0,0,0,6">
+                                                <TextBlock Text="📂" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <TextBlock Text="1. Veri Yükle" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="TXT/DAT Form" FontSize="10" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                                        </StackPanel>
+                                    </Border>
 
-                                <UniformGrid Columns="2" Margin="0,0,0,10">
-                                    <Border Background="{DynamicResource HoverBg}" CornerRadius="10" Padding="12,10" Margin="0,0,6,8">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="⚡" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="Yüksek Hızlı Motor" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
-                                                <TextBlock Text="10.000+ form / sn" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
-                                            </StackPanel>
+                                    <!-- Adım 2 -->
+                                    <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="10,10" Margin="2,0,2,0">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <Border Width="32" Height="32" CornerRadius="8" Background="{DynamicResource AccentBgLight}" Margin="0,0,0,6">
+                                                <TextBlock Text="🔑" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <TextBlock Text="2. Anahtar Eşle" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="A, B, C, D Matrisi" FontSize="10" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
                                         </StackPanel>
                                     </Border>
-                                    <Border Background="{DynamicResource SuccessBgLight}" CornerRadius="10" Padding="12,10" Margin="6,0,0,8">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="🔔" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="YÖK BDS Çan Eğrisi" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource Success}"/>
-                                                <TextBlock Text="T-Skor otomatik notlandırma" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
-                                            </StackPanel>
+
+                                    <!-- Adım 3 -->
+                                    <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="10,10" Margin="2,0,2,0">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <Border Width="32" Height="32" CornerRadius="8" Background="{DynamicResource WarningBgLight}" Margin="0,0,0,6">
+                                                <TextBlock Text="⚡" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <TextBlock Text="3. Çan &amp; Not" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="T-Skor &amp; Harf" FontSize="10" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
                                         </StackPanel>
                                     </Border>
-                                    <Border Background="{DynamicResource WarningBgLight}" CornerRadius="10" Padding="12,10" Margin="0,0,6,8">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="📊" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="Psikometrik Analiz" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource Warning}"/>
-                                                <TextBlock Text="KR-20, SeM, Madde Ayırt Edicilik" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
-                                            </StackPanel>
-                                        </StackPanel>
-                                    </Border>
-                                    <Border Background="{DynamicResource AccentBgLight}" CornerRadius="10" Padding="12,10" Margin="6,0,0,8">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="📑" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="Zengin Raporlama" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource Accent}"/>
-                                                <TextBlock Text="PDF Karne, Excel &amp; CSV" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
-                                            </StackPanel>
+
+                                    <!-- Adım 4 -->
+                                    <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="10,10" Margin="4,0,0,0">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <Border Width="32" Height="32" CornerRadius="8" Background="{DynamicResource SuccessBgLight}" Margin="0,0,0,6">
+                                                <TextBlock Text="📑" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <TextBlock Text="4. Raporla" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="PDF &amp; Excel" FontSize="10" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
                                         </StackPanel>
                                     </Border>
                                 </UniformGrid>
+
+                                <!-- Temel Standartlar & Güvenlik Özeti -->
+                                <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="12" Padding="14,10">
+                                    <StackPanel>
+                                        <TextBlock Text="Sistem Güvencesi ve Standartlar" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
+                                        
+                                        <Grid Margin="0,2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="🛡️" FontSize="13" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="%100 Çevrimdışı (Offline): Öğrenci verileri asla buluta gitmez, cihazda kalır." FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                                        </Grid>
+
+                                        <Grid Margin="0,3">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="📊" FontSize="13" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="Psikometri: KR-20, SeM, Varyans ve Madde Ayırt Edicilik analizleri." FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                                        </Grid>
+
+                                        <Grid Margin="0,2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="💾" FontSize="13" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="Yerel Depolama: Sınav geçmişi ve ders arşivleri SQLite veritabanında saklanır." FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
                             </StackPanel>
                         </ScrollViewer>
                     </TabItem>
-
+                    
                     <!-- TAB 2: ÖZELLİKLER & MODÜLLER -->
                     <TabItem Header="🚀 Modüller">
                         <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="24,18">

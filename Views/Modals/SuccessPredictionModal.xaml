@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="OptikFormApp.Views.Modals.SuccessPredictionModal"
+<UserControl x:Class="OptikFormApp.Views.Modals.SuccessPredictionModal"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,7 @@
              mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="1000">
     
     <Grid Visibility="{Binding IsSuccessPredictionOpen, Converter={StaticResource BoolToVis}}"
-          Background="#CC000000">
+          Background="{DynamicResource ModalBackdrop}">
         
         <!-- Premium Modal -->
         <Border Width="920" 

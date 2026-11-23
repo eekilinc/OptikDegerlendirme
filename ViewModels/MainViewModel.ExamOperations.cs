@@ -29,7 +29,7 @@ namespace OptikFormApp.ViewModels
             
             try
             {
-                var (students, answerKeys, errors) = await _parserService.ParseFileAsync(filePath);
+                var (students, answerKeys, errors) = await _parserService.ParseFileAsync(filePath, default, GetCurrentOpticalFormat());
                 bool isCritical = errors.Any(e => e.StartsWith("KRİTİK HATA"));
                 
                 if (errors.Count > 0)

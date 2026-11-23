@@ -113,6 +113,37 @@
                 <!-- Content Cards -->
                 <StackPanel Grid.Row="1" Margin="24,20,24,10">
 
+                    <!-- Öğretim Elemanı Profili & Tablo Tercihi -->
+                    <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="16" Padding="18,14" Margin="0,0,0,12">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <Border Width="36" Height="36" CornerRadius="10" Background="{DynamicResource AccentBgLight}" Margin="0,0,12,0">
+                                    <TextBlock Text="👤" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Öğretim Elemanı Profili &amp; Görünüm" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}"/>
+                                    <TextBlock Text="PDF rapor kapak ve imza bloğuna otomatik basılır" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                    <TextBlock Text="Öğretim Elemanı Adı / Unvanı" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,4"/>
+                                    <TextBox Text="{Binding InstructorName, UpdateSourceTrigger=PropertyChanged}" Padding="10,8" FontSize="13"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                    <TextBlock Text="Bölüm / Program Adı" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,4"/>
+                                    <TextBox Text="{Binding DepartmentName, UpdateSourceTrigger=PropertyChanged}" Padding="10,8" FontSize="13"/>
+                                </StackPanel>
+                            </Grid>
+                            <CheckBox IsChecked="{Binding ShowLetterGradeColumn}" Content="Öğrenci tablosunda Harf Notu (AA–FF) sütununu göster (Tek sınavda kapalı önerilir)"
+                                      Foreground="{DynamicResource TextMain}" FontSize="12" VerticalContentAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
                     <!-- School Name Card -->
                     <Border CornerRadius="16" 
                             Padding="20,18" 

@@ -1,0 +1,126 @@
+<UserControl x:Class="OptikFormApp.Views.Modals.ObsExportModal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="620" d:DesignWidth="740">
+
+    <Grid Visibility="{Binding IsObsExportOpen, Converter={StaticResource BoolToVis}}"
+          Background="{DynamicResource ModalBackdrop}">
+        <Border Width="720" MaxHeight="620" VerticalAlignment="Center" HorizontalAlignment="Center"
+                CornerRadius="20" Background="{DynamicResource CardBg}" Margin="20">
+            <Border.Effect>
+                <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.25" BlurRadius="50" ShadowDepth="15"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Border Grid.Row="0" Height="76" CornerRadius="20,20,0,0" Padding="24,14">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="{DynamicResource AccentColor}" Offset="0"/>
+                            <GradientStop Color="{DynamicResource AccentPurpleColor}" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border Width="44" Height="44" CornerRadius="12" Background="#25FFFFFF" Margin="0,0,14,0">
+                                <TextBlock Text="📤" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="MAKÜ OBS Hazır Not Aktarımı" FontSize="17" FontWeight="Bold" Foreground="White"/>
+                                <TextBlock Text="Öğrenci numarasına göre sıralı, yuvarlama seçenekli ve tek tıkla kopyalanabilir OBS listesi" FontSize="11" Foreground="White" Opacity="0.85"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Button Command="{Binding CloseObsExportCommand}" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Width="30" Height="30" Background="#25FFFFFF" Foreground="White" FontSize="13" Cursor="Hand">
+                            <Button.Content>✕</Button.Content>
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="15">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="bd" Property="Background" Value="#45FFFFFF"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <!-- Toolbar: Yuvarlama ve Kopyalama -->
+                <Border Grid.Row="1" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,0,0,1" Padding="20,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Yuvarlama Kuralı:" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <ComboBox SelectedIndex="{Binding ObsRoundingModeIndex}" Width="210" FontSize="12" Padding="8,6">
+                                <ComboBoxItem Content="Tam Sayıya Yuvarla (54.5 → 55)"/>
+                                <ComboBoxItem Content="Yukarı Yuvarla (54.1 → 55)"/>
+                                <ComboBoxItem Content="Ondalıklı Bırak (54,50)"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Command="{Binding CopyObsScoresCommand}" Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,6,0" FontSize="11"
+                                    ToolTip="Sadece OBS not sütununu panoya kopyala">
+                                <TextBlock Text="📋 Sadece Notları Kopyala"/>
+                            </Button>
+                            <Button Command="{Binding CopyObsIdAndScoresCommand}" Style="{StaticResource OutlineButton}" Padding="10,6" FontSize="11"
+                                    ToolTip="Öğrenci No ve Not sütunlarını birlikte kopyala">
+                                <TextBlock Text="📋 No + Not Kopyala"/>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Önizleme Tablosu -->
+                <DataGrid Grid.Row="2" ItemsSource="{Binding ObsPreviewRows}" AutoGenerateColumns="False" IsReadOnly="True"
+                          Margin="20,14" BorderBrush="{DynamicResource Border}" BorderThickness="1" RowHeight="32">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" Binding="{Binding RowNumber}" Width="45"/>
+                        <DataGridTextColumn Header="Öğrenci No" Binding="{Binding StudentId}" Width="130"/>
+                        <DataGridTextColumn Header="Ad Soyad" Binding="{Binding FullName}" Width="*"/>
+                        <DataGridTextColumn Header="Ham Puan" Binding="{Binding RawScore, StringFormat='{}{0:F2}'}" Width="90"/>
+                        <DataGridTextColumn Header="OBS Notu" Binding="{Binding FormattedScore}" Width="95">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontWeight" Value="ExtraBold"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Footer -->
+                <Border Grid.Row="3" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" CornerRadius="0,0,20,20" Padding="20,12">
+                    <Grid>
+                        <TextBlock Text="{Binding ObsPreviewRows.Count, StringFormat='Toplam {0} öğrenci OBS aktarımına hazır'}" FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Command="{Binding ExportObsCsvCommand}" Style="{StaticResource OutlineButton}" Padding="14,7" Margin="0,0,8,0" FontSize="12" Content="📄 OBS CSV Kaydet"/>
+                            <Button Command="{Binding ExportObsExcelCommand}" Style="{StaticResource PipelineButton}" Background="{DynamicResource Success}" BorderBrush="{DynamicResource Success}" Foreground="White" Padding="16,7" FontSize="12" FontWeight="Bold" Content="📊 OBS Excel (.xlsx) Kaydet"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

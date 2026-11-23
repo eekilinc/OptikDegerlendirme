@@ -129,143 +129,210 @@ namespace OptikFormApp.Services
             {
                 container.Page(page =>
                 {
-                        page.Size(PageSizes.A4);
-                        page.Margin(1, Unit.Centimetre);
-                        page.PageColor(Colors.White);
-                        page.DefaultTextStyle(x => x.FontSize(12).FontFamily(Fonts.Verdana));
+                    page.Size(PageSizes.A4);
+                    page.Margin(1.5f, Unit.Centimetre);
+                    page.PageColor("#ffffff");
+                    page.DefaultTextStyle(x => x.FontSize(10).FontFamily(Fonts.TimesNewRoman));
 
-                        page.Header().Row(row =>
+                    page.Header().Column(hdr =>
+                    {
+                        hdr.Item().Height(4).Background("#1e3a5f");
+                        hdr.Item().PaddingTop(1).Height(1.5f).Background("#3b82f6");
+                        hdr.Item().PaddingTop(10).PaddingBottom(8).BorderBottom(1).BorderColor("#e2e8f0").Row(row =>
                         {
                             row.RelativeItem().Column(col =>
                             {
-                                col.Item().Text(schoolName).FontSize(14).Medium().FontColor(Colors.Grey.Medium);
-                                col.Item().Text("SINAV SONUÇ KARNESİ").FontSize(20).SemiBold().FontColor(Colors.Blue.Medium);
-                                col.Item().Text($"{DateTime.Now:dd.MM.yyyy HH:mm}").FontSize(10).FontColor(Colors.Grey.Medium);
+                                col.Item().Text(string.IsNullOrWhiteSpace(schoolName) ? "AĞLASUN MESLEK YÜKSEKOKULU" : schoolName.ToUpper()).FontSize(10).SemiBold().FontColor("#475569");
+                                col.Item().Text("BİREYSEL SINAV SONUÇ KARNESİ").FontSize(16).Bold().FontColor("#1e3a5f");
+                            });
+                            row.ConstantItem(130).AlignRight().AlignMiddle().Column(col =>
+                            {
+                                col.Item().AlignRight().Text($"Tarih: {DateTime.Now:dd.MM.yyyy}").FontSize(8.5f).FontColor("#64748b");
+                                col.Item().AlignRight().Text($"Sıralama: #{student.Rank} / {totalStudents}").FontSize(9.5f).Bold().FontColor("#1d4ed8");
+                            });
+                        });
+                    });
+
+                    page.Content().PaddingVertical(12).Column(x =>
+                    {
+                        x.Spacing(14);
+
+                        // Öğrenci Kimlik Kartı
+                        x.Item().Border(1).BorderColor("#e2e8f0").Background("#f8fafc").Padding(12).Table(table =>
+                        {
+                            table.ColumnsDefinition(columns =>
+                            {
+                                columns.RelativeColumn(1.2f);
+                                columns.RelativeColumn(1f);
+                            });
+
+                            table.Cell().PaddingVertical(2).Text(t => { t.Span("Ad Soyad: ").SemiBold().FontColor("#475569"); t.Span(student.FullName).Bold().FontColor("#1e293b"); });
+                            table.Cell().PaddingVertical(2).Text(t => { t.Span("Öğrenci No: ").SemiBold().FontColor("#475569"); t.Span(student.StudentId).Bold().FontColor("#1e293b"); });
+                            table.Cell().PaddingVertical(2).Text(t => { t.Span("Kitapçık Türü: ").SemiBold().FontColor("#475569"); t.Span(string.IsNullOrWhiteSpace(student.BookletType) ? "-" : student.BookletType).Bold().FontColor("#7c3aed"); });
+                            table.Cell().PaddingVertical(2).Text(t => { t.Span("Sınıf Ortalaması: ").SemiBold().FontColor("#475569"); t.Span($"{examAverage:F2} Puan ({examNetAverage:F2} Net)").FontColor("#1e293b"); });
+                        });
+
+                        // 4'lü Özet KPI Kartları
+                        x.Item().Row(row =>
+                        {
+                            row.Spacing(8);
+                            row.RelativeItem().Border(1).BorderColor("#bbf7d0").Background("#f0fdf4").Padding(10).AlignCenter().Column(c =>
+                            {
+                                c.Item().AlignCenter().Text("DOĞRU").FontSize(8).Bold().FontColor("#166534");
+                                c.Item().AlignCenter().Text(student.CorrectCount.ToString()).FontSize(18).Bold().FontColor("#15803d");
+                            });
+                            row.RelativeItem().Border(1).BorderColor("#fecaca").Background("#fef2f2").Padding(10).AlignCenter().Column(c =>
+                            {
+                                c.Item().AlignCenter().Text("YANLIŞ").FontSize(8).Bold().FontColor("#991b1b");
+                                c.Item().AlignCenter().Text(student.IncorrectCount.ToString()).FontSize(18).Bold().FontColor("#dc2626");
+                            });
+                            row.RelativeItem().Border(1).BorderColor("#e2e8f0").Background("#f8fafc").Padding(10).AlignCenter().Column(c =>
+                            {
+                                c.Item().AlignCenter().Text("BOŞ").FontSize(8).Bold().FontColor("#475569");
+                                c.Item().AlignCenter().Text(student.EmptyCount.ToString()).FontSize(18).Bold().FontColor("#64748b");
+                            });
+                            row.RelativeItem().Border(1).BorderColor("#bfdbfe").Background("#eff6ff").Padding(10).AlignCenter().Column(c =>
+                            {
+                                c.Item().AlignCenter().Text("PUAN / NET").FontSize(8).Bold().FontColor("#1e40af");
+                                c.Item().AlignCenter().Text($"{student.Score:F2}").FontSize(18).Bold().FontColor("#1d4ed8");
+                                c.Item().AlignCenter().Text($"{student.NetCount:F2} Net").FontSize(8).FontColor("#3b82f6");
                             });
                         });
 
-                        page.Content().PaddingVertical(1, Unit.Centimetre).Column(x =>
+                        // Vektör Performans Karşılaştırma Grafiği (Öğrenci vs Sınıf Ortalaması)
+                        x.Item().Border(1).BorderColor("#e2e8f0").Background("#ffffff").Padding(10).Column(comp =>
                         {
-                            x.Spacing(20);
-
-                            // Student Info
-                            x.Item().Table(table =>
+                            double diff = student.Score - examAverage;
+                            string diffText = diff >= 0 ? $"Sınıf ortalamasının +{diff:F2} puan üzerinde" : $"Sınıf ortalamasının {diff:F2} puan altında";
+                            comp.Item().PaddingBottom(6).Row(r =>
                             {
-                                table.ColumnsDefinition(columns =>
-                                {
-                                    columns.RelativeColumn();
-                                    columns.RelativeColumn();
-                                });
-
-                                table.Cell().Text(t => { t.Span("Ad Soyad: ").SemiBold(); t.Span(student.FullName); });
-                                table.Cell().Text(t => { t.Span("Öğrenci No: ").SemiBold(); t.Span(student.StudentId); });
-                                table.Cell().Text(t => { t.Span("Kitapçık: ").SemiBold(); t.Span(student.BookletType); });
-                                table.Cell().Text(t => { t.Span("Puan / Sıralama: ").SemiBold(); t.Span($"{student.Score:F2} (Sıra: {student.Rank}/{totalStudents})"); });
-                                table.Cell().Text(t => { t.Span("Sınıf Net/Puan Ort.: ").SemiBold(); t.Span($"{examNetAverage:F2} Net / {examAverage:F2} Puan"); });
+                                r.RelativeItem().Text("SINIF ORTALAMASI İLE KARŞILAŞTIRMA").FontSize(9).Bold().FontColor("#1e3a5f");
+                                r.AutoItem().Text(diffText).FontSize(8.5f).Bold().FontColor(diff >= 0 ? "#15803d" : "#b91c1c");
                             });
-
-                            // Summary Stats
-                            x.Item().Row(row =>
+                            comp.Item().Height(46).Canvas((canvas, size) =>
                             {
-                                row.RelativeItem().Column(c =>
-                                {
-                                    c.Item().AlignCenter().Text("DOĞRU").FontSize(10).SemiBold();
-                                    c.Item().AlignCenter().Text(student.CorrectCount.ToString()).FontSize(16).FontColor(Colors.Green.Medium);
-                                });
-                                row.RelativeItem().Column(c =>
-                                {
-                                    c.Item().AlignCenter().Text("YANLIŞ").FontSize(10).SemiBold();
-                                    c.Item().AlignCenter().Text(student.IncorrectCount.ToString()).FontSize(16).FontColor(Colors.Red.Medium);
-                                });
-                                row.RelativeItem().Column(c =>
-                                {
-                                    c.Item().AlignCenter().Text("BOŞ").FontSize(10).SemiBold();
-                                    c.Item().AlignCenter().Text(student.EmptyCount.ToString()).FontSize(16).FontColor(Colors.Grey.Medium);
-                                });
-                            });
+                                float labelW = 85f;
+                                float barAreaW = Math.Max(40f, size.Width - labelW - 45f);
+                                using var track = new SKPaint { Color = SKColor.Parse("#e2e8f0"), IsAntialias = true };
+                                using var txt = new SKPaint { Color = SKColor.Parse("#334155"), TextSize = 8.5f, IsAntialias = true, FakeBoldText = true };
+                                using var valTxt = new SKPaint { Color = SKColor.Parse("#1e293b"), TextSize = 8.5f, IsAntialias = true, FakeBoldText = true };
 
-                            // Answers Table
-                            x.Item().Text("Cevaplarınız:").SemiBold().Underline();
-                            x.Item().Table(table =>
-                            {
-                                table.ColumnsDefinition(columns =>
-                                {
-                                    for (int i = 0; i < 10; i++) columns.RelativeColumn();
-                                });
-                                
-                                for (int i = 0; i < student.ColoredAnswers.Count; i++)
-                                {
-                                    var ans = student.ColoredAnswers[i];
-                                    table.Cell().Border(1).BorderColor(Colors.Grey.Lighten2).Padding(2).AlignCenter().Column(c => {
-                                        c.Item().Text((i + 1).ToString()).FontSize(8).FontColor(Colors.Grey.Medium);
-                                        c.Item().Text(ans.Character.ToString()).Bold().FontColor(
-                                            ans.State == AnswerState.Correct ? Colors.Green.Medium :
-                                            ans.State == AnswerState.Incorrect ? Colors.Red.Medium : Colors.Grey.Medium
-                                        );
-                                    });
-                                }
-                            });
+                                // Satır 1: Öğrenci Puanı
+                                canvas.DrawText("Öğrenci Puanı", 0, 14, txt);
+                                canvas.DrawRoundRect(new SKRect(labelW, 5, labelW + barAreaW, 17), 3, 3, track);
+                                using var stuPaint = new SKPaint { Color = SKColor.Parse(student.Score >= examAverage ? "#15803d" : "#2563eb"), IsAntialias = true };
+                                float stuW = Math.Max(3f, (float)(barAreaW * Math.Clamp(student.Score / 100.0, 0, 1)));
+                                canvas.DrawRoundRect(new SKRect(labelW, 5, labelW + stuW, 17), 3, 3, stuPaint);
+                                canvas.DrawText($"{student.Score:F1}", labelW + barAreaW + 6, 14, valTxt);
 
-                if (outcomes?.Count > 0)
-                {
-                    var studentOutcomes = outcomes.Where(o => 
-                        string.Equals(o.BookletName, student.BookletType, StringComparison.OrdinalIgnoreCase)).ToList();
-                    
-                    if (studentOutcomes.Count > 0)
-                    {
-                        x.Item().PaddingTop(15).Text("Konu Bazlı Başarı Analiziniz:").SemiBold().Underline();
+                                // Satır 2: Sınıf Ortalaması
+                                canvas.DrawText("Sınıf Ortalaması", 0, 36, txt);
+                                canvas.DrawRoundRect(new SKRect(labelW, 27, labelW + barAreaW, 39), 3, 3, track);
+                                using var avgPaint = new SKPaint { Color = SKColor.Parse("#7c3aed"), IsAntialias = true };
+                                float avgW = Math.Max(3f, (float)(barAreaW * Math.Clamp(examAverage / 100.0, 0, 1)));
+                                canvas.DrawRoundRect(new SKRect(labelW, 27, labelW + avgW, 39), 3, 3, avgPaint);
+                                canvas.DrawText($"{examAverage:F1}", labelW + barAreaW + 6, 36, valTxt);
+                            });
+                        });
+
+                        // Cevap Anahtarı Karşılaştırma Izgarası
+                        x.Item().Background("#1e3a5f").Padding(6).Text("SORU BAZLI CEVAP DÖKÜMÜ").FontSize(9.5f).Bold().FontColor("#ffffff");
                         x.Item().Table(table =>
                         {
-                            table.ColumnsDefinition(cols =>
+                            table.ColumnsDefinition(columns =>
                             {
-                                cols.RelativeColumn(3);
-                                cols.RelativeColumn(1);
-                                cols.RelativeColumn(1);
-                                cols.RelativeColumn(1);
-                                cols.RelativeColumn(1);
+                                for (int i = 0; i < 10; i++) columns.RelativeColumn();
                             });
 
-                            table.Header(header =>
+                            for (int i = 0; i < student.ColoredAnswers.Count; i++)
                             {
-                                header.Cell().Text("Konu Adı").Bold().FontSize(10);
-                                header.Cell().Text("Soru Sayısı").Bold().FontSize(10);
-                                header.Cell().Text("Doğrunuz").Bold().FontSize(10);
-                                header.Cell().Text("Başarı %").Bold().FontSize(10);
-                                header.Cell().Text("Genel Ort.").Bold().FontSize(10);
-                            });
+                                var ans = student.ColoredAnswers[i];
+                                string cellBg = ans.State == AnswerState.Correct ? "#f0fdf4" :
+                                                ans.State == AnswerState.Incorrect ? "#fef2f2" : "#f8fafc";
+                                string fg = ans.State == AnswerState.Correct ? "#15803d" :
+                                            ans.State == AnswerState.Incorrect ? "#dc2626" : "#94a3b8";
 
-                            foreach (var topic in studentOutcomes)
-                            {
-                                var questions = topic.QuestionNumbers;
-                                int topicQCount = questions.Count;
-                                int topicStdCorrect = 0;
-                                
-                                foreach (var q in questions)
+                                table.Cell().Background(cellBg).Border(0.75f).BorderColor("#e2e8f0").Padding(3).AlignCenter().Column(c =>
                                 {
-                                    if (q - 1 >= 0 && q - 1 < student.QuestionResults.Count)
-                                    {
-                                        if (student.QuestionResults[q - 1]) topicStdCorrect++;
-                                    }
-                                }
-
-                                double topicSuccess = topicQCount > 0 ? ((double)topicStdCorrect / topicQCount) * 100 : 0;
-
-                                table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).PaddingVertical(2).Text(topic.Name).FontSize(10);
-                                table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).PaddingVertical(2).Text(topicQCount.ToString()).FontSize(10);
-                                table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).PaddingVertical(2).Text(topicStdCorrect.ToString()).FontSize(10);
-                                table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).PaddingVertical(2).Text($"{topicSuccess:F0}%").FontSize(10).FontColor(topicSuccess >= 50 ? Colors.Green.Medium : Colors.Red.Medium);
-                                table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).PaddingVertical(2).Text($"{topic.GlobalSuccessRate:F0}%").FontSize(10).FontColor(Colors.Grey.Medium);
+                                    c.Item().AlignCenter().Text((i + 1).ToString()).FontSize(7).FontColor("#64748b");
+                                    c.Item().AlignCenter().Text(ans.Character.ToString()).FontSize(9.5f).Bold().FontColor(fg);
+                                });
                             }
                         });
-                    }
-                }
-            });
 
-            page.Footer().AlignCenter().Text(x =>
-            {
-                x.Span("Sayfa ");
-                x.CurrentPageNumber();
-            });
+                        // Konu / Öğrenim Çıktısı Bazlı Başarı
+                        if (outcomes?.Count > 0)
+                        {
+                            var studentOutcomes = outcomes.Where(o =>
+                                string.Equals(o.BookletName, student.BookletType, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                            if (studentOutcomes.Count > 0)
+                            {
+                                x.Item().PaddingTop(6).Background("#1e3a5f").Padding(6).Text("KONU / ÖĞRENİM ÇIKTISI BAZLI BAŞARI ANALİZİ").FontSize(9.5f).Bold().FontColor("#ffffff");
+                                x.Item().Table(table =>
+                                {
+                                    table.ColumnsDefinition(cols =>
+                                    {
+                                        cols.RelativeColumn(3);
+                                        cols.ConstantColumn(45);
+                                        cols.ConstantColumn(55);
+                                        cols.ConstantColumn(80);
+                                        cols.ConstantColumn(55);
+                                        cols.ConstantColumn(55);
+                                    });
+
+                                    table.Header(header =>
+                                    {
+                                        header.Cell().Background("#f1f5f9").Padding(4).Text("Konu / Kazanım").Bold().FontSize(8);
+                                        header.Cell().Background("#f1f5f9").Padding(4).AlignCenter().Text("Soru").Bold().FontSize(8);
+                                        header.Cell().Background("#f1f5f9").Padding(4).AlignCenter().Text("Doğru").Bold().FontSize(8);
+                                        header.Cell().Background("#f1f5f9").Padding(4).Text("Grafik").Bold().FontSize(8);
+                                        header.Cell().Background("#f1f5f9").Padding(4).AlignCenter().Text("Başarı").Bold().FontSize(8);
+                                        header.Cell().Background("#f1f5f9").Padding(4).AlignCenter().Text("Sınıf").Bold().FontSize(8);
+                                    });
+
+                                    foreach (var topic in studentOutcomes)
+                                    {
+                                        var questions = topic.QuestionNumbers;
+                                        int topicQCount = questions.Count;
+                                        int topicStdCorrect = 0;
+
+                                        foreach (var q in questions)
+                                        {
+                                            if (q - 1 >= 0 && q - 1 < student.QuestionResults.Count && student.QuestionResults[q - 1])
+                                                topicStdCorrect++;
+                                        }
+
+                                        double topicSuccess = topicQCount > 0 ? ((double)topicStdCorrect / topicQCount) * 100 : 0;
+                                        string barHex = topicSuccess >= 60 ? "#15803d" : topicSuccess >= 40 ? "#ca8a04" : "#dc2626";
+
+                                        table.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).Text(topic.Name).FontSize(8.5f);
+                                        table.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(topicQCount.ToString()).FontSize(8.5f);
+                                        table.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(topicStdCorrect.ToString()).FontSize(8.5f);
+                                        table.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).Height(12).Canvas((canvas, size) =>
+                                        {
+                                            using var tr = new SKPaint { Color = SKColor.Parse("#e2e8f0"), IsAntialias = true };
+                                            canvas.DrawRoundRect(new SKRect(0, 2, size.Width, size.Height - 2), 2.5f, 2.5f, tr);
+                                            if (topicSuccess > 0)
+                                            {
+                                                using var fill = new SKPaint { Color = SKColor.Parse(barHex), IsAntialias = true };
+                                                float w = Math.Max(3f, (float)(size.Width * Math.Clamp(topicSuccess / 100.0, 0, 1)));
+                                                canvas.DrawRoundRect(new SKRect(0, 2, w, size.Height - 2), 2.5f, 2.5f, fill);
+                                            }
+                                        });
+                                        table.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text($"%{topicSuccess:F0}").FontSize(8.5f).Bold().FontColor(barHex);
+                                        table.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text($"%{topic.GlobalSuccessRate:F0}").FontSize(8.5f).FontColor("#64748b");
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                    page.Footer().AlignCenter().Text(x =>
+                    {
+                        x.Span($"{schoolName} — Bireysel Sınav Sonuç Karnesi | Sayfa ").FontSize(8.5f).FontColor("#94a3b8");
+                        x.CurrentPageNumber();
+                    });
                 });
             })
             .GeneratePdf(filePath);

@@ -191,6 +191,8 @@ namespace OptikFormApp.ViewModels
             _gradingSettings.Mode = saved.GradingModeIndex == 0 ? GradingMode.RelativeEvaluation : GradingMode.AbsoluteGrading;
             if (saved.RelativeThreshold > 0)
                 _gradingSettings.RelativeThreshold = saved.RelativeThreshold;
+            LoadAcademicToolsSettings(saved);
+            InitializeAcademicToolsCommands();
             _gridRowHeight = _layoutIndex == 0 ? 32 : 50;
             _gridCellPadding = _layoutIndex == 0
                 ? new System.Windows.Thickness(10, 0, 10, 0)
@@ -501,6 +503,7 @@ namespace OptikFormApp.ViewModels
                                 CourseName = SelectedCourse?.Name ?? "",
                                 ExamTitle = SelectedExam?.Title ?? "Sınav Raporu",
                                 AcademicTerm = ExamReportMetadata.GetCurrentAcademicTerm(),
+                                InstructorName = InstructorName,
                                 PassingScore = PassingScore,
                                 WrongDeductionFactor = WrongDeductionFactor,
                                 CancelledQuestions = QuestionSettings

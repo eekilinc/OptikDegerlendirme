@@ -14,25 +14,43 @@ namespace OptikFormApp.Services
     /// Bu servis optik form okuyucularından gelen TXT dosyalarını
     /// işleyerek öğrenci sonuçları ve cevap anahtarlarını çıkarır.
     /// </remarks>
+    public class OpticalFormatConfig
+    {
+        public int NameStart { get; set; } = 0;
+        public int NameLength { get; set; } = 22;
+        public int IdStart { get; set; } = 22;
+        public int IdLength { get; set; } = 10;
+        public int BookletStart { get; set; } = 32;
+        public int AnswersStart { get; set; } = 33;
+
+        public int MinLineLength => Math.Max(BookletStart + 1, Math.Max(NameStart + NameLength, IdStart + IdLength));
+
+        public static OpticalFormatConfig Default => new();
+    }
+
     public class OpticalParserService
     {
-        /// <summary>
-        /// Optik form dosyasını parse eder.
-        /// </summary>
-        /// <param name="filePath">TXT dosyasının yolu.</param>
-        /// <returns>
-        /// Tuple içinde:
-        /// - Students: Öğrenci sonuçları listesi
-        /// - AnswerKeys: Cevap anahtarları listesi  
-        /// - Errors: Parse hataları listesi
-        /// </returns>
-        /// <exception cref="IOException">Dosya okuma hatası.</exception>
-        /// <example>
-        /// var parser = new OpticalParserService();
-        /// var result = await parser.ParseFileAsync("data.txt");
-        /// </example>
-        public async Task<(List<StudentResult> Students, List<AnswerKeyModel> AnswerKeys, List<string> Errors)> ParseFileAsync(string filePath, System.Threading.CancellationToken cancellationToken = default)
+        public (string FullName, string StudentId, string BookletType, string RawAnswers) ParseLineFields(string line, OpticalFormatConfig? format = null)
         {
+            var fmt = format ?? OpticalFormatConfig.Default;
+            string SafeSlice(int start, int len)
+            {
+                if (start < 0 || start >= line.Length || len <= 0) return "";
+                return line.Substring(start, Math.Min(len, line.Length - start)).Trim();
+            }
+
+            string fullName = SafeSlice(fmt.NameStart, fmt.NameLength);
+            string studentId = SafeSlice(fmt.IdStart, fmt.IdLength);
+            string bookletType = SafeSlice(fmt.BookletStart, 1).ToUpper();
+            string rawAnswers = fmt.AnswersStart >= 0 && line.Length > fmt.AnswersStart
+                ? line.Substring(fmt.AnswersStart).TrimEnd()
+                : "";
+            return (fullName, studentId, bookletType, rawAnswers);
+        }
+
+        public async Task<(List<StudentResult> Students, List<AnswerKeyModel> AnswerKeys, List<string> Errors)> ParseFileAsync(string filePath, System.Threading.CancellationToken cancellationToken = default, OpticalFormatConfig? format = null)
+        {
+            var fmt = format ?? OpticalFormatConfig.Default;
             var students = new List<StudentResult>();
             var answerKeys = new List<AnswerKeyModel>();
             var errors = new List<string>();
@@ -48,17 +66,18 @@ namespace OptikFormApp.Services
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
                 var lines = await File.ReadAllLinesAsync(filePath, System.Text.Encoding.GetEncoding(1254), cancellationToken);
                 int lineNum = 0;
+                int minLen = fmt.MinLineLength;
 
                 foreach (var line in lines)
                 {
                     lineNum++;
                     if (string.IsNullOrWhiteSpace(line)) continue;
 
-                    if (line.Length < 33) 
+                    if (line.Length < minLen) 
                     {
-                        // Kısa satırda bile temel bilgileri çıkarmaya çalış
-                        string partialName = line.Length >= 1 ? line.Substring(0, Math.Min(22, line.Length)).Trim() : "";
-                        string partialId = line.Length > 22 ? line.Substring(22, Math.Min(10, line.Length - 22)).Trim() : "";
+                        var partial = ParseLineFields(line, fmt);
+                        string partialName = partial.FullName;
+                        string partialId = partial.StudentId;
                         
                         string identifier = !string.IsNullOrEmpty(partialId) 
                             ? $"[{partialId}] {partialName}".Trim() 
@@ -66,16 +85,13 @@ namespace OptikFormApp.Services
                                 ? $"[{partialName}]" 
                                 : $"[Satır {lineNum}]";
                         
-                        errors.Add($"{identifier}: VERİ EKSİK! Satır uzunluğu {line.Length} (En az 33 gerekli). Cevaplar eksik olabilir.");
+                        errors.Add($"{identifier}: VERİ EKSİK! Satır uzunluğu {line.Length} (En az {minLen} gerekli). Cevaplar eksik olabilir.");
                         continue; 
                     }
 
                     try 
                     {
-                        string fullName = line.Substring(0, 22).Trim();
-                        string studentId = line.Substring(22, 10).Trim();
-                        string bookletType = line.Substring(32, 1).Trim().ToUpper();
-                        string rawAnswers = line.Length > 33 ? line.Substring(33).TrimEnd() : "";
+                        var (fullName, studentId, bookletType, rawAnswers) = ParseLineFields(line, fmt);
 
                         // Öğrenci tanımlayıcı bilgisi (hata mesajları için)
                         string studentIdentifier = !string.IsNullOrEmpty(studentId) 

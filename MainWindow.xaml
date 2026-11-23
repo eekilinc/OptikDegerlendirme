@@ -38,6 +38,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/> <!-- Top Menu -->
+                <RowDefinition Height="Auto"/> <!-- Update Notification Banner -->
                 <RowDefinition Height="*"/>    <!-- Main View -->
             </Grid.RowDefinitions>
 
@@ -69,6 +70,7 @@
                         <MenuItem Header="Soru Ayarlarını Yönet (İptal/Çoklu)" Command="{Binding OpenQuestionSettingsCommand}"/>
                         <MenuItem Header="Öğrenim Çıktılarını (Konu) Yönet" Command="{Binding OpenLearningOutcomesCommand}"/>
                         <Separator/>
+                        <MenuItem Header="📋 Sınıf Listesi Eşleştir (Yoklama / Hata Tespiti)..." Command="{Binding OpenRosterMatchCommand}"/>
                         <MenuItem Header="🔍 Gelişmiş Filtreleme" Command="{Binding OpenAdvancedFilterCommand}"/>
                         <Separator/>
                         <MenuItem Header="Puanları Hesapla" Command="{Binding EvaluateCommand}" InputGestureText="F5"/>
@@ -78,6 +80,8 @@
                         <MenuItem Header="Seçili Dersi Sil" Command="{Binding DeleteCourseCommand}" CommandParameter="{Binding SelectedCourse}"/>
                     </MenuItem>
                     <MenuItem Header="_Raporlar">
+                        <MenuItem Header="📤 MAKÜ OBS Hazır Not Aktarımı..." Command="{Binding OpenObsExportCommand}"/>
+                        <Separator/>
                         <MenuItem Header="Excel Raporu Al (.xlsx)" Command="{Binding ExportExcelCommand}" InputGestureText="Ctrl+E"/>
                         <MenuItem Header="CSV Olarak Dışa Aktar (.csv)" Command="{Binding ExportCsvCommand}" InputGestureText="Ctrl+Shift+C"/>
                         <MenuItem Header="Not Listesi (No + Puan) (.csv)" Command="{Binding ExportGradeListCommand}"/>
@@ -90,7 +94,8 @@
                     </MenuItem>
                     <MenuItem Header="_Ayarlar">
                         <MenuItem Header="Arayüz Ayarları..." Command="{Binding OpenUISettingsCommand}"/>
-                        <MenuItem Header="Genel Hesaplama Ayarları..." Command="{Binding OpenGeneralConfigCommand}"/>
+                        <MenuItem Header="Genel Hesaplama &amp; Profil Ayarları..." Command="{Binding OpenGeneralConfigCommand}"/>
+                        <MenuItem Header="📐 Optik Form Format Ayarlayıcı..." Command="{Binding OpenOpticalFormatCommand}"/>
                         <Separator/>
                         <MenuItem Header="Sınav Şablonlarını Yönet..." Command="{Binding OpenTemplateManagerCommand}"/>
                         <Separator/>
@@ -112,11 +117,28 @@
                 </Menu>
             </Border>
 
+            <!-- OTOMATİK GÜNCELLEME BİLDİRİM BANDI -->
+            <Border Grid.Row="1" Grid.ColumnSpan="2"
+                    Visibility="{Binding HasUpdateAvailable, Converter={StaticResource BoolToVis}}"
+                    Background="{DynamicResource HoverBg}" BorderBrush="{DynamicResource Accent}" BorderThickness="0,0,0,1" Padding="14,7">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="🚀" FontSize="13" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding LatestVersionTag, StringFormat='Yeni sürüm mevcut: {0}'}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource Accent}" VerticalAlignment="Center"/>
+                        <TextBlock Text=" — Yeni özellikler ve iyileştirmeler için GitHub Release sayfasından indirebilirsiniz." FontSize="11.5" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Content="İndir" Command="{Binding OpenUpdateUrlCommand}" Background="{DynamicResource Accent}" Foreground="White" Padding="12,4" FontSize="11" FontWeight="Bold" Margin="0,0,8,0"/>
+                        <Button Content="✕" Command="{Binding DismissUpdateBannerCommand}" Background="Transparent" Foreground="{DynamicResource TextMuted}" Padding="6,2" FontSize="11" BorderThickness="0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
             <!-- SIDEBAR: COURSES & EXAMS -->
-            <views:SidebarView Grid.Row="1" Grid.Column="0" />
+            <views:SidebarView Grid.Row="2" Grid.Column="0" />
 
             <!-- Main Content -->
-            <Grid Grid.Row="1" Grid.Column="1" Margin="25">
+            <Grid Grid.Row="2" Grid.Column="1" Margin="25">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -358,6 +380,15 @@
         <!-- VALIDATION DETAILS MODAL OVERLAY -->
         <modals:ValidationDetailsModal Panel.ZIndex="650" 
                                        Visibility="{Binding IsValidationDetailsOpen, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+        <!-- OBS EXPORT MODAL OVERLAY -->
+        <modals:ObsExportModal Panel.ZIndex="655" />
+
+        <!-- ROSTER MATCH MODAL OVERLAY -->
+        <modals:RosterMatchModal Panel.ZIndex="656" />
+
+        <!-- OPTICAL FORMAT DESIGNER MODAL OVERLAY -->
+        <modals:OpticalFormatModal Panel.ZIndex="657" />
 
         <!-- BUSY LOADING OVERLAY -->
         <modals:BusyOverlay Panel.ZIndex="1000" />

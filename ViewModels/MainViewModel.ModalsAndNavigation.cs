@@ -23,7 +23,7 @@ namespace OptikFormApp.ViewModels
 
         private void SaveSettings()
         {
-            _settingsService.Save(new OptikFormApp.Models.AppSettings
+            var s = new OptikFormApp.Models.AppSettings
             {
                 SchoolName = _schoolName,
                 DefaultExcelPath = _defaultExcelPath,
@@ -35,7 +35,9 @@ namespace OptikFormApp.ViewModels
                 FontSize = (int)_fontSize,
                 GradingModeIndex = _gradingSettings.Mode == GradingMode.RelativeEvaluation ? 0 : 1,
                 RelativeThreshold = _gradingSettings.RelativeThreshold
-            });
+            };
+            SaveAcademicToolsSettings(s);
+            _settingsService.Save(s);
         }
 
         private void ApplyTheme(bool dark) 

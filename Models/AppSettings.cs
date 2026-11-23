@@ -23,4 +23,17 @@ public class AppSettings
     public int FontSize { get; set; } = 12;
     public int GradingModeIndex { get; set; } = 0;
     public double RelativeThreshold { get; set; } = 20.0;
+
+    // Öğretim Elemanı Profili & Rapor Tercihleri
+    public string InstructorName { get; set; } = "";
+    public string DepartmentName { get; set; } = "Ağlasun Meslek Yüksekokulu";
+    public bool ShowLetterGradeColumn { get; set; } = false;
+
+    // Dinamik Optik Form Sütun Konumları (Varsayılan: Ağlasun MYO)
+    public int OpticalNameStart { get; set; } = 0;
+    public int OpticalNameLength { get; set; } = 22;
+    public int OpticalIdStart { get; set; } = 22;
+    public int OpticalIdLength { get; set; } = 10;
+    public int OpticalBookletStart { get; set; } = 32;
+    public int OpticalAnswersStart { get; set; } = 33;
 }

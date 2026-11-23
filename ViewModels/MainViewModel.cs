@@ -495,6 +495,24 @@ namespace OptikFormApp.ViewModels
                         BusyMessage = "Tam rapor PDF hazırlanıyor...";
                         
                         await Task.Run(() => {
+                            var metadata = new ExamReportMetadata
+                            {
+                                CourseCode = SelectedCourse?.Code ?? "",
+                                CourseName = SelectedCourse?.Name ?? "",
+                                ExamTitle = SelectedExam?.Title ?? "Sınav Raporu",
+                                AcademicTerm = ExamReportMetadata.GetCurrentAcademicTerm(),
+                                PassingScore = PassingScore,
+                                WrongDeductionFactor = WrongDeductionFactor,
+                                CancelledQuestions = QuestionSettings
+                                    .Where(q => q.IsCancelled)
+                                    .Select(q => $"{q.BookletName}:S{q.QuestionNumber}")
+                                    .ToList(),
+                                MultiCorrectQuestions = QuestionSettings
+                                    .Where(q => q.IsMultipleEnabled && !string.IsNullOrWhiteSpace(q.MultipleCorrectAnswers))
+                                    .Select(q => $"{q.BookletName}:S{q.QuestionNumber}({q.MultipleCorrectAnswers})")
+                                    .ToList()
+                            };
+
                             _pdfService.GenerateFullReport(
                                 SelectedCourse?.Name ?? "Sınav Raporu",
                                 Students.ToList(),
@@ -507,7 +525,8 @@ namespace OptikFormApp.ViewModels
                                 QuestionCorrelations,
                                 Percentiles,
                                 AnswerKeys,
-                                sfd.FileName
+                                sfd.FileName,
+                                metadata
                             );
                         });
                         
@@ -1728,6 +1747,22 @@ namespace OptikFormApp.ViewModels
         public ObservableCollection<QuestionDifficulty> EasiestQuestions { get; } = new();
         public Dictionary<string, double> Percentiles { get; private set; } = new();
         public string ReportText { get; private set; } = "";
+        public string GradingRulesSummary
+        {
+            get
+            {
+                string deduction = WrongDeductionFactor switch
+                {
+                    <= 0.001 => "Yanlış Götürme Yok",
+                    >= 0.30 and <= 0.36 => "3 Yanlış 1 Doğru",
+                    >= 0.24 and <= 0.26 => "4 Yanlış 1 Doğru",
+                    _ => $"Katsayı {WrongDeductionFactor:F2}"
+                };
+                int cancelledCount = QuestionSettings.Count(q => q.IsCancelled);
+                int multiCount = QuestionSettings.Count(q => q.IsMultipleEnabled && !string.IsNullOrWhiteSpace(q.MultipleCorrectAnswers));
+                return $"Baraj: {PassingScore:F0}  •  {deduction}  •  İptal: {(cancelledCount > 0 ? $"{cancelledCount} Soru" : "Yok")}  •  Çoklu Doğru: {(multiCount > 0 ? $"{multiCount} Soru" : "Yok")}";
+            }
+        }
         public ICommand CopyReportCommand { get; set; }
 
         // Toast Notifications

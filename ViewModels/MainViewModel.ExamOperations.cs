@@ -387,8 +387,9 @@ namespace OptikFormApp.ViewModels
             foreach (var corr in _statsReportService.AnalyzeQuestionCorrelations(studentsList, 50))
                 QuestionCorrelations.Add(corr);
 
-            ReportText = _statsReportService.GenerateReportSummary(studentsList, SelectedExam?.Title ?? "Mevcut Sınav");
+            ReportText = _statsReportService.GenerateReportSummary(studentsList, SelectedExam?.Title ?? "Mevcut Sınav", LearningOutcomes);
             OnPropertyChanged(nameof(ReportText));
+            OnPropertyChanged(nameof(GradingRulesSummary));
         }
 
         private async Task RunItemAnalysisAsync()

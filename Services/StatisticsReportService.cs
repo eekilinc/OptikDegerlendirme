@@ -551,7 +551,7 @@ namespace OptikFormApp.Services
             return result;
         }
 
-        public string GenerateReportSummary(List<StudentResult> students, string examName = "")
+        public string GenerateReportSummary(List<StudentResult> students, string examName = "", IEnumerable<LearningOutcome>? learningOutcomes = null)
         {
             if (students == null || students.Count == 0)
                 return "Veri yok.";
@@ -562,6 +562,7 @@ namespace OptikFormApp.Services
             var topStudents = GetTopStudents(students, 5);
             var lowStudents = GetLowestStudents(students, 5);
             var booklets = GetBookletComparison(students);
+            var outcomesList = learningOutcomes?.ToList() ?? new List<LearningOutcome>();
 
             var report = $"""
 ========================================================================
@@ -619,8 +620,15 @@ Sınava Giren Sayı: {stats.TotalStudents} Öğrenci
                     report += $"\nKitapçık {b.BookletName,-8} : n={b.StudentCount,-3} | Ort={b.AverageScore,6:F2} | Medyan={b.MedianScore,6:F2} | S={b.StandardDeviation,5:F2} | Min={b.MinScore,5:F1} | Max={b.MaxScore,5:F1} | Başarı=%{b.PassRate:F1}";
             }
 
-            report += $"\n\n[ 7. AKILLI PEDAGOJİK DEĞERLENDİRME ]\n------------------------------------------------------------------------\n{stats.PedagogicalEvaluation}";
-            report += "\n\n[ 8. PUAN ARALIKLARI FREKANS DAĞILIMI ]\n------------------------------------------------------------------------";
+            if (outcomesList.Count > 0)
+            {
+                report += "\n\n[ 7. ÖĞRENİM ÇIKTILARI / KONU BAZLI BAŞARI (YÖKAK) ]\n------------------------------------------------------------------------";
+                foreach (var o in outcomesList)
+                    report += $"\n• {o.Name,-30} (Sorular: {o.QuestionNumbersRaw,-10}) : %{o.GlobalSuccessRate,5:F1} ({o.GlobalCorrectCount}/{o.GlobalTotalCount})";
+            }
+
+            report += $"\n\n[ 8. AKILLI PEDAGOJİK DEĞERLENDİRME ]\n------------------------------------------------------------------------\n{stats.PedagogicalEvaluation}";
+            report += "\n\n[ 9. PUAN ARALIKLARI FREKANS DAĞILIMI ]\n------------------------------------------------------------------------";
 
             foreach (var d in dist)
             {

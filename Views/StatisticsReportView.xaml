@@ -79,8 +79,8 @@
                                 <TextBlock Text="{Binding ClassStats.TotalStudents, StringFormat='{}{0} Öğrenci'}" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource Accent}"/>
                             </Border>
                         </StackPanel>
-                        <TextBlock Text="Derece listeleri, kitapçık adaleti, soru özeti, psikometrik güvenilirlik (KR-20) ve pedagojik yorumlar" 
-                                   FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,2,0,0"/>
+                        <TextBlock Text="{Binding GradingRulesSummary}" 
+                                   FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,3,0,0"/>
                     </StackPanel>
                 </StackPanel>
 
@@ -322,10 +322,50 @@
                 </ScrollViewer>
             </TabItem>
 
-            <!-- TAB 2: KİTAPÇIK ADALETİ & SORU ÖZETİ -->
-            <TabItem Header="📘 Kitapçık Adaleti &amp; Soru Özeti">
+            <!-- TAB 2: KİTAPÇIK ADALETİ, ÖĞRENİM ÇIKTILARI & SORU ÖZETİ -->
+            <TabItem Header="📘 Kitapçık, Kazanımlar &amp; Sorular">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,12,0,0">
                     <StackPanel>
+                        <!-- Öğrenim Çıktıları / Konu Bazlı Başarı (YÖKAK / Akreditasyon) -->
+                        <Border Style="{StaticResource AcademicSectionCard}"
+                                Visibility="{Binding LearningOutcomes.Count, Converter={StaticResource DataToVisConverter}}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,10">
+                                    <StackPanel>
+                                        <TextBlock Text="📚 Öğrenim Çıktıları &amp; Konu Bazlı Başarı Analizi" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
+                                        <TextBlock Text="YÖKAK / Akreditasyon dosyalarına doğrudan eklenebilir kazanım başarı oranları" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                    <Border HorizontalAlignment="Right" VerticalAlignment="Center" Background="{DynamicResource AccentBgLight}" CornerRadius="6" Padding="8,2">
+                                        <TextBlock Text="YÖKAK Uyumlu" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource Accent}"/>
+                                    </Border>
+                                </Grid>
+
+                                <DataGrid ItemsSource="{Binding LearningOutcomes}" AutoGenerateColumns="False" IsReadOnly="True"
+                                          HeadersVisibility="Column" GridLinesVisibility="None" BorderThickness="0" RowHeight="34">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Öğrenim Çıktısı / Konu" Binding="{Binding Name}" Width="2*"/>
+                                        <DataGridTextColumn Header="Kitapçık" Binding="{Binding BookletName}" Width="70"/>
+                                        <DataGridTextColumn Header="İlgili Sorular" Binding="{Binding QuestionNumbersRaw}" Width="110"/>
+                                        <DataGridTextColumn Header="Başarı %" Binding="{Binding GlobalSuccessRate, StringFormat='{}%{0:F1}'}" Width="80">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTemplateColumn Header="Başarı Grafiği" Width="1.2*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ProgressBar Value="{Binding GlobalSuccessRate}" Maximum="100" Height="8" Foreground="{DynamicResource Success}" Background="{DynamicResource HeaderBg}" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+
                         <!-- Kitapçık Bazlı Karşılaştırma (Tam Genişlik) -->
                         <Border Style="{StaticResource AcademicSectionCard}">
                             <StackPanel>

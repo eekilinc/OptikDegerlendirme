@@ -11,9 +11,43 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using QuestPDF.Previewer;
 using QuestPDF;
+using SkiaSharp;
 
 namespace OptikFormApp.Services
 {
+    public class ExamReportMetadata
+    {
+        public string CourseCode { get; set; } = "";
+        public string CourseName { get; set; } = "";
+        public string ExamTitle { get; set; } = "";
+        public string AcademicTerm { get; set; } = "";
+        public string InstructorName { get; set; } = "";
+        public double PassingScore { get; set; } = 50;
+        public double WrongDeductionFactor { get; set; } = 0.25;
+        public List<string> CancelledQuestions { get; set; } = new();
+        public List<string> MultiCorrectQuestions { get; set; } = new();
+
+        public string DeductionRuleText => WrongDeductionFactor switch
+        {
+            <= 0.001 => "Yanlış Götürme Yok (0)",
+            >= 0.30 and <= 0.36 => "3 Yanlış 1 Doğruyu Götürür (0.33)",
+            >= 0.24 and <= 0.26 => "4 Yanlış 1 Doğruyu Götürür (0.25)",
+            _ => $"Özel Katsayı ({WrongDeductionFactor:F2})"
+        };
+
+        public static string GetCurrentAcademicTerm()
+        {
+            var now = DateTime.Now;
+            return now.Month switch
+            {
+                >= 9 => $"{now.Year}-{now.Year + 1} Güz Dönemi",
+                1 => $"{now.Year - 1}-{now.Year} Güz Dönemi",
+                >= 2 and <= 6 => $"{now.Year - 1}-{now.Year} Bahar Dönemi",
+                _ => $"{now.Year - 1}-{now.Year} Yaz Okulu"
+            };
+        }
+    }
+
     public class PdfReportService
     {
         public record PdfProgressReport(
@@ -252,15 +286,31 @@ namespace OptikFormApp.Services
             ObservableCollection<StatisticsReportService.QuestionCorrelation> questionCorrelations,
             Dictionary<string, double> percentiles,
             ObservableCollection<AnswerKeyModel> answerKeys,
-            string outputFilePath)
+            string outputFilePath,
+            ExamReportMetadata? metadata = null)
         {
             if (students == null || students.Count == 0)
                 throw new ArgumentException("Öğrenci listesi boş olamaz.", nameof(students));
 
+            var meta = metadata ?? new ExamReportMetadata
+            {
+                CourseName = examName,
+                ExamTitle = examName,
+                AcademicTerm = ExamReportMetadata.GetCurrentAcademicTerm()
+            };
+            if (string.IsNullOrWhiteSpace(meta.AcademicTerm))
+                meta.AcademicTerm = ExamReportMetadata.GetCurrentAcademicTerm();
+
+            string courseDisplay = !string.IsNullOrWhiteSpace(meta.CourseCode)
+                ? $"{meta.CourseCode} — {meta.CourseName}"
+                : (!string.IsNullOrWhiteSpace(meta.CourseName) ? meta.CourseName : examName);
+            string cancelledDisplay = meta.CancelledQuestions.Count > 0 ? string.Join(", ", meta.CancelledQuestions) : "Yok";
+            string multiDisplay = meta.MultiCorrectQuestions.Count > 0 ? string.Join(", ", meta.MultiCorrectQuestions) : "Yok";
+
             var statsService = new StatisticsReportService();
             var topStudents = statsService.GetTopStudents(students, 5);
             var lowStudents = statsService.GetLowestStudents(students, 5);
-            var bookletComparison = statsService.GetBookletComparison(students);
+            var bookletComparison = statsService.GetBookletComparison(students, meta.PassingScore);
 
             Document.Create(container =>
             {
@@ -290,23 +340,49 @@ namespace OptikFormApp.Services
                             c.Item().PaddingVertical(14).LineHorizontal(1).LineColor("#cbd5e1");
                         });
 
-                        // Sınav Bilgileri
-                        x.Item().Border(1).BorderColor("#e2e8f0").Background("#f8fafc").Padding(18).Column(c =>
+                        // Sınav Bilgileri & Değerlendirme Kuralları (Yan Yana 2 Kurumsal Kutu)
+                        x.Item().Row(row =>
                         {
-                            c.Item().AlignCenter().PaddingBottom(12).Text("SINAV KÜNYESİ").FontSize(13).Bold().FontColor("#1e3a5f");
-                            c.Item().Table(t =>
+                            row.Spacing(10);
+
+                            // Sol: Sınav Künyesi
+                            row.RelativeItem(1.15f).Border(1).BorderColor("#e2e8f0").Background("#f8fafc").Padding(14).Column(c =>
                             {
-                                t.ColumnsDefinition(cd => { cd.ConstantColumn(140); cd.RelativeColumn(); });
-                                t.Cell().PaddingVertical(3).Text("Sınav Adı:").FontSize(10.5f).SemiBold().FontColor("#475569");
-                                t.Cell().PaddingVertical(3).Text(examName).FontSize(10.5f).Bold().FontColor("#1e293b");
-                                t.Cell().PaddingVertical(3).Text("Rapor Tarihi:").FontSize(10.5f).SemiBold().FontColor("#475569");
-                                t.Cell().PaddingVertical(3).Text(DateTime.Now.ToString("dd MMMM yyyy, HH:mm", new System.Globalization.CultureInfo("tr-TR"))).FontSize(10.5f).FontColor("#1e293b");
-                                t.Cell().PaddingVertical(3).Text("Katılımcı / Soru Sayısı:").FontSize(10.5f).SemiBold().FontColor("#475569");
-                                t.Cell().PaddingVertical(3).Text($"{students.Count} Öğrenci  •  {questionDifficulties?.Count ?? 0} Soru").FontSize(10.5f).FontColor("#1e293b");
-                                t.Cell().PaddingVertical(3).Text("En Yüksek Puan Alan:").FontSize(10.5f).SemiBold().FontColor("#15803d");
-                                t.Cell().PaddingVertical(3).Text($"{classStats?.MaxScore:F2} Puan — {classStats?.TopScoreStudentNames ?? "-"}").FontSize(10.5f).SemiBold().FontColor("#15803d");
-                                t.Cell().PaddingVertical(3).Text("En Düşük Puan Alan:").FontSize(10.5f).SemiBold().FontColor("#b91c1c");
-                                t.Cell().PaddingVertical(3).Text($"{classStats?.MinScore:F2} Puan — {classStats?.LowestScoreStudentNames ?? "-"}").FontSize(10.5f).SemiBold().FontColor("#b91c1c");
+                                c.Item().PaddingBottom(8).Text("SINAV KÜNYESİ").FontSize(11).Bold().FontColor("#1e3a5f");
+                                c.Item().Table(t =>
+                                {
+                                    t.ColumnsDefinition(cd => { cd.ConstantColumn(95); cd.RelativeColumn(); });
+                                    t.Cell().PaddingVertical(2).Text("Akademik Dönem:").FontSize(9.5f).SemiBold().FontColor("#475569");
+                                    t.Cell().PaddingVertical(2).Text(meta.AcademicTerm).FontSize(9.5f).FontColor("#1e293b");
+                                    t.Cell().PaddingVertical(2).Text("Ders:").FontSize(9.5f).SemiBold().FontColor("#475569");
+                                    t.Cell().PaddingVertical(2).Text(courseDisplay).FontSize(9.5f).Bold().FontColor("#1e293b");
+                                    t.Cell().PaddingVertical(2).Text("Sınav:").FontSize(9.5f).SemiBold().FontColor("#475569");
+                                    t.Cell().PaddingVertical(2).Text(string.IsNullOrWhiteSpace(meta.ExamTitle) ? examName : meta.ExamTitle).FontSize(9.5f).FontColor("#1e293b");
+                                    t.Cell().PaddingVertical(2).Text("Tarih:").FontSize(9.5f).SemiBold().FontColor("#475569");
+                                    t.Cell().PaddingVertical(2).Text(DateTime.Now.ToString("dd MMMM yyyy, HH:mm", new System.Globalization.CultureInfo("tr-TR"))).FontSize(9.5f).FontColor("#1e293b");
+                                    t.Cell().PaddingVertical(2).Text("Katılım / Soru:").FontSize(9.5f).SemiBold().FontColor("#475569");
+                                    t.Cell().PaddingVertical(2).Text($"{students.Count} Öğrenci  •  {questionDifficulties?.Count ?? 0} Soru").FontSize(9.5f).FontColor("#1e293b");
+                                });
+                            });
+
+                            // Sağ: Sınav Değerlendirme Kuralları Özeti
+                            row.RelativeItem(1f).Border(1).BorderColor("#dbeafe").Background("#eff6ff").Padding(14).Column(c =>
+                            {
+                                c.Item().PaddingBottom(8).Text("DEĞERLENDİRME KURALLARI").FontSize(11).Bold().FontColor("#1e3a5f");
+                                c.Item().Table(t =>
+                                {
+                                    t.ColumnsDefinition(cd => { cd.ConstantColumn(85); cd.RelativeColumn(); });
+                                    t.Cell().PaddingVertical(2).Text("Yanlış Kuralı:").FontSize(9.5f).SemiBold().FontColor("#475569");
+                                    t.Cell().PaddingVertical(2).Text(meta.DeductionRuleText).FontSize(9.5f).Bold().FontColor("#1d4ed8");
+                                    t.Cell().PaddingVertical(2).Text("Baraj Puanı:").FontSize(9.5f).SemiBold().FontColor("#475569");
+                                    t.Cell().PaddingVertical(2).Text($"{meta.PassingScore:F0} Puan").FontSize(9.5f).SemiBold().FontColor("#1e293b");
+                                    t.Cell().PaddingVertical(2).Text("İptal Sorular:").FontSize(9.5f).SemiBold().FontColor("#475569");
+                                    t.Cell().PaddingVertical(2).Text(cancelledDisplay).FontSize(9.5f).FontColor("#1e293b");
+                                    t.Cell().PaddingVertical(2).Text("Çoklu Doğru:").FontSize(9.5f).SemiBold().FontColor("#475569");
+                                    t.Cell().PaddingVertical(2).Text(multiDisplay).FontSize(9.5f).FontColor("#1e293b");
+                                    t.Cell().PaddingVertical(2).Text("Uç Puanlar:").FontSize(9.5f).SemiBold().FontColor("#475569");
+                                    t.Cell().PaddingVertical(2).Text($"Min {classStats?.MinScore:F1} / Max {classStats?.MaxScore:F1}").FontSize(9.5f).SemiBold().FontColor("#15803d");
+                                });
                             });
                         });
 
@@ -505,62 +581,147 @@ namespace OptikFormApp.Services
                                 });
 
                                 int total = questionDifficulties.Count;
-                                
-                                // Kolay
-                                t.Cell().Background("#f0fdf4").BorderBottom(1).BorderColor("#bbf7d0").Padding(5).Text("Kolay").FontSize(9).FontColor("#166534");
-                                t.Cell().Background("#f0fdf4").BorderBottom(1).BorderColor("#bbf7d0").Padding(5).Text(new string('█', (int)((double)easy / total * 30))).FontSize(9).FontColor("#22c55e");
-                                t.Cell().Background("#f0fdf4").BorderBottom(1).BorderColor("#bbf7d0").Padding(5).AlignCenter().Text(easy.ToString()).FontSize(9).Bold();
-                                t.Cell().Background("#f0fdf4").BorderBottom(1).BorderColor("#bbf7d0").Padding(5).AlignCenter().Text($"{(double)easy/total*100:F1}%").FontSize(9);
-                                
-                                // Orta
-                                t.Cell().Background("#fffbeb").BorderBottom(1).BorderColor("#fcd34d").Padding(5).Text("Orta").FontSize(9).FontColor("#92400e");
-                                t.Cell().Background("#fffbeb").BorderBottom(1).BorderColor("#fcd34d").Padding(5).Text(new string('█', (int)((double)medium / total * 30))).FontSize(9).FontColor("#f59e0b");
-                                t.Cell().Background("#fffbeb").BorderBottom(1).BorderColor("#fcd34d").Padding(5).AlignCenter().Text(medium.ToString()).FontSize(9).Bold();
-                                t.Cell().Background("#fffbeb").BorderBottom(1).BorderColor("#fcd34d").Padding(5).AlignCenter().Text($"{(double)medium/total*100:F1}%").FontSize(9);
-                                
-                                // Zor
-                                t.Cell().Background("#fef2f2").BorderBottom(1).BorderColor("#fecaca").Padding(5).Text("Zor").FontSize(9).FontColor("#991b1b");
-                                t.Cell().Background("#fef2f2").BorderBottom(1).BorderColor("#fecaca").Padding(5).Text(new string('█', (int)((double)hard / total * 30))).FontSize(9).FontColor("#ef4444");
-                                t.Cell().Background("#fef2f2").BorderBottom(1).BorderColor("#fecaca").Padding(5).AlignCenter().Text(hard.ToString()).FontSize(9).Bold();
-                                t.Cell().Background("#fef2f2").BorderBottom(1).BorderColor("#fecaca").Padding(5).AlignCenter().Text($"{(double)hard/total*100:F1}%").FontSize(9);
-                                
-                                // Çok Zor
-                                t.Cell().Background("#f8fafc").BorderBottom(1).BorderColor("#e2e8f0").Padding(5).Text("Çok Zor").FontSize(9).FontColor("#475569");
-                                t.Cell().Background("#f8fafc").BorderBottom(1).BorderColor("#e2e8f0").Padding(5).Text(new string('█', (int)((double)veryHard / total * 30))).FontSize(9).FontColor("#64748b");
-                                t.Cell().Background("#f8fafc").BorderBottom(1).BorderColor("#e2e8f0").Padding(5).AlignCenter().Text(veryHard.ToString()).FontSize(9).Bold();
-                                t.Cell().Background("#f8fafc").BorderBottom(1).BorderColor("#e2e8f0").Padding(5).AlignCenter().Text($"{(double)veryHard/total*100:F1}%").FontSize(9);
+
+                                void AddDiffRow(string label, int countVal, string bgHex, string borderHex, string textHex, string barHex)
+                                {
+                                    double ratio = total > 0 ? (double)countVal / total : 0;
+                                    t.Cell().Background(bgHex).BorderBottom(1).BorderColor(borderHex).Padding(5).Text(label).FontSize(9).SemiBold().FontColor(textHex);
+                                    t.Cell().Background(bgHex).BorderBottom(1).BorderColor(borderHex).Padding(5).Height(14).Canvas((canvas, size) =>
+                                    {
+                                        using var trackPaint = new SKPaint { Color = SKColor.Parse("#e2e8f0"), IsAntialias = true, Style = SKPaintStyle.Fill };
+                                        canvas.DrawRoundRect(new SKRect(0, 3, size.Width, size.Height - 3), 3, 3, trackPaint);
+                                        if (ratio > 0)
+                                        {
+                                            using var barPaint = new SKPaint { Color = SKColor.Parse(barHex), IsAntialias = true, Style = SKPaintStyle.Fill };
+                                            float w = Math.Max(4f, (float)(size.Width * ratio));
+                                            canvas.DrawRoundRect(new SKRect(0, 3, w, size.Height - 3), 3, 3, barPaint);
+                                        }
+                                    });
+                                    t.Cell().Background(bgHex).BorderBottom(1).BorderColor(borderHex).Padding(5).AlignCenter().Text(countVal.ToString()).FontSize(9).Bold();
+                                    t.Cell().Background(bgHex).BorderBottom(1).BorderColor(borderHex).Padding(5).AlignCenter().Text($"%{ratio * 100:F1}").FontSize(9);
+                                }
+
+                                AddDiffRow("Kolay", easy, "#f0fdf4", "#bbf7d0", "#166534", "#22c55e");
+                                AddDiffRow("Orta", medium, "#fffbeb", "#fcd34d", "#92400e", "#f59e0b");
+                                AddDiffRow("Zor", hard, "#fef2f2", "#fecaca", "#991b1b", "#ef4444");
+                                AddDiffRow("Çok Zor", veryHard, "#f8fafc", "#e2e8f0", "#475569", "#64748b");
                             });
                         }
 
-                        // Bölüm 2: Puan Dağılım Histogramı
-                        x.Item().PaddingTop(15).Background("#1e3a5f").Padding(8).Text("2. PUAN DAĞILIM HİSTOGRAMI").FontSize(12).Bold().FontColor("#ffffff");
+                        // Bölüm 2: Vektör Puan Dağılım Histogramı & Gaussian Çan Eğrisi
+                        x.Item().PaddingTop(14).Background("#1e3a5f").Padding(8).Text("2. PUAN DAĞILIM HİSTOGRAMI VE NORMAL DAĞILIM (ÇAN EĞRİSİ)").FontSize(11.5f).Bold().FontColor("#ffffff");
                         
                         if (scoreDistribution?.Count > 0)
                         {
-                            x.Item().PaddingTop(8).Table(t =>
+                            var distSnapshot = scoreDistribution.ToList();
+                            double meanVal = classStats?.AverageScore ?? 50;
+                            double stdVal = classStats?.StandardDeviation ?? 15;
+                            int totalStuds = students.Count;
+
+                            x.Item().PaddingTop(8).Border(1).BorderColor("#e2e8f0").Background("#ffffff").Padding(10).Column(chartCol =>
                             {
-                                t.ColumnsDefinition(cd => { cd.ConstantColumn(80); cd.ConstantColumn(50); cd.RelativeColumn(); });
-                                
-                                t.Header(h =>
+                                chartCol.Item().Height(190).Canvas((canvas, size) =>
                                 {
-                                    h.Cell().Background("#334155").Padding(5).Text("Puan Aralığı").FontSize(8).Bold().FontColor("#ffffff");
-                                    h.Cell().Background("#334155").Padding(5).AlignCenter().Text("n").FontSize(8).Bold().FontColor("#ffffff");
-                                    h.Cell().Background("#334155").Padding(5).Text("Dağılım").FontSize(8).Bold().FontColor("#ffffff");
+                                    float padLeft = 32f, padRight = 16f, padTop = 20f, padBottom = 28f;
+                                    float chartW = size.Width - padLeft - padRight;
+                                    float chartH = size.Height - padTop - padBottom;
+                                    if (chartW <= 20 || chartH <= 20) return;
+
+                                    int maxCount = Math.Max(1, distSnapshot.Max(d => d.Count));
+                                    // Y-axis gridlines
+                                    using var gridPaint = new SKPaint { Color = SKColor.Parse("#e2e8f0"), StrokeWidth = 0.75f, IsAntialias = true };
+                                    using var axisPaint = new SKPaint { Color = SKColor.Parse("#64748b"), StrokeWidth = 1.2f, IsAntialias = true };
+                                    using var labelPaint = new SKPaint { Color = SKColor.Parse("#475569"), TextSize = 7.5f, IsAntialias = true, TextAlign = SKTextAlign.Center };
+                                    using var yLabelPaint = new SKPaint { Color = SKColor.Parse("#64748b"), TextSize = 7.5f, IsAntialias = true, TextAlign = SKTextAlign.Right };
+
+                                    int gridSteps = 4;
+                                    for (int g = 0; g <= gridSteps; g++)
+                                    {
+                                        float y = padTop + chartH - (chartH * g / gridSteps);
+                                        canvas.DrawLine(padLeft, y, padLeft + chartW, y, g == 0 ? axisPaint : gridPaint);
+                                        int tickVal = (int)Math.Round((double)maxCount * g / gridSteps);
+                                        canvas.DrawText(tickVal.ToString(), padLeft - 5, y + 3, yLabelPaint);
+                                    }
+                                    // Y axis
+                                    canvas.DrawLine(padLeft, padTop, padLeft, padTop + chartH, axisPaint);
+
+                                    // Vector Histogram Bars
+                                    int bins = distSnapshot.Count;
+                                    float slotW = chartW / bins;
+                                    float barW = slotW * 0.68f;
+                                    using var barFill = new SKPaint { Color = SKColor.Parse("#3b82f6").WithAlpha(210), IsAntialias = true, Style = SKPaintStyle.Fill };
+                                    using var barBorder = new SKPaint { Color = SKColor.Parse("#1d4ed8"), StrokeWidth = 0.8f, IsAntialias = true, Style = SKPaintStyle.Stroke };
+                                    using var valPaint = new SKPaint { Color = SKColor.Parse("#1e293b"), TextSize = 7.5f, IsAntialias = true, TextAlign = SKTextAlign.Center, FakeBoldText = true };
+
+                                    for (int i = 0; i < bins; i++)
+                                    {
+                                        var d = distSnapshot[i];
+                                        float xCenter = padLeft + slotW * (i + 0.5f);
+                                        float barH = (float)((double)d.Count / maxCount * chartH);
+                                        float top = padTop + chartH - barH;
+                                        var rect = new SKRect(xCenter - barW / 2f, top, xCenter + barW / 2f, padTop + chartH);
+                                        if (d.Count > 0)
+                                        {
+                                            canvas.DrawRoundRect(rect, 3, 3, barFill);
+                                            canvas.DrawRoundRect(rect, 3, 3, barBorder);
+                                            canvas.DrawText(d.Count.ToString(), xCenter, top - 4, valPaint);
+                                        }
+                                        canvas.DrawText(d.Range, xCenter, padTop + chartH + 13, labelPaint);
+                                    }
+
+                                    // Gaussian Normal Distribution Bell Curve Overlay
+                                    if (stdVal > 0.5 && totalStuds > 1)
+                                    {
+                                        double binWidth = 100.0 / bins;
+                                        double peakPdf = 1.0 / (stdVal * Math.Sqrt(2 * Math.PI));
+                                        double peakExpectedCount = peakPdf * totalStuds * binWidth;
+                                        double curveScale = Math.Max(maxCount, peakExpectedCount);
+
+                                        using var curvePath = new SKPath();
+                                        int samples = 80;
+                                        for (int s = 0; s <= samples; s++)
+                                        {
+                                            double scoreX = 100.0 * s / samples;
+                                            double z = (scoreX - meanVal) / stdVal;
+                                            double pdf = Math.Exp(-0.5 * z * z) / (stdVal * Math.Sqrt(2 * Math.PI));
+                                            double expectedCount = pdf * totalStuds * binWidth;
+                                            float px = padLeft + (float)(scoreX / 100.0 * chartW);
+                                            float py = padTop + chartH - (float)(Math.Min(1.0, expectedCount / curveScale) * chartH);
+                                            if (s == 0) curvePath.MoveTo(px, py);
+                                            else curvePath.LineTo(px, py);
+                                        }
+                                        using var curvePaint = new SKPaint
+                                        {
+                                            Color = SKColor.Parse("#7c3aed"),
+                                            StrokeWidth = 2.0f,
+                                            IsAntialias = true,
+                                            Style = SKPaintStyle.Stroke
+                                        };
+                                        canvas.DrawPath(curvePath, curvePaint);
+
+                                        // Mean (μ) vertical dashed reference line
+                                        float meanX = padLeft + (float)(Math.Clamp(meanVal, 0, 100) / 100.0 * chartW);
+                                        using var meanPaint = new SKPaint
+                                        {
+                                            Color = SKColor.Parse("#dc2626"),
+                                            StrokeWidth = 1.2f,
+                                            IsAntialias = true,
+                                            PathEffect = SKPathEffect.CreateDash(new float[] { 4, 3 }, 0)
+                                        };
+                                        canvas.DrawLine(meanX, padTop, meanX, padTop + chartH, meanPaint);
+                                        using var meanLabel = new SKPaint { Color = SKColor.Parse("#dc2626"), TextSize = 7.5f, IsAntialias = true, TextAlign = SKTextAlign.Center, FakeBoldText = true };
+                                        canvas.DrawText($"Ort: {meanVal:F1}", meanX, padTop - 4, meanLabel);
+                                    }
                                 });
-                                
-                                int maxCount = scoreDistribution.Max(d => d.Count);
-                                bool alternate = false;
-                                foreach (var d in scoreDistribution)
+
+                                // Legend
+                                chartCol.Item().PaddingTop(4).AlignCenter().Row(leg =>
                                 {
-                                    var bgColor = alternate ? "#f1f5f9" : "#ffffff";
-                                    int barWidth = maxCount > 0 ? (int)((double)d.Count / maxCount * 100) : 0;
-                                    string bar = new string('█', barWidth / 4);
-                                    
-                                    t.Cell().Background(bgColor).BorderBottom(1).BorderColor("#e2e8f0").Padding(4).Text(d.Range).FontSize(8);
-                                    t.Cell().Background(bgColor).BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(d.Count.ToString()).FontSize(8);
-                                    t.Cell().Background(bgColor).BorderBottom(1).BorderColor("#e2e8f0").Padding(4).Text(bar).FontSize(8).FontColor("#2563eb");
-                                    alternate = !alternate;
-                                }
+                                    leg.Spacing(16);
+                                    leg.AutoItem().Text("■ Puan Frekansı (Öğrenci Sayısı)").FontSize(8).FontColor("#2563eb");
+                                    leg.AutoItem().Text("— Gaussian Normal Dağılım (Çan Eğrisi)").FontSize(8).Bold().FontColor("#7c3aed");
+                                    leg.AutoItem().Text("┆ Sınıf Ortalaması (μ)").FontSize(8).FontColor("#dc2626");
+                                });
                             });
                         }
 
@@ -846,38 +1007,60 @@ namespace OptikFormApp.Services
                 }
 
                 // SAYFA 4: KAZANIM ANALİZİ
-                if (learningOutcomes?.Count > 0)
+                // SON SAYFA: ÖĞRENİM ÇIKTILARI (YÖKAK / AKREDİTASYON) VE RESMİ ONAY / İMZA BLOĞU
+                container.Page(page =>
                 {
-                    container.Page(page =>
+                    page.Size(PageSizes.A4);
+                    page.Margin(1.5f, Unit.Centimetre);
+                    page.PageColor("#ffffff");
+                    page.DefaultTextStyle(x => x.FontSize(9).FontFamily(Fonts.TimesNewRoman));
+
+                    page.Header().BorderBottom(1).BorderColor("#e2e8f0").PaddingBottom(8).Row(row =>
                     {
-                        page.Size(PageSizes.A4);
-                        page.Margin(1.5f, Unit.Centimetre);
-                        page.PageColor("#ffffff");
-                        page.DefaultTextStyle(x => x.FontSize(9).FontFamily(Fonts.TimesNewRoman));
+                        row.RelativeItem().Text($"{courseDisplay} — Kazanım Analizi ve Resmi Onay").FontSize(10.5f).Bold().FontColor("#1e3a5f");
+                        row.ConstantItem(80).AlignRight().Text(x => { x.Span("Sayfa ").FontSize(9.5f).FontColor("#64748b"); x.CurrentPageNumber(); });
+                    });
 
-                        page.Header().BorderBottom(1).BorderColor("#e2e8f0").PaddingBottom(8).Row(row =>
-                        {
-                            row.RelativeItem().Text($"{examName} - Kazanım Analizi").FontSize(11).Bold().FontColor("#1e3a5f");
-                            row.ConstantItem(80).AlignRight().Text(x => { x.Span("Sayfa ").FontSize(10).FontColor("#64748b"); x.CurrentPageNumber(); });
-                        });
+                    page.Content().PaddingVertical(10).Column(x =>
+                    {
+                        x.Spacing(14);
 
-                        page.Content().PaddingVertical(10).Column(x =>
+                        if (learningOutcomes?.Count > 0)
                         {
-                            x.Item().PaddingBottom(10).Background("#1e3a5f").Padding(8).Text("6. ÖĞRENME KAZANIMLARI ANALİZİ").FontSize(12).Bold().FontColor("#ffffff");
-                            
-                            x.Item().PaddingBottom(5).Text("Tablo 2. Kazanım Bazında Başarı Oranları").FontSize(10).Italic().FontColor("#475569");
-                            
+                            double GetRate(LearningOutcome o) => o.GlobalSuccessRate > 0 ? o.GlobalSuccessRate : o.SuccessRate;
+                            var strongest = learningOutcomes.OrderByDescending(GetRate).First();
+                            var weakest = learningOutcomes.OrderBy(GetRate).First();
+
+                            x.Item().Background("#1e3a5f").Padding(8).Text("6. ÖĞRENİM ÇIKTILARI & KONU BAZLI BAŞARI ANALİZİ (YÖKAK / AKREDİTASYON)").FontSize(11).Bold().FontColor("#ffffff");
+
+                            // En Güçlü & En Zayıf Konu Özeti
+                            x.Item().Row(r =>
+                            {
+                                r.Spacing(10);
+                                r.RelativeItem().Border(1).BorderColor("#bbf7d0").Background("#f0fdf4").Padding(8).Column(c =>
+                                {
+                                    c.Item().Text("EN GÜÇLÜ KONU / ÇIKTI").FontSize(8).Bold().FontColor("#166534");
+                                    c.Item().Text($"{strongest.Name} (%{GetRate(strongest):F1})").FontSize(9.5f).Bold().FontColor("#15803d");
+                                });
+                                r.RelativeItem().Border(1).BorderColor("#fecaca").Background("#fef2f2").Padding(8).Column(c =>
+                                {
+                                    c.Item().Text("GELİŞTİRİLMESİ GEREKEN KONU / ÇIKTI").FontSize(8).Bold().FontColor("#991b1b");
+                                    c.Item().Text($"{weakest.Name} (%{GetRate(weakest):F1})").FontSize(9.5f).Bold().FontColor("#b91c1c");
+                                });
+                            });
+
                             x.Item().Table(t =>
                             {
-                                t.ColumnsDefinition(cd => { cd.ConstantColumn(35); cd.RelativeColumn(5); cd.ConstantColumn(50); cd.ConstantColumn(80); cd.ConstantColumn(70); });
+                                t.ColumnsDefinition(cd => { cd.ConstantColumn(28); cd.RelativeColumn(4); cd.ConstantColumn(65); cd.ConstantColumn(95); cd.ConstantColumn(55); cd.ConstantColumn(65); });
                                 
                                 t.Header(h =>
                                 {
                                     h.Cell().Background("#334155").Padding(5).AlignCenter().Text("No").FontSize(8).Bold().FontColor("#ffffff");
-                                    h.Cell().Background("#334155").Padding(5).Text("Kazanım / Konu Adı").FontSize(8).Bold().FontColor("#ffffff");
-                                    h.Cell().Background("#334155").Padding(5).AlignCenter().Text("Soru").FontSize(8).Bold().FontColor("#ffffff");
+                                    h.Cell().Background("#334155").Padding(5).Text("Öğrenim Çıktısı / Konu").FontSize(8).Bold().FontColor("#ffffff");
+                                    h.Cell().Background("#334155").Padding(5).AlignCenter().Text("Sorular").FontSize(8).Bold().FontColor("#ffffff");
+                                    h.Cell().Background("#334155").Padding(5).Text("Başarı Grafiği").FontSize(8).Bold().FontColor("#ffffff");
                                     h.Cell().Background("#334155").Padding(5).AlignCenter().Text("Başarı %").FontSize(8).Bold().FontColor("#ffffff");
-                                    h.Cell().Background("#334155").Padding(5).AlignCenter().Text("Derecelendirme").FontSize(8).Bold().FontColor("#ffffff");
+                                    h.Cell().Background("#334155").Padding(5).AlignCenter().Text("Düzey").FontSize(8).Bold().FontColor("#ffffff");
                                 });
                                 
                                 int idx = 1;
@@ -885,16 +1068,17 @@ namespace OptikFormApp.Services
                                 foreach (var o in learningOutcomes)
                                 {
                                     var bgColor = alternate ? "#f8fafc" : "#ffffff";
+                                    double rate = GetRate(o);
                                     
-                                    string level = o.SuccessRate switch
+                                    string level = rate switch
                                     {
                                         >= 80 => "Mükemmel",
-                                        >= 60 => "İyi",
+                                        >= 60 => "Yeterli",
                                         >= 40 => "Orta",
                                         _ => "Gelişmeli"
                                     };
                                     
-                                    string levelColor = o.SuccessRate switch
+                                    string levelColor = rate switch
                                     {
                                         >= 80 => "#15803d",
                                         >= 60 => "#2563eb",
@@ -902,12 +1086,23 @@ namespace OptikFormApp.Services
                                         _ => "#dc2626"
                                     };
                                     
-                                    int qCount = o.QuestionNumbers?.Count ?? 0;
+                                    string qRaw = string.IsNullOrWhiteSpace(o.QuestionNumbersRaw) ? (o.QuestionNumbers?.Count.ToString() ?? "-") : o.QuestionNumbersRaw;
                                     
                                     t.Cell().Background(bgColor).BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(idx.ToString()).FontSize(8);
-                                    t.Cell().Background(bgColor).BorderBottom(1).BorderColor("#e2e8f0").Padding(4).Text(o.Name).FontSize(8);
-                                    t.Cell().Background(bgColor).BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(qCount.ToString()).FontSize(8);
-                                    t.Cell().Background(bgColor).BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text($"{o.SuccessRate:F1}%").FontSize(8).Bold().FontColor(levelColor);
+                                    t.Cell().Background(bgColor).BorderBottom(1).BorderColor("#e2e8f0").Padding(4).Text(o.Name).FontSize(8).SemiBold();
+                                    t.Cell().Background(bgColor).BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(qRaw).FontSize(8);
+                                    t.Cell().Background(bgColor).BorderBottom(1).BorderColor("#e2e8f0").Padding(4).Height(12).Canvas((canvas, size) =>
+                                    {
+                                        using var tr = new SKPaint { Color = SKColor.Parse("#e2e8f0"), IsAntialias = true };
+                                        canvas.DrawRoundRect(new SKRect(0, 2, size.Width, size.Height - 2), 2.5f, 2.5f, tr);
+                                        if (rate > 0)
+                                        {
+                                            using var fill = new SKPaint { Color = SKColor.Parse(levelColor), IsAntialias = true };
+                                            float w = Math.Max(3f, (float)(size.Width * Math.Clamp(rate / 100.0, 0, 1)));
+                                            canvas.DrawRoundRect(new SKRect(0, 2, w, size.Height - 2), 2.5f, 2.5f, fill);
+                                        }
+                                    });
+                                    t.Cell().Background(bgColor).BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text($"%{rate:F1}").FontSize(8).Bold().FontColor(levelColor);
                                     t.Cell().Background(bgColor).BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(level).FontSize(8).FontColor(levelColor);
                                     
                                     idx++;
@@ -915,22 +1110,48 @@ namespace OptikFormApp.Services
                                 }
                             });
                             
-                            x.Item().PaddingTop(15).Border(1).BorderColor("#e2e8f0").Background("#f8fafc").Padding(10).Column(c =>
+                            x.Item().Border(1).BorderColor("#e2e8f0").Background("#f8fafc").Padding(8).Row(r =>
                             {
-                                c.Item().PaddingBottom(5).Text("BAŞARI DERECELENDİRMESİ:").FontSize(9).Bold().FontColor("#1e293b");
-                                c.Item().Row(r =>
+                                r.RelativeItem().Text("≥ %80: Mükemmel").FontSize(8).Bold().FontColor("#15803d");
+                                r.RelativeItem().Text("%60 – 79: Yeterli").FontSize(8).Bold().FontColor("#2563eb");
+                                r.RelativeItem().Text("%40 – 59: Orta").FontSize(8).Bold().FontColor("#ca8a04");
+                                r.RelativeItem().Text("< %40: Geliştirilmeli").FontSize(8).Bold().FontColor("#dc2626");
+                            });
+                        }
+
+                        // RESMİ ONAY & İMZA BLOĞU
+                        x.Item().PaddingTop(18).Border(1).BorderColor("#cbd5e1").Background("#f8fafc").Padding(16).Column(sig =>
+                        {
+                            sig.Item().AlignCenter().PaddingBottom(10).Text("RESMİ DEĞERLENDİRME ONAY VE İMZA BLOĞU").FontSize(10.5f).Bold().FontColor("#1e3a5f");
+                            sig.Item().PaddingBottom(14).AlignCenter().Text($"Bu rapor, {courseDisplay} dersinin {(string.IsNullOrWhiteSpace(meta.ExamTitle) ? examName : meta.ExamTitle)} ({meta.AcademicTerm}) optik değerlendirme sonuçlarını ve istatistiksel analizlerini belgelemek amacıyla düzenlenmiştir.")
+                                .FontSize(8.5f).Italic().FontColor("#475569");
+
+                            sig.Item().Row(r =>
+                            {
+                                r.Spacing(24);
+                                // Sol: Dersi Veren Öğretim Elemanı
+                                r.RelativeItem().Border(1).BorderColor("#e2e8f0").Background("#ffffff").Padding(12).Column(c =>
                                 {
-                                    r.RelativeItem().Text("≥ %80: Mükemmel").FontSize(8).FontColor("#15803d");
-                                    r.RelativeItem().Text("60-79%: İyi").FontSize(8).FontColor("#2563eb");
-                                    r.RelativeItem().Text("40-59%: Orta").FontSize(8).FontColor("#ca8a04");
-                                    r.RelativeItem().Text("< %40: Gelişmeli").FontSize(8).FontColor("#dc2626");
+                                    c.Item().AlignCenter().Text("DERSİ VEREN ÖĞRETİM ELEMANI").FontSize(8.5f).Bold().FontColor("#1e3a5f");
+                                    c.Item().PaddingTop(8).AlignCenter().Text(string.IsNullOrWhiteSpace(meta.InstructorName) ? "Ad Soyad / Unvan: ........................................." : meta.InstructorName).FontSize(9).FontColor("#334155");
+                                    c.Item().PaddingTop(6).AlignCenter().Text($"Tarih: {DateTime.Now:dd.MM.yyyy}").FontSize(8.5f).FontColor("#64748b");
+                                    c.Item().PaddingTop(28).AlignCenter().Text("İmza: ..............................................").FontSize(8.5f).FontColor("#64748b");
+                                });
+
+                                // Sağ: Bölüm / Program Başkanlığı
+                                r.RelativeItem().Border(1).BorderColor("#e2e8f0").Background("#ffffff").Padding(12).Column(c =>
+                                {
+                                    c.Item().AlignCenter().Text("BÖLÜM / PROGRAM BAŞKANLIĞI ONAYI").FontSize(8.5f).Bold().FontColor("#1e3a5f");
+                                    c.Item().PaddingTop(8).AlignCenter().Text("Ad Soyad / Unvan: .........................................").FontSize(9).FontColor("#334155");
+                                    c.Item().PaddingTop(6).AlignCenter().Text("Tarih: .... / .... / 20....").FontSize(8.5f).FontColor("#64748b");
+                                    c.Item().PaddingTop(28).AlignCenter().Text("İmza / Mühür: .....................................").FontSize(8.5f).FontColor("#64748b");
                                 });
                             });
                         });
-
-                        page.Footer().AlignCenter().Text(x => { x.Span("Sınav Değerlendirme Raporu | Sayfa ").FontSize(9).FontColor("#94a3b8"); x.CurrentPageNumber(); });
                     });
-                }
+
+                    page.Footer().AlignCenter().Text(x => { x.Span("Ağlasun MYO — Akademik Sınav Değerlendirme Raporu | Sayfa ").FontSize(9).FontColor("#94a3b8"); x.CurrentPageNumber(); });
+                });
 
             }).GeneratePdf(outputFilePath);
         }

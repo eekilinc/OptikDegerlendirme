@@ -1720,6 +1720,12 @@ namespace OptikFormApp.ViewModels
         public StatisticsReportService.ClassStatistics ClassStats { get; private set; } = new();
         public ObservableCollection<StatisticsReportService.ScoreDistribution> ScoreDistribution { get; } = new();
         public ObservableCollection<StatisticsReportService.QuestionCorrelation> QuestionCorrelations { get; } = new();
+        public ObservableCollection<StatisticsReportService.StudentRankItem> TopStudents { get; } = new();
+        public ObservableCollection<StatisticsReportService.StudentRankItem> LowestStudents { get; } = new();
+        public ObservableCollection<StatisticsReportService.LetterGradeSummary> LetterGradeDistribution { get; } = new();
+        public ObservableCollection<StatisticsReportService.BookletStatsSummary> BookletComparison { get; } = new();
+        public ObservableCollection<QuestionDifficulty> HardestQuestions { get; } = new();
+        public ObservableCollection<QuestionDifficulty> EasiestQuestions { get; } = new();
         public Dictionary<string, double> Percentiles { get; private set; } = new();
         public string ReportText { get; private set; } = "";
         public ICommand CopyReportCommand { get; set; }

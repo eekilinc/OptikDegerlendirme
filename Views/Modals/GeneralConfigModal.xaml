@@ -327,7 +327,7 @@
                                                  FontWeight="Bold" 
                                                  FontSize="16" 
                                                  Foreground="{DynamicResource Success}"
-                                                 Background="White"
+                                                 Background="{DynamicResource CardBg}"
                                                  BorderBrush="{DynamicResource Success}"
                                                  BorderThickness="2"/>
                                     </StackPanel>
@@ -494,7 +494,7 @@
                                          FontWeight="Bold" 
                                          FontSize="14" 
                                          Foreground="{DynamicResource AccentPurple}"
-                                         Background="White"
+                                         Background="{DynamicResource CardBg}"
                                          BorderBrush="{DynamicResource AccentPurple}"
                                          BorderThickness="1.5"/>
                             </Grid>

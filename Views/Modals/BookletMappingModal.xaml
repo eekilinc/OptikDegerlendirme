@@ -103,7 +103,7 @@
                     <TextBox Text="{Binding MappingInputText, UpdateSourceTrigger=PropertyChanged}"
                              FontFamily="Consolas" FontSize="13" AcceptsReturn="True" 
                              VerticalScrollBarVisibility="Auto" Height="140" Padding="10"
-                             Background="White" BorderBrush="{DynamicResource Border}" BorderThickness="1"/>
+                             Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1"/>
 
                     <!-- Live Preview / Validation Box -->
                     <Border CornerRadius="10" Padding="12,10" Margin="0,14,0,0" BorderThickness="1">

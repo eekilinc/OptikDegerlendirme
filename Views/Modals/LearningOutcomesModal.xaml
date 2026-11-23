@@ -225,7 +225,7 @@
                             </TextBox>
                         </StackPanel>
                         <Button Grid.Column="6" 
-                                Content="â• Ekle" 
+                                Content="➕ Ekle" 
                                 Command="{Binding AddLearningOutcomeCommand}" 
                                 VerticalAlignment="Bottom"
                                 Padding="20,10" 

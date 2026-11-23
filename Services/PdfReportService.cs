@@ -257,6 +257,11 @@ namespace OptikFormApp.Services
             if (students == null || students.Count == 0)
                 throw new ArgumentException("Öğrenci listesi boş olamaz.", nameof(students));
 
+            var statsService = new StatisticsReportService();
+            var topStudents = statsService.GetTopStudents(students, 5);
+            var lowStudents = statsService.GetLowestStudents(students, 5);
+            var bookletComparison = statsService.GetBookletComparison(students);
+
             Document.Create(container =>
             {
                 // AKADEMİK KAPAK SAYFASI
@@ -269,68 +274,194 @@ namespace OptikFormApp.Services
 
                     page.Content().Column(x =>
                     {
-                        x.Spacing(30);
+                        x.Spacing(20);
 
                         // Üst Dekoratif Çizgi
-                        x.Item().Height(4).Background("#1e3a5f");
+                        x.Item().Height(5).Background("#1e3a5f");
                         x.Item().PaddingTop(2).Height(2).Background("#3b82f6");
 
-                        // Başlık Bölümü
+                        // Kurumsal Başlık Bölümü
                         x.Item().AlignCenter().Column(c =>
                         {
-                            c.Item().Text("SINAV DEĞERLENDİRME RAPORU").FontSize(22).Bold().FontColor("#1e3a5f").FontFamily(Fonts.TimesNewRoman);
-                            c.Item().PaddingTop(8).Text("ITEM ANALYSIS & STATISTICAL REPORT").FontSize(12).Italic().FontColor("#64748b").FontFamily(Fonts.TimesNewRoman);
-                            c.Item().PaddingVertical(20).LineHorizontal(1).LineColor("#cbd5e1");
+                            c.Item().AlignCenter().Text("BURDUR MEHMET AKİF ERSOY ÜNİVERSİTESİ").FontSize(11).SemiBold().FontColor("#475569");
+                            c.Item().AlignCenter().PaddingTop(3).Text("AĞLASUN MESLEK YÜKSEKOKULU").FontSize(13).Bold().FontColor("#1e3a5f");
+                            c.Item().PaddingTop(14).AlignCenter().Text("AKADEMİK SINAV DEĞERLENDİRME RAPORU").FontSize(21).Bold().FontColor("#1e3a5f");
+                            c.Item().PaddingTop(5).AlignCenter().Text("PSYCHOMETRIC ITEM ANALYSIS & STATISTICAL REPORT").FontSize(10).Italic().FontColor("#64748b");
+                            c.Item().PaddingVertical(14).LineHorizontal(1).LineColor("#cbd5e1");
                         });
 
                         // Sınav Bilgileri
-                        x.Item().Border(1).BorderColor("#e2e8f0").Background("#f8fafc").Padding(20).Column(c =>
+                        x.Item().Border(1).BorderColor("#e2e8f0").Background("#f8fafc").Padding(18).Column(c =>
                         {
-                            c.Item().AlignCenter().PaddingBottom(15).Text("SINAV BİLGİLERİ").FontSize(14).Bold().FontColor("#1e3a5f");
+                            c.Item().AlignCenter().PaddingBottom(12).Text("SINAV KÜNYESİ").FontSize(13).Bold().FontColor("#1e3a5f");
                             c.Item().Table(t =>
                             {
-                                t.ColumnsDefinition(cd => { cd.RelativeColumn(); cd.RelativeColumn(); });
-                                t.Cell().Text("Sınav Adı:").FontSize(11).SemiBold().FontColor("#475569");
-                                t.Cell().Text(examName).FontSize(11).FontColor("#1e293b");
-                                t.Cell().Text("Rapor Tarihi:").FontSize(11).SemiBold().FontColor("#475569");
-                                t.Cell().Text(DateTime.Now.ToString("dd MMMM yyyy, HH:mm", new System.Globalization.CultureInfo("tr-TR"))).FontSize(11).FontColor("#1e293b");
-                                t.Cell().Text("Öğrenci Sayısı:").FontSize(11).SemiBold().FontColor("#475569");
-                                t.Cell().Text(students.Count.ToString()).FontSize(11).FontColor("#1e293b");
-                                t.Cell().Text("Soru Sayısı:").FontSize(11).SemiBold().FontColor("#475569");
-                                t.Cell().Text((questionDifficulties?.Count ?? 0).ToString()).FontSize(11).FontColor("#1e293b");
+                                t.ColumnsDefinition(cd => { cd.ConstantColumn(140); cd.RelativeColumn(); });
+                                t.Cell().PaddingVertical(3).Text("Sınav Adı:").FontSize(10.5f).SemiBold().FontColor("#475569");
+                                t.Cell().PaddingVertical(3).Text(examName).FontSize(10.5f).Bold().FontColor("#1e293b");
+                                t.Cell().PaddingVertical(3).Text("Rapor Tarihi:").FontSize(10.5f).SemiBold().FontColor("#475569");
+                                t.Cell().PaddingVertical(3).Text(DateTime.Now.ToString("dd MMMM yyyy, HH:mm", new System.Globalization.CultureInfo("tr-TR"))).FontSize(10.5f).FontColor("#1e293b");
+                                t.Cell().PaddingVertical(3).Text("Katılımcı / Soru Sayısı:").FontSize(10.5f).SemiBold().FontColor("#475569");
+                                t.Cell().PaddingVertical(3).Text($"{students.Count} Öğrenci  •  {questionDifficulties?.Count ?? 0} Soru").FontSize(10.5f).FontColor("#1e293b");
+                                t.Cell().PaddingVertical(3).Text("En Yüksek Puan Alan:").FontSize(10.5f).SemiBold().FontColor("#15803d");
+                                t.Cell().PaddingVertical(3).Text($"{classStats?.MaxScore:F2} Puan — {classStats?.TopScoreStudentNames ?? "-"}").FontSize(10.5f).SemiBold().FontColor("#15803d");
+                                t.Cell().PaddingVertical(3).Text("En Düşük Puan Alan:").FontSize(10.5f).SemiBold().FontColor("#b91c1c");
+                                t.Cell().PaddingVertical(3).Text($"{classStats?.MinScore:F2} Puan — {classStats?.LowestScoreStudentNames ?? "-"}").FontSize(10.5f).SemiBold().FontColor("#b91c1c");
                             });
                         });
 
-                        // Özet İstatistikler - Modern Kartlar
-                        x.Item().AlignCenter().PaddingVertical(15).Text("ÖZET İSTATİSTİKLER").FontSize(14).Bold().FontColor("#1e3a5f");
+                        // Özet İstatistikler - Modern Kartlar (5 Kart)
+                        x.Item().AlignCenter().PaddingTop(6).Text("TEMEL İSTATİSTİK ÖZETİ").FontSize(13).Bold().FontColor("#1e3a5f");
                         x.Item().Row(r =>
                         {
-                            r.RelativeItem().Border(1).BorderColor("#dbeafe").Background("#eff6ff").Padding(12).AlignCenter().Column(c =>
+                            r.Spacing(6);
+                            r.RelativeItem().Border(1).BorderColor("#dbeafe").Background("#eff6ff").Padding(10).AlignCenter().Column(c =>
                             {
-                                c.Item().Text("ORTALAMA").FontSize(9).FontColor("#64748b");
-                                c.Item().Text(classStats?.AverageScore.ToString("F2") ?? "0.00").FontSize(20).Bold().FontColor("#1d4ed8");
+                                c.Item().AlignCenter().Text("ORTALAMA").FontSize(8).FontColor("#64748b");
+                                c.Item().AlignCenter().Text(classStats?.AverageScore.ToString("F2") ?? "0.00").FontSize(18).Bold().FontColor("#1d4ed8");
                             });
-                            r.RelativeItem().Border(1).BorderColor("#dcfce7").Background("#f0fdf4").Padding(12).AlignCenter().Column(c =>
+                            r.RelativeItem().Border(1).BorderColor("#dcfce7").Background("#f0fdf4").Padding(10).AlignCenter().Column(c =>
                             {
-                                c.Item().Text("MEDYAN").FontSize(9).FontColor("#64748b");
-                                c.Item().Text(classStats?.MedianScore.ToString("F2") ?? "0.00").FontSize(20).Bold().FontColor("#15803d");
+                                c.Item().AlignCenter().Text("BAŞARI %").FontSize(8).FontColor("#64748b");
+                                c.Item().AlignCenter().Text($"%{classStats?.SuccessRate:F1}").FontSize(18).Bold().FontColor("#15803d");
                             });
-                            r.RelativeItem().Border(1).BorderColor("#f3e8ff").Background("#faf5ff").Padding(12).AlignCenter().Column(c =>
+                            r.RelativeItem().Border(1).BorderColor("#f3e8ff").Background("#faf5ff").Padding(10).AlignCenter().Column(c =>
                             {
-                                c.Item().Text("STD. SAPMA").FontSize(9).FontColor("#64748b");
-                                c.Item().Text(classStats?.StandardDeviation.ToString("F2") ?? "0.00").FontSize(20).Bold().FontColor("#7c3aed");
+                                c.Item().AlignCenter().Text("MEDYAN").FontSize(8).FontColor("#64748b");
+                                c.Item().AlignCenter().Text(classStats?.MedianScore.ToString("F2") ?? "0.00").FontSize(18).Bold().FontColor("#7c3aed");
                             });
-                            r.RelativeItem().Border(1).BorderColor("#fef3c7").Background("#fffbeb").Padding(12).AlignCenter().Column(c =>
+                            r.RelativeItem().Border(1).BorderColor("#ffedd5").Background("#fff7ed").Padding(10).AlignCenter().Column(c =>
                             {
-                                c.Item().Text("GÜVENİRLİK").FontSize(9).FontColor("#64748b");
-                                c.Item().Text(reliabilityStats?.CronbachAlpha.ToString("F2") ?? "0.00").FontSize(20).Bold().FontColor("#b45309");
+                                c.Item().AlignCenter().Text("STD. SAPMA").FontSize(8).FontColor("#64748b");
+                                c.Item().AlignCenter().Text(classStats?.StandardDeviation.ToString("F2") ?? "0.00").FontSize(18).Bold().FontColor("#c2410c");
+                            });
+                            r.RelativeItem().Border(1).BorderColor("#fef3c7").Background("#fffbeb").Padding(10).AlignCenter().Column(c =>
+                            {
+                                c.Item().AlignCenter().Text("KR-20").FontSize(8).FontColor("#64748b");
+                                c.Item().AlignCenter().Text(reliabilityStats?.KR20.ToString("F2") ?? "0.00").FontSize(18).Bold().FontColor("#b45309");
                             });
                         });
 
+                        // Pedagojik Özet Kutusu
+                        if (!string.IsNullOrWhiteSpace(classStats?.PedagogicalEvaluation))
+                        {
+                            x.Item().Border(1).BorderColor("#cbd5e1").Background("#f8fafc").Padding(14).Column(c =>
+                            {
+                                c.Item().PaddingBottom(6).Text("AKADEMİK DEĞERLENDİRME ÖZETİ").FontSize(10).Bold().FontColor("#1e3a5f");
+                                c.Item().Text(classStats.PedagogicalEvaluation.Replace("🛡️ ", "").Replace("⚠️ ", "").Replace("📉 ", "").Replace("📈 ", "").Replace("⚖️ ", "").Replace("👥 ", "").Replace("🎯 ", ""))
+                                    .FontSize(9).LineHeight(1.35f).FontColor("#334155");
+                            });
+                        }
+
                         // Alt Dekoratif Çizgi
-                        x.Item().PaddingTop(40).Height(2).Background("#3b82f6");
+                        x.Item().PaddingTop(14).Height(2).Background("#3b82f6");
                         x.Item().PaddingTop(2).Height(4).Background("#1e3a5f");
                     });
+                });
+
+                // AKADEMİK DERECE, KRİTİK GRUP & KİTAPÇIK ADALETİ SAYFASI
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+                    page.Margin(1.5f, Unit.Centimetre);
+                    page.PageColor("#ffffff");
+                    page.DefaultTextStyle(x => x.FontSize(9.5f).FontFamily(Fonts.TimesNewRoman));
+
+                    page.Header().BorderBottom(1).BorderColor("#e2e8f0").PaddingBottom(8).Row(row =>
+                    {
+                        row.RelativeItem().Text($"{examName} — Derece Listeleri ve Kitapçık Analizi").FontSize(10.5f).Bold().FontColor("#1e3a5f");
+                        row.ConstantItem(80).AlignRight().Text(x => { x.Span("Sayfa ").FontSize(9.5f).FontColor("#64748b"); x.CurrentPageNumber(); });
+                    });
+
+                    page.Content().PaddingVertical(10).Column(x =>
+                    {
+                        x.Spacing(14);
+
+                        // En Yüksek Puan Alanlar (İlk 5)
+                        x.Item().Background("#15803d").Padding(7).Text("EN YÜKSEK PUAN ALAN ÖĞRENCİLER (ONUR LİSTESİ — İLK 5)").FontSize(10.5f).Bold().FontColor("#ffffff");
+                        x.Item().Table(t =>
+                        {
+                            t.ColumnsDefinition(cd => { cd.ConstantColumn(35); cd.ConstantColumn(80); cd.RelativeColumn(3); cd.ConstantColumn(45); cd.ConstantColumn(85); cd.ConstantColumn(45); cd.ConstantColumn(55); });
+                            t.Header(h =>
+                            {
+                                h.Cell().Background("#f0fdf4").BorderBottom(1).BorderColor("#bbf7d0").Padding(4).AlignCenter().Text("Sıra").FontSize(8).Bold().FontColor("#166534");
+                                h.Cell().Background("#f0fdf4").BorderBottom(1).BorderColor("#bbf7d0").Padding(4).Text("Öğr. No").FontSize(8).Bold().FontColor("#166534");
+                                h.Cell().Background("#f0fdf4").BorderBottom(1).BorderColor("#bbf7d0").Padding(4).Text("Ad Soyad").FontSize(8).Bold().FontColor("#166534");
+                                h.Cell().Background("#f0fdf4").BorderBottom(1).BorderColor("#bbf7d0").Padding(4).AlignCenter().Text("Kitap.").FontSize(8).Bold().FontColor("#166534");
+                                h.Cell().Background("#f0fdf4").BorderBottom(1).BorderColor("#bbf7d0").Padding(4).AlignCenter().Text("D / Y / B").FontSize(8).Bold().FontColor("#166534");
+                                h.Cell().Background("#f0fdf4").BorderBottom(1).BorderColor("#bbf7d0").Padding(4).AlignCenter().Text("Net").FontSize(8).Bold().FontColor("#166534");
+                                h.Cell().Background("#f0fdf4").BorderBottom(1).BorderColor("#bbf7d0").Padding(4).AlignCenter().Text("Puan").FontSize(8).Bold().FontColor("#166534");
+                            });
+                            foreach (var st in topStudents)
+                            {
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text($"#{st.Rank}").FontSize(8).Bold();
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).Text(st.StudentId).FontSize(8);
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).Text(st.FullName).FontSize(8).SemiBold();
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(st.BookletType).FontSize(8);
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(st.CorrectWrongEmptyText).FontSize(8);
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(st.NetCount.ToString("F2")).FontSize(8);
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(st.Score.ToString("F2")).FontSize(8).Bold().FontColor("#15803d");
+                            }
+                        });
+
+                        // En Düşük Puan Alanlar (Son 5)
+                        x.Item().Background("#b91c1c").Padding(7).Text("EN DÜŞÜK PUAN ALAN ÖĞRENCİLER (DESTEK GEREKEN GRUP — SON 5)").FontSize(10.5f).Bold().FontColor("#ffffff");
+                        x.Item().Table(t =>
+                        {
+                            t.ColumnsDefinition(cd => { cd.ConstantColumn(35); cd.ConstantColumn(80); cd.RelativeColumn(3); cd.ConstantColumn(45); cd.ConstantColumn(85); cd.ConstantColumn(45); cd.ConstantColumn(55); });
+                            t.Header(h =>
+                            {
+                                h.Cell().Background("#fef2f2").BorderBottom(1).BorderColor("#fecaca").Padding(4).AlignCenter().Text("Sıra").FontSize(8).Bold().FontColor("#991b1b");
+                                h.Cell().Background("#fef2f2").BorderBottom(1).BorderColor("#fecaca").Padding(4).Text("Öğr. No").FontSize(8).Bold().FontColor("#991b1b");
+                                h.Cell().Background("#fef2f2").BorderBottom(1).BorderColor("#fecaca").Padding(4).Text("Ad Soyad").FontSize(8).Bold().FontColor("#991b1b");
+                                h.Cell().Background("#fef2f2").BorderBottom(1).BorderColor("#fecaca").Padding(4).AlignCenter().Text("Kitap.").FontSize(8).Bold().FontColor("#991b1b");
+                                h.Cell().Background("#fef2f2").BorderBottom(1).BorderColor("#fecaca").Padding(4).AlignCenter().Text("D / Y / B").FontSize(8).Bold().FontColor("#991b1b");
+                                h.Cell().Background("#fef2f2").BorderBottom(1).BorderColor("#fecaca").Padding(4).AlignCenter().Text("Net").FontSize(8).Bold().FontColor("#991b1b");
+                                h.Cell().Background("#fef2f2").BorderBottom(1).BorderColor("#fecaca").Padding(4).AlignCenter().Text("Puan").FontSize(8).Bold().FontColor("#991b1b");
+                            });
+                            foreach (var st in lowStudents)
+                            {
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text($"#{st.Rank}").FontSize(8).Bold();
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).Text(st.StudentId).FontSize(8);
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).Text(st.FullName).FontSize(8).SemiBold();
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(st.BookletType).FontSize(8);
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(st.CorrectWrongEmptyText).FontSize(8);
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(st.NetCount.ToString("F2")).FontSize(8);
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(st.Score.ToString("F2")).FontSize(8).Bold().FontColor("#b91c1c");
+                            }
+                        });
+
+                        // Kitapçık Bazlı Adalet Analizi (Tam Genişlik)
+                        x.Item().Background("#1e3a5f").Padding(7).Text("KİTAPÇIK BAZLI PERFORMANS & ADALET ANALİZİ").FontSize(10.5f).Bold().FontColor("#ffffff");
+                        x.Item().Table(t =>
+                        {
+                            t.ColumnsDefinition(cd => { cd.ConstantColumn(60); cd.ConstantColumn(55); cd.RelativeColumn(); cd.RelativeColumn(); cd.RelativeColumn(); cd.RelativeColumn(); cd.RelativeColumn(); cd.RelativeColumn(); });
+                            t.Header(h =>
+                            {
+                                h.Cell().Background("#f1f5f9").Padding(4).Text("Kitapçık").FontSize(8).Bold();
+                                h.Cell().Background("#f1f5f9").Padding(4).AlignCenter().Text("Öğrenci").FontSize(8).Bold();
+                                h.Cell().Background("#f1f5f9").Padding(4).AlignCenter().Text("Ortalama").FontSize(8).Bold();
+                                h.Cell().Background("#f1f5f9").Padding(4).AlignCenter().Text("Medyan").FontSize(8).Bold();
+                                h.Cell().Background("#f1f5f9").Padding(4).AlignCenter().Text("Std. Sapma").FontSize(8).Bold();
+                                h.Cell().Background("#f1f5f9").Padding(4).AlignCenter().Text("En Düşük").FontSize(8).Bold();
+                                h.Cell().Background("#f1f5f9").Padding(4).AlignCenter().Text("En Yüksek").FontSize(8).Bold();
+                                h.Cell().Background("#f1f5f9").Padding(4).AlignCenter().Text("Başarı %").FontSize(8).Bold();
+                            });
+                            foreach (var bk in bookletComparison)
+                            {
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).Text(bk.BookletName).FontSize(8).Bold().FontColor("#7c3aed");
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(bk.StudentCount.ToString()).FontSize(8);
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(bk.AverageScore.ToString("F2")).FontSize(8).Bold();
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(bk.MedianScore.ToString("F1")).FontSize(8);
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(bk.StandardDeviation.ToString("F2")).FontSize(8);
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(bk.MinScore.ToString("F1")).FontSize(8);
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text(bk.MaxScore.ToString("F1")).FontSize(8);
+                                t.Cell().BorderBottom(1).BorderColor("#e2e8f0").Padding(4).AlignCenter().Text($"%{bk.PassRate:F1}").FontSize(8).Bold().FontColor("#15803d");
+                            }
+                        });
+                    });
+
+                    page.Footer().AlignCenter().Text(x => { x.Span("Ağlasun MYO — Akademik Sınav Değerlendirme Raporu | Sayfa ").FontSize(9).FontColor("#94a3b8"); x.CurrentPageNumber(); });
                 });
 
                 // SAYFA 1: DETAYLI İSTATİSTİKLER

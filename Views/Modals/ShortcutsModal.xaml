@@ -329,7 +329,7 @@
                                         CornerRadius="6" 
                                         Padding="8,4" 
                                         Margin="0,0,12,0">
-                                    <TextBlock Text="Ctrl+â‡§+C" 
+                                    <TextBlock Text="Ctrl+Shift+C" 
                                                FontFamily="Consolas" 
                                                FontSize="12" 
                                                FontWeight="Bold" 

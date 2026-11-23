@@ -425,7 +425,7 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button Content="📤 Dışa Aktar" 
                                 Command="{Binding ExportTemplateCommand}"
-                                Background="White"
+                                Background="{DynamicResource CardBg}"
                                 Foreground="{DynamicResource TextMain}"
                                 BorderBrush="{DynamicResource Border}"
                                 BorderThickness="1"

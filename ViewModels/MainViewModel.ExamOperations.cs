@@ -347,13 +347,38 @@ namespace OptikFormApp.ViewModels
             var studentsList = Students.ToList();
             double kr20 = ReliabilityStats?.KR20 ?? 0;
             double cronbach = ReliabilityStats?.CronbachAlpha ?? 0;
+            double passScore = PassingScore > 0 ? PassingScore : 50;
 
-            ClassStats = _statsReportService.CalculateClassStatistics(studentsList, passingScore: 50, kr20: kr20, cronbachAlpha: cronbach);
+            ClassStats = _statsReportService.CalculateClassStatistics(studentsList, passingScore: passScore, kr20: kr20, cronbachAlpha: cronbach);
             OnPropertyChanged(nameof(ClassStats));
 
             ScoreDistribution.Clear();
             foreach (var dist in _statsReportService.GetScoreDistribution(studentsList, 10))
                 ScoreDistribution.Add(dist);
+
+            TopStudents.Clear();
+            foreach (var st in _statsReportService.GetTopStudents(studentsList, 5))
+                TopStudents.Add(st);
+
+            LowestStudents.Clear();
+            foreach (var st in _statsReportService.GetLowestStudents(studentsList, 5))
+                LowestStudents.Add(st);
+
+            LetterGradeDistribution.Clear();
+            foreach (var lg in _statsReportService.GetLetterGradeDistribution(studentsList))
+                LetterGradeDistribution.Add(lg);
+
+            BookletComparison.Clear();
+            foreach (var bk in _statsReportService.GetBookletComparison(studentsList, passScore))
+                BookletComparison.Add(bk);
+
+            HardestQuestions.Clear();
+            foreach (var q in QuestionDifficulties.OrderBy(q => q.SuccessRate).Take(5))
+                HardestQuestions.Add(q);
+
+            EasiestQuestions.Clear();
+            foreach (var q in QuestionDifficulties.OrderByDescending(q => q.SuccessRate).Take(5))
+                EasiestQuestions.Add(q);
 
             Percentiles = _statsReportService.CalculatePercentiles(studentsList);
             OnPropertyChanged(nameof(Percentiles));

@@ -34,6 +34,51 @@ namespace OptikFormApp.Services
             public int PassedCount { get; set; }
             public int FailedCount { get; set; }
             public string PedagogicalEvaluation { get; set; } = "";
+            public double AverageCorrect { get; set; }
+            public double AverageIncorrect { get; set; }
+            public double AverageEmpty { get; set; }
+            public double AverageNet { get; set; }
+            public string MinMaxSummary => $"En Düşük: {MinScore:F1}  |  En Yüksek: {MaxScore:F1}";
+            public string TopScoreStudentNames { get; set; } = "-";
+            public string LowestScoreStudentNames { get; set; } = "-";
+            public string ReliabilityInterpretation { get; set; } = "-";
+        }
+
+        public class StudentRankItem
+        {
+            public int Rank { get; set; }
+            public string StudentId { get; set; } = "";
+            public string FullName { get; set; } = "";
+            public string BookletType { get; set; } = "";
+            public int CorrectCount { get; set; }
+            public int IncorrectCount { get; set; }
+            public int EmptyCount { get; set; }
+            public double NetCount { get; set; }
+            public double Score { get; set; }
+            public string LetterGrade { get; set; } = "-";
+            public string Status { get; set; } = "";
+            public string CorrectWrongEmptyText => $"{CorrectCount}D / {IncorrectCount}Y / {EmptyCount}B";
+        }
+
+        public class LetterGradeSummary
+        {
+            public string LetterGrade { get; set; } = "";
+            public int Count { get; set; }
+            public double Percentage { get; set; }
+            public string Category { get; set; } = "";
+            public double BarWidth { get; set; }
+        }
+
+        public class BookletStatsSummary
+        {
+            public string BookletName { get; set; } = "";
+            public int StudentCount { get; set; }
+            public double AverageScore { get; set; }
+            public double MedianScore { get; set; }
+            public double StandardDeviation { get; set; }
+            public double MinScore { get; set; }
+            public double MaxScore { get; set; }
+            public double PassRate { get; set; }
         }
 
         public class ScoreDistribution
@@ -152,6 +197,33 @@ namespace OptikFormApp.Services
             string pedagogical = GeneratePedagogicalEvaluation(
                 avg, median, stdDev, skewness, kurtosis, variationCoeff, effectiveReliability, (double)passed / count * 100);
 
+            // Doğru / Yanlış / Boş / Net ortalamaları
+            double avgCorrect = Math.Round(students.Average(s => (double)s.CorrectCount), 2);
+            double avgIncorrect = Math.Round(students.Average(s => (double)s.IncorrectCount), 2);
+            double avgEmpty = Math.Round(students.Average(s => (double)s.EmptyCount), 2);
+            double avgNet = Math.Round(students.Average(s => s.NetCount), 2);
+
+            // En yüksek ve en düşük alan öğrenci özetleri (eşit puanlılar dahil)
+            var topScorers = students.Where(s => Math.Abs(s.Score - max) < 0.001).Select(s => s.FullName).Take(3).ToList();
+            var lowScorers = students.Where(s => Math.Abs(s.Score - min) < 0.001).Select(s => s.FullName).Take(3).ToList();
+            int topExtra = students.Count(s => Math.Abs(s.Score - max) < 0.001) - topScorers.Count;
+            int lowExtra = students.Count(s => Math.Abs(s.Score - min) < 0.001) - lowScorers.Count;
+
+            string topNames = topScorers.Count > 0
+                ? string.Join(", ", topScorers) + (topExtra > 0 ? $" (+{topExtra} kişi)" : "")
+                : "-";
+            string lowNames = lowScorers.Count > 0
+                ? string.Join(", ", lowScorers) + (lowExtra > 0 ? $" (+{lowExtra} kişi)" : "")
+                : "-";
+
+            string relInterpretation = effectiveReliability >= 0.80
+                ? "Yüksek Güvenilirlik"
+                : effectiveReliability >= 0.70
+                    ? "Kabul Edilebilir"
+                    : effectiveReliability >= 0.60
+                        ? "Orta Düzey"
+                        : "Revizyon Önerilir";
+
             return new ClassStatistics
             {
                 AverageScore = Math.Round(avg, 2),
@@ -178,7 +250,14 @@ namespace OptikFormApp.Services
                 TotalStudents = count,
                 PassedCount = passed,
                 FailedCount = count - passed,
-                PedagogicalEvaluation = pedagogical
+                PedagogicalEvaluation = pedagogical,
+                AverageCorrect = avgCorrect,
+                AverageIncorrect = avgIncorrect,
+                AverageEmpty = avgEmpty,
+                AverageNet = avgNet,
+                TopScoreStudentNames = topNames,
+                LowestScoreStudentNames = lowNames,
+                ReliabilityInterpretation = relInterpretation
             };
         }
 
@@ -351,6 +430,127 @@ namespace OptikFormApp.Services
             return percentiles;
         }
 
+        public List<StudentRankItem> GetTopStudents(List<StudentResult> students, int count = 5)
+        {
+            if (students == null || students.Count == 0)
+                return new List<StudentRankItem>();
+
+            return students
+                .OrderByDescending(s => s.Score)
+                .ThenByDescending(s => s.NetCount)
+                .ThenBy(s => s.FullName)
+                .Take(count)
+                .Select((s, idx) => new StudentRankItem
+                {
+                    Rank = s.Rank > 0 ? s.Rank : idx + 1,
+                    StudentId = s.StudentId,
+                    FullName = s.FullName,
+                    BookletType = string.IsNullOrWhiteSpace(s.BookletType) ? "-" : s.BookletType,
+                    CorrectCount = s.CorrectCount,
+                    IncorrectCount = s.IncorrectCount,
+                    EmptyCount = s.EmptyCount,
+                    NetCount = Math.Round(s.NetCount, 2),
+                    Score = Math.Round(s.Score, 2),
+                    LetterGrade = string.IsNullOrWhiteSpace(s.LetterGrade) ? "-" : s.LetterGrade,
+                    Status = s.Status ?? ""
+                })
+                .ToList();
+        }
+
+        public List<StudentRankItem> GetLowestStudents(List<StudentResult> students, int count = 5)
+        {
+            if (students == null || students.Count == 0)
+                return new List<StudentRankItem>();
+
+            int total = students.Count;
+            return students
+                .OrderBy(s => s.Score)
+                .ThenBy(s => s.NetCount)
+                .ThenBy(s => s.FullName)
+                .Take(count)
+                .Select((s, idx) => new StudentRankItem
+                {
+                    Rank = s.Rank > 0 ? s.Rank : total - idx,
+                    StudentId = s.StudentId,
+                    FullName = s.FullName,
+                    BookletType = string.IsNullOrWhiteSpace(s.BookletType) ? "-" : s.BookletType,
+                    CorrectCount = s.CorrectCount,
+                    IncorrectCount = s.IncorrectCount,
+                    EmptyCount = s.EmptyCount,
+                    NetCount = Math.Round(s.NetCount, 2),
+                    Score = Math.Round(s.Score, 2),
+                    LetterGrade = string.IsNullOrWhiteSpace(s.LetterGrade) ? "-" : s.LetterGrade,
+                    Status = s.Status ?? ""
+                })
+                .ToList();
+        }
+
+        public List<LetterGradeSummary> GetLetterGradeDistribution(List<StudentResult> students)
+        {
+            var result = new List<LetterGradeSummary>();
+            if (students == null || students.Count == 0) return result;
+
+            string[] order = { "AA", "BA", "BB", "CB", "CC", "DC", "DD", "FD", "FF" };
+            int total = students.Count;
+
+            foreach (var grade in order)
+            {
+                int c = students.Count(s => string.Equals(s.LetterGrade, grade, StringComparison.OrdinalIgnoreCase));
+                double pct = total > 0 ? Math.Round((double)c / total * 100, 1) : 0;
+                string cat = grade is "AA" or "BA" or "BB" or "CB" or "CC"
+                    ? "Başarılı"
+                    : grade is "DC" or "DD"
+                        ? "Şartlı"
+                        : "Başarısız";
+
+                result.Add(new LetterGradeSummary
+                {
+                    LetterGrade = grade,
+                    Count = c,
+                    Percentage = pct,
+                    Category = cat,
+                    BarWidth = Math.Min(100, pct)
+                });
+            }
+
+            return result;
+        }
+
+        public List<BookletStatsSummary> GetBookletComparison(List<StudentResult> students, double passingScore = 50)
+        {
+            var result = new List<BookletStatsSummary>();
+            if (students == null || students.Count == 0) return result;
+
+            var groups = students
+                .GroupBy(s => string.IsNullOrWhiteSpace(s.BookletType) ? "Belirsiz" : s.BookletType.Trim().ToUpperInvariant())
+                .OrderBy(g => g.Key);
+
+            foreach (var g in groups)
+            {
+                var scores = g.Select(s => s.Score).OrderBy(v => v).ToList();
+                int n = scores.Count;
+                double avg = scores.Average();
+                double median = n % 2 == 0 ? (scores[n / 2 - 1] + scores[n / 2]) / 2.0 : scores[n / 2];
+                double variance = n > 1 ? scores.Sum(v => Math.Pow(v - avg, 2)) / (n - 1) : 0;
+                double stdDev = Math.Sqrt(variance);
+                int passed = scores.Count(v => v >= passingScore);
+
+                result.Add(new BookletStatsSummary
+                {
+                    BookletName = g.Key,
+                    StudentCount = n,
+                    AverageScore = Math.Round(avg, 2),
+                    MedianScore = Math.Round(median, 2),
+                    StandardDeviation = Math.Round(stdDev, 2),
+                    MinScore = Math.Round(scores.Min(), 2),
+                    MaxScore = Math.Round(scores.Max(), 2),
+                    PassRate = n > 0 ? Math.Round((double)passed / n * 100, 1) : 0
+                });
+            }
+
+            return result;
+        }
+
         public string GenerateReportSummary(List<StudentResult> students, string examName = "")
         {
             if (students == null || students.Count == 0)
@@ -359,6 +559,9 @@ namespace OptikFormApp.Services
             var stats = CalculateClassStatistics(students);
             var dist = GetScoreDistribution(students, 10);
             var percentiles = CalculatePercentiles(students);
+            var topStudents = GetTopStudents(students, 5);
+            var lowStudents = GetLowestStudents(students, 5);
+            var booklets = GetBookletComparison(students);
 
             var report = $"""
 ========================================================================
@@ -370,12 +573,13 @@ Sınava Giren Sayı: {stats.TotalStudents} Öğrenci
 
 [ 1. MERKEZİ EĞİLİM VE YAYILMA ÖLÇÜLERİ ]
 ------------------------------------------------------------------------
-• Aritmetik Ortalama     : {stats.AverageScore:F2}
+• Aritmetik Ortalama     : {stats.AverageScore:F2} (Ort. Net: {stats.AverageNet:F2})
+• Doğru / Yanlış / Boş   : {stats.AverageCorrect:F1}D / {stats.AverageIncorrect:F1}Y / {stats.AverageEmpty:F1}B
 • Medyan (Ortanca)       : {stats.MedianScore:F2}
 • Mod (Tepe Değer)       : {stats.ModeScoreText}
 • Standart Sapma         : {stats.StandardDeviation:F2}
 • Varyans                : {stats.Variance:F2}
-• En Düşük / En Yüksek   : {stats.MinScore:F1} / {stats.MaxScore:F1}
+• En Düşük / En Yüksek   : {stats.MinScore:F1} ({stats.LowestScoreStudentNames}) / {stats.MaxScore:F1} ({stats.TopScoreStudentNames})
 • Puan Açıklığı (Ranj)   : {stats.Range:F1}
 • Çeyrekler Açıklığı(IQR): {stats.InterquartileRange:F1}
 • Bağıl Değişkenlik (V)  : %{stats.VariationCoefficient:F1} -> {stats.HomogeneityInterpretation}
@@ -398,13 +602,25 @@ Sınava Giren Sayı: {stats.TotalStudents} Öğrenci
 • %75 Dilimi (Q3)        : {percentiles.GetValueOrDefault("%75 (Q3 - Üst Çeyrek)", 0):F1}
 • %90 Dilimi (Üst)       : {percentiles.GetValueOrDefault("%90 (Üst Sınır)", 0):F1}
 
-[ 4. AKILLI PEDAGOJİK DEĞERLENDİRME ]
-------------------------------------------------------------------------
-{stats.PedagogicalEvaluation}
-
-[ 5. PUAN ARALIKLARI FREKANS DAĞILIMI ]
+[ 4. EN YÜKSEK PUAN ALANLAR (İLK 5) ]
 ------------------------------------------------------------------------
 """;
+            foreach (var st in topStudents)
+                report += $"\n#{st.Rank,-3} {st.StudentId,-12} {st.FullName,-26} [{st.BookletType}] {st.CorrectWrongEmptyText,-14} Net: {st.NetCount,5:F2} | Puan: {st.Score,6:F2}";
+
+            report += "\n\n[ 5. EN DÜŞÜK PUAN ALANLAR (SON 5 - DESTEK GEREKEN GRUP) ]\n------------------------------------------------------------------------";
+            foreach (var st in lowStudents)
+                report += $"\n#{st.Rank,-3} {st.StudentId,-12} {st.FullName,-26} [{st.BookletType}] {st.CorrectWrongEmptyText,-14} Net: {st.NetCount,5:F2} | Puan: {st.Score,6:F2}";
+
+            if (booklets.Count > 0)
+            {
+                report += "\n\n[ 6. KİTAPÇIK BAZLI KARŞILAŞTIRMA ]\n------------------------------------------------------------------------";
+                foreach (var b in booklets)
+                    report += $"\nKitapçık {b.BookletName,-8} : n={b.StudentCount,-3} | Ort={b.AverageScore,6:F2} | Medyan={b.MedianScore,6:F2} | S={b.StandardDeviation,5:F2} | Min={b.MinScore,5:F1} | Max={b.MaxScore,5:F1} | Başarı=%{b.PassRate:F1}";
+            }
+
+            report += $"\n\n[ 7. AKILLI PEDAGOJİK DEĞERLENDİRME ]\n------------------------------------------------------------------------\n{stats.PedagogicalEvaluation}";
+            report += "\n\n[ 8. PUAN ARALIKLARI FREKANS DAĞILIMI ]\n------------------------------------------------------------------------";
 
             foreach (var d in dist)
             {

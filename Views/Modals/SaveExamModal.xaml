@@ -43,7 +43,7 @@
                     <!-- Info Banner -->
                     <Border Background="{DynamicResource HoverBg}" BorderBrush="{DynamicResource Accent}" BorderThickness="1" CornerRadius="10" Padding="15" Margin="0,0,0,20">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="â„¹ï¸" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="ℹ️" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
                             <TextBlock Text="Kaydedilen sınavlar seçili derste listelenir ve tekrar açılabilir." 
                                        FontSize="12" Foreground="{DynamicResource TextMain}" 
                                        TextWrapping="Wrap"/>
@@ -98,7 +98,7 @@
                         
                         <!-- Add Course Button -->
                         <Button Grid.Column="1" 
-                                Content="â• Yeni Ders" 
+                                Content="➕ Yeni Ders" 
                                 Command="{Binding ToggleAddCourseInlineCommand}"
                                 VerticalAlignment="Bottom"
                                 Margin="8,0,0,0"

@@ -1167,9 +1167,9 @@ namespace OptikFormApp.ViewModels
                         try
                         {
                             await _backupService.RestoreFullBackupAsync(ofd.FileName, true);
-                            await LoadCoursesAsync();
-                            ShowToastSuccess("Yedek geri yüklendi! Lütfen uygulamayı yeniden başlatın.");
-                            AddToLog($"Yedek geri yüklendi: {Path.GetFileName(ofd.FileName)}", LogLevel.Success);
+                            await RefreshWorkspaceAfterRestoreAsync(reloadSettings: true);
+                            ShowToastSuccess($"Tam yedek başarıyla geri yüklendi ({Courses.Count} ders).");
+                            AddToLog($"Tam yedek geri yüklendi: {Path.GetFileName(ofd.FileName)} ({Courses.Count} ders)", LogLevel.Success);
                         }
                         catch (Exception ex)
                         {
@@ -1201,9 +1201,9 @@ namespace OptikFormApp.ViewModels
                         try
                         {
                             await _backupService.RestoreDatabaseAsync(ofd.FileName);
-                            await LoadCoursesAsync();
-                            ShowToastSuccess("Veritabanı geri yüklendi!");
-                            AddToLog($"Veritabanı geri yüklendi: {Path.GetFileName(ofd.FileName)}", LogLevel.Success);
+                            await RefreshWorkspaceAfterRestoreAsync(reloadSettings: false);
+                            ShowToastSuccess($"Veritabanı başarıyla geri yüklendi ({Courses.Count} ders).");
+                            AddToLog($"Veritabanı geri yüklendi: {Path.GetFileName(ofd.FileName)} ({Courses.Count} ders)", LogLevel.Success);
                         }
                         catch (Exception ex)
                         {

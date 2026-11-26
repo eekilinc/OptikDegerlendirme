@@ -10,7 +10,7 @@ namespace OptikFormApp.Services
 {
     /// <summary>
     /// Tam yedekleme ve geri yükleme servisi
-    /// Veritabanı + ayarlar + şablonlar tek zip dosyasında
+    /// Veritabanı + ayarlar + şablonlar + JSON dışa aktarım tek zip dosyasında
     /// </summary>
     public class BackupService
     {
@@ -19,13 +19,16 @@ namespace OptikFormApp.Services
         private readonly NotificationService _notificationService;
         private readonly JsonDataService _jsonDataService;
 
-        private static readonly string AppDataPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "OptikDegerlendirme");
+        private string GetAppDataDirectory()
+        {
+            var dir = Path.GetDirectoryName(_dbService.DatabasePath);
+            if (!string.IsNullOrWhiteSpace(dir))
+                return dir;
 
-        private static readonly string SettingsDir = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "OptikFormApp");
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "OptikDegerlendirme");
+        }
 
         public BackupService(
             DatabaseService dbService,
@@ -40,7 +43,7 @@ namespace OptikFormApp.Services
         }
 
         /// <summary>
-        /// Tam yedek oluşturur (DB + Settings + Metadata)
+        /// Tam yedek oluşturur (WAL-safe DB + Settings + Templates + Metadata + JSON Export)
         /// </summary>
         public async Task<string> CreateFullBackupAsync(string? customPath = null)
         {
@@ -48,24 +51,28 @@ namespace OptikFormApp.Services
             var backupName = $"OptikBackup_{timestamp}.zip";
             var backupPath = customPath ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), backupName);
 
-            var tempDir = Path.Combine(Path.GetTempPath(), $"OptikBackup_{timestamp}");
+            var tempDir = Path.Combine(Path.GetTempPath(), $"OptikBackup_{timestamp}_{Guid.NewGuid():N}");
             Directory.CreateDirectory(tempDir);
 
             try
             {
-                // 1. Veritabanı dosyasını kopyala
-                var dbSource = Path.Combine(AppDataPath, "optik.db");
-                if (File.Exists(dbSource))
-                {
-                    File.Copy(dbSource, Path.Combine(tempDir, "optik.db"), true);
-                }
+                // 1. Veritabanını SQLite Online Backup API + WAL Checkpoint ile tek parça tutarlı olarak yedekle
+                var dbDest = Path.Combine(tempDir, "optik.db");
+                await _dbService.BackupDatabaseAsync(dbDest);
 
                 // 2. Ayarları JSON olarak kaydet
                 var settings = _settingsService.Load();
                 var settingsJson = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
                 await File.WriteAllTextAsync(Path.Combine(tempDir, "settings.json"), settingsJson);
 
-                // 3. Metadata oluştur
+                // 3. Şablonları (Templates) kopyala
+                var templatesDir = Path.Combine(GetAppDataDirectory(), "Templates");
+                if (Directory.Exists(templatesDir))
+                {
+                    CopyDirectoryRecursive(templatesDir, Path.Combine(tempDir, "Templates"));
+                }
+
+                // 4. Metadata oluştur
                 var metadata = new BackupMetadata
                 {
                     BackupDate = DateTime.Now,
@@ -77,11 +84,11 @@ namespace OptikFormApp.Services
                 var metaJson = JsonSerializer.Serialize(metadata, new JsonSerializerOptions { WriteIndented = true });
                 await File.WriteAllTextAsync(Path.Combine(tempDir, "metadata.json"), metaJson);
 
-                // 4. Tüm sınav verilerini JSON olarak dışa aktar
-                var exportData = await _jsonDataService.ExportAllDataAsync();
+                // 5. Tüm sınav verilerini JSON olarak dışa aktar (ikincil kurtarma katmanı)
+                var exportData = await _jsonDataService.ExportAllDataAsync(_dbService);
                 await File.WriteAllTextAsync(Path.Combine(tempDir, "data_export.json"), exportData);
 
-                // 5. Zip dosyası oluştur
+                // 6. Zip dosyası oluştur
                 if (File.Exists(backupPath))
                     File.Delete(backupPath);
 
@@ -92,9 +99,10 @@ namespace OptikFormApp.Services
             }
             finally
             {
-                // Temizlik
                 if (Directory.Exists(tempDir))
-                    Directory.Delete(tempDir, true);
+                {
+                    try { Directory.Delete(tempDir, true); } catch { }
+                }
             }
         }
 
@@ -107,11 +115,6 @@ namespace OptikFormApp.Services
             var backupName = $"OptikDB_{timestamp}.db";
             var backupPath = customPath ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), backupName);
 
-            var dbSource = Path.Combine(AppDataPath, "optik.db");
-            if (!File.Exists(dbSource))
-                throw new FileNotFoundException("Veritabanı dosyası bulunamadı");
-
-            // SQLite backup: checkpoint + copy
             await _dbService.BackupDatabaseAsync(backupPath);
 
             _notificationService.ShowSuccess($"Veritabanı yedeği oluşturuldu: {backupPath}");
@@ -136,9 +139,9 @@ namespace OptikFormApp.Services
         }
 
         /// <summary>
-        /// Tam yedeği geri yükle
+        /// Tam yedeği geri yükle (.zip). Hem güncel optik.db hem de eski sürümlerdeki data_export.json kurtarmasını destekler.
         /// </summary>
-        public async Task RestoreFullBackupAsync(string zipPath, bool overwriteExisting = false)
+        public async Task RestoreFullBackupAsync(string zipPath, bool overwriteExisting = true)
         {
             if (!File.Exists(zipPath))
                 throw new FileNotFoundException("Yedek dosyası bulunamadı", zipPath);
@@ -148,37 +151,40 @@ namespace OptikFormApp.Services
 
             try
             {
-                // Zip'i aç
                 SafeExtractZip(zipPath, tempDir);
 
-                // Metadata kontrolü
-                var metaPath = Path.Combine(tempDir, "metadata.json");
-                if (File.Exists(metaPath))
+                var appDataDir = GetAppDataDirectory();
+                Directory.CreateDirectory(appDataDir);
+
+                // Mevcut veritabanının WAL-safe güvenlik yedeğini al
+                var safetyBackup = Path.Combine(appDataDir, $"pre_restore_backup_{DateTime.Now:yyyyMMdd_HHmmss}.db");
+                if (File.Exists(_dbService.DatabasePath))
                 {
-                    var metaJson = await File.ReadAllTextAsync(metaPath);
-                    var metadata = JsonSerializer.Deserialize<BackupMetadata>(metaJson);
-                    // İleride versiyon kontrolü eklenebilir
+                    try { await _dbService.BackupDatabaseAsync(safetyBackup); } catch { }
                 }
 
-                // Mevcut veriyi yedekle (güvenlik için)
-                var safetyBackup = Path.Combine(AppDataPath, $"pre_restore_backup_{DateTime.Now:yyyyMMdd_HHmmss}.db");
-                var dbCurrent = Path.Combine(AppDataPath, "optik.db");
-                if (File.Exists(dbCurrent))
-                {
-                    File.Copy(dbCurrent, safetyBackup, true);
-                }
-
-                // Veritabanını geri yükle
                 var dbBackup = Path.Combine(tempDir, "optik.db");
-                if (File.Exists(dbBackup))
+                var dataExportPath = Path.Combine(tempDir, "data_export.json");
+
+                if (File.Exists(dbBackup) && (overwriteExisting || !File.Exists(_dbService.DatabasePath)))
                 {
-                    if (overwriteExisting || !File.Exists(dbCurrent))
-                    {
-                        // DB'yi kapat ve değiştir
-                        await _dbService.CloseConnectionAsync();
-                        File.Copy(dbBackup, dbCurrent, true);
-                        await _dbService.ReconnectAsync();
-                    }
+                    await _dbService.RestoreDatabaseFromFileAsync(dbBackup);
+                }
+
+                // Eski sürümlerde WAL checkpoint yapılmadan oluşturulmuş .zip yedeklerinde optik.db boş olabilir;
+                // bu durumda data_export.json içindeki tüm ders, sınav ve öğrenci kayıtlarını otomatik kurtar.
+                var restoredCourses = await _dbService.GetCoursesAsync();
+                if (restoredCourses.Count == 0 && File.Exists(dataExportPath))
+                {
+                    await _jsonDataService.ImportAllDataToDatabaseAsync(dataExportPath, _dbService);
+                }
+
+                // Şablonları geri yükle
+                var extractedTemplates = Path.Combine(tempDir, "Templates");
+                if (Directory.Exists(extractedTemplates))
+                {
+                    var targetTemplates = Path.Combine(appDataDir, "Templates");
+                    CopyDirectoryRecursive(extractedTemplates, targetTemplates);
                 }
 
                 // Ayarları geri yükle
@@ -186,43 +192,45 @@ namespace OptikFormApp.Services
                 if (File.Exists(settingsPath))
                 {
                     var settingsJson = await File.ReadAllTextAsync(settingsPath);
-                    var settings = JsonSerializer.Deserialize<Models.AppSettings>(settingsJson);
+                    var settings = JsonSerializer.Deserialize<Models.AppSettings>(
+                        settingsJson,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                     if (settings != null)
                     {
                         _settingsService.Save(settings);
                     }
                 }
 
-                _notificationService.ShowSuccess("Yedek başarıyla geri yüklendi. Uygulama yeniden başlatılmalı.");
+                await _dbService.CheckpointAsync();
+                _notificationService.ShowSuccess("Yedek başarıyla geri yüklendi.");
             }
             finally
             {
                 if (Directory.Exists(tempDir))
-                    Directory.Delete(tempDir, true);
+                {
+                    try { Directory.Delete(tempDir, true); } catch { }
+                }
             }
         }
 
         /// <summary>
-        /// Veritabanını geri yükle
+        /// Veritabanını geri yükle (.db)
         /// </summary>
         public async Task RestoreDatabaseAsync(string dbPath)
         {
             if (!File.Exists(dbPath))
                 throw new FileNotFoundException("Veritabanı dosyası bulunamadı", dbPath);
 
-            // Güvenlik yedeği
-            var safetyBackup = Path.Combine(AppDataPath, $"pre_restore_{DateTime.Now:yyyyMMdd_HHmmss}.db");
-            var dbCurrent = Path.Combine(AppDataPath, "optik.db");
-            if (File.Exists(dbCurrent))
+            var appDataDir = GetAppDataDirectory();
+            Directory.CreateDirectory(appDataDir);
+
+            var safetyBackup = Path.Combine(appDataDir, $"pre_restore_{DateTime.Now:yyyyMMdd_HHmmss}.db");
+            if (File.Exists(_dbService.DatabasePath))
             {
-                File.Copy(dbCurrent, safetyBackup, true);
+                try { await _dbService.BackupDatabaseAsync(safetyBackup); } catch { }
             }
 
-            // DB'yi kapat ve değiştir
-            await _dbService.CloseConnectionAsync();
-            File.Copy(dbPath, dbCurrent, true);
-            await _dbService.ReconnectAsync();
-
+            await _dbService.RestoreDatabaseFromFileAsync(dbPath);
             _notificationService.ShowSuccess("Veritabanı geri yüklendi.");
         }
 
@@ -235,7 +243,9 @@ namespace OptikFormApp.Services
                 throw new FileNotFoundException("Ayar dosyası bulunamadı", jsonPath);
 
             var json = await File.ReadAllTextAsync(jsonPath);
-            var settings = JsonSerializer.Deserialize<Models.AppSettings>(json);
+            var settings = JsonSerializer.Deserialize<Models.AppSettings>(
+                json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             if (settings == null)
                 throw new InvalidDataException("Ayar dosyası geçersiz");
 
@@ -284,7 +294,9 @@ namespace OptikFormApp.Services
             finally
             {
                 if (Directory.Exists(tempDir))
-                    Directory.Delete(tempDir, true);
+                {
+                    try { Directory.Delete(tempDir, true); } catch { }
+                }
             }
         }
 
@@ -312,6 +324,19 @@ namespace OptikFormApp.Services
             }
 
             return backups.OrderByDescending(b => b.CreatedDate).ToList();
+        }
+
+        private static void CopyDirectoryRecursive(string sourceDir, string destDir)
+        {
+            Directory.CreateDirectory(destDir);
+            foreach (var file in Directory.GetFiles(sourceDir))
+            {
+                File.Copy(file, Path.Combine(destDir, Path.GetFileName(file)), overwrite: true);
+            }
+            foreach (var subDir in Directory.GetDirectories(sourceDir))
+            {
+                CopyDirectoryRecursive(subDir, Path.Combine(destDir, Path.GetFileName(subDir)));
+            }
         }
 
         /// <summary>

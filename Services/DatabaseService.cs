@@ -20,6 +20,8 @@ namespace OptikFormApp.Services
         private bool _disposed;
         private readonly SemaphoreSlim _gate = new(1, 1);
 
+        public string DatabasePath => _dbPath;
+
         public DatabaseService(string? dbPath = null)
         {
             // Program Files dizinine yazma izni olmayabileceği için AppData'ya kaydet
@@ -221,6 +223,13 @@ namespace OptikFormApp.Services
 
                     await InsertResultsAsync((SqliteTransaction)transaction, examId, results, cancellationToken);
                     await transaction.CommitAsync();
+                    try
+                    {
+                        using var cp = _connection.CreateCommand();
+                        cp.CommandText = "PRAGMA wal_checkpoint(PASSIVE);";
+                        await cp.ExecuteNonQueryAsync(cancellationToken);
+                    }
+                    catch { }
                     return examId;
                 }
                 catch
@@ -261,6 +270,13 @@ namespace OptikFormApp.Services
 
                     await InsertResultsAsync((SqliteTransaction)transaction, exam.Id, results, cancellationToken);
                     await transaction.CommitAsync();
+                    try
+                    {
+                        using var cp = _connection.CreateCommand();
+                        cp.CommandText = "PRAGMA wal_checkpoint(PASSIVE);";
+                        await cp.ExecuteNonQueryAsync(cancellationToken);
+                    }
+                    catch { }
                 }
                 catch
                 {
@@ -497,8 +513,19 @@ namespace OptikFormApp.Services
         public void Dispose()
         {
             if (_disposed) return;
-            _connection?.Close();
-            _connection?.Dispose();
+            try
+            {
+                if (_connection != null && _connection.State == System.Data.ConnectionState.Open)
+                {
+                    using var cp = _connection.CreateCommand();
+                    cp.CommandText = "PRAGMA wal_checkpoint(TRUNCATE);";
+                    cp.ExecuteNonQuery();
+                }
+            }
+            catch { }
+            try { _connection?.Close(); } catch { }
+            try { if (_connection != null) SqliteConnection.ClearPool(_connection); } catch { }
+            try { _connection?.Dispose(); } catch { }
             _gate.Dispose();
             _disposed = true;
             GC.SuppressFinalize(this);
@@ -507,17 +534,56 @@ namespace OptikFormApp.Services
         // ── Backup & Restore Operations ─────────────────────────────────────────
 
         /// <summary>
-        /// Veritabanı bağlantısını kapatır (restore işlemi için)
+        /// WAL günlüğündeki tüm değişiklikleri ana .db dosyasına yazar ve WAL dosyasını sıfırlar.
         /// </summary>
-        public async Task CloseConnectionAsync()
+        public async Task CheckpointAsync()
         {
             await _gate.WaitAsync();
             try
             {
                 if (_connection != null && _connection.State == System.Data.ConnectionState.Open)
                 {
-                    await _connection.CloseAsync();
+                    using var cp = _connection.CreateCommand();
+                    cp.CommandText = "PRAGMA wal_checkpoint(TRUNCATE);";
+                    await cp.ExecuteNonQueryAsync();
                 }
+            }
+            catch
+            {
+                // Salt okunur veya henüz başlatılmamış bağlantılarda sessizce geç
+            }
+            finally
+            {
+                _gate.Release();
+            }
+        }
+
+        /// <summary>
+        /// Veritabanı bağlantısını kapatır ve bağlantı havuzunu temizler (restore işlemi için)
+        /// </summary>
+        public async Task CloseConnectionAsync()
+        {
+            await _gate.WaitAsync();
+            try
+            {
+                if (_connection != null)
+                {
+                    if (_connection.State == System.Data.ConnectionState.Open)
+                    {
+                        try
+                        {
+                            using var cp = _connection.CreateCommand();
+                            cp.CommandText = "PRAGMA wal_checkpoint(TRUNCATE);";
+                            await cp.ExecuteNonQueryAsync();
+                        }
+                        catch { }
+                        await _connection.CloseAsync();
+                    }
+                    try { SqliteConnection.ClearPool(_connection); } catch { }
+                    try { _connection.Dispose(); } catch { }
+                    _connection = null!;
+                }
+                SqliteConnection.ClearAllPools();
             }
             finally
             {
@@ -536,10 +602,12 @@ namespace OptikFormApp.Services
                 if (_connection != null)
                 {
                     try { await _connection.CloseAsync(); } catch { }
+                    try { SqliteConnection.ClearPool(_connection); } catch { }
                     try { _connection.Dispose(); } catch { }
                     _connection = null!;
                 }
 
+                SqliteConnection.ClearAllPools();
                 _connection = new SqliteConnection($"Data Source={_dbPath};Cache=Shared;Foreign Keys=True;");
                 await _connection.OpenAsync();
 
@@ -555,26 +623,134 @@ namespace OptikFormApp.Services
             {
                 _gate.Release();
             }
+
+            await InitializeDatabaseAsync();
         }
 
         /// <summary>
-        /// SQLite backup komutu ile veritabanı yedeği alır
+        /// Yedek bir .db dosyasını mevcut veritabanının üzerine güvenli ve atomik biçimde geri yükler.
+        /// Bağlantı havuzunu ve eski -wal / -shm dosyalarını temizler; kilit durumunda Online Backup API'ye düşer.
         /// </summary>
-        public async Task BackupDatabaseAsync(string backupPath)
+        public async Task RestoreDatabaseFromFileAsync(string sourceDbPath)
         {
-            // Önce WAL dosyalarını temizle
+            if (string.IsNullOrWhiteSpace(sourceDbPath) || !File.Exists(sourceDbPath))
+                throw new FileNotFoundException("Veritabanı yedek dosyası bulunamadı.", sourceDbPath);
+
+            var fileInfo = new FileInfo(sourceDbPath);
+            if (fileInfo.Length >= 16)
+            {
+                byte[] header = new byte[16];
+                await using (var fs = new FileStream(sourceDbPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    int read = await fs.ReadAsync(header.AsMemory(0, 16));
+                    string magic = System.Text.Encoding.ASCII.GetString(header, 0, Math.Min(read, 15));
+                    if (!magic.StartsWith("SQLite format 3", StringComparison.Ordinal))
+                        throw new InvalidDataException("Seçilen dosya geçerli bir SQLite veritabanı değil.");
+                }
+            }
+
             await _gate.WaitAsync();
             try
             {
-                using var checkpointCmd = _connection.CreateCommand();
-                checkpointCmd.CommandText = "PRAGMA wal_checkpoint(TRUNCATE);";
-                await checkpointCmd.ExecuteNonQueryAsync();
+                if (_connection != null)
+                {
+                    try { await _connection.CloseAsync(); } catch { }
+                    try { SqliteConnection.ClearPool(_connection); } catch { }
+                    try { _connection.Dispose(); } catch { }
+                    _connection = null!;
+                }
 
-                using var backupConnection = new SqliteConnection($"Data Source={backupPath};");
+                SqliteConnection.ClearAllPools();
+
+                string walPath = _dbPath + "-wal";
+                string shmPath = _dbPath + "-shm";
+                bool copiedDirectly = false;
+
+                try
+                {
+                    if (File.Exists(walPath)) File.Delete(walPath);
+                    if (File.Exists(shmPath)) File.Delete(shmPath);
+
+                    if (fileInfo.Length > 0)
+                        File.Copy(sourceDbPath, _dbPath, overwrite: true);
+                    else if (File.Exists(_dbPath))
+                        File.Delete(_dbPath);
+
+                    if (File.Exists(walPath)) File.Delete(walPath);
+                    if (File.Exists(shmPath)) File.Delete(shmPath);
+                    copiedDirectly = true;
+                }
+                catch (IOException)
+                {
+                    copiedDirectly = false;
+                }
+
+                _connection = new SqliteConnection($"Data Source={_dbPath};Cache=Shared;Foreign Keys=True;");
+                await _connection.OpenAsync();
+
+                if (!copiedDirectly && fileInfo.Length > 0)
+                {
+                    using var srcConn = new SqliteConnection($"Data Source={sourceDbPath};Mode=ReadOnly;Pooling=False;");
+                    await srcConn.OpenAsync();
+                    srcConn.BackupDatabase(_connection);
+                    await srcConn.CloseAsync();
+                }
+
+                using var pragmaCmd = _connection.CreateCommand();
+                pragmaCmd.CommandText = @"
+                    PRAGMA journal_mode = WAL;
+                    PRAGMA synchronous = NORMAL;
+                    PRAGMA foreign_keys = ON;
+                ";
+                await pragmaCmd.ExecuteNonQueryAsync();
+            }
+            finally
+            {
+                _gate.Release();
+            }
+
+            await InitializeDatabaseAsync();
+            await CheckpointAsync();
+        }
+
+        /// <summary>
+        /// SQLite backup komutu ile tek dosyalık tam tutarlı veritabanı yedeği alır
+        /// </summary>
+        public async Task BackupDatabaseAsync(string backupPath)
+        {
+            await _gate.WaitAsync();
+            try
+            {
+                try
+                {
+                    using var checkpointCmd = _connection.CreateCommand();
+                    checkpointCmd.CommandText = "PRAGMA wal_checkpoint(TRUNCATE);";
+                    await checkpointCmd.ExecuteNonQueryAsync();
+                }
+                catch { }
+
+                var dir = Path.GetDirectoryName(backupPath);
+                if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+
+                if (File.Exists(backupPath))
+                    File.Delete(backupPath);
+
+                using var backupConnection = new SqliteConnection($"Data Source={backupPath};Pooling=False;");
                 await backupConnection.OpenAsync();
 
                 _connection.BackupDatabase(backupConnection);
+
+                try
+                {
+                    using var journalCmd = backupConnection.CreateCommand();
+                    journalCmd.CommandText = "PRAGMA journal_mode = DELETE;";
+                    await journalCmd.ExecuteNonQueryAsync();
+                }
+                catch { }
+
                 await backupConnection.CloseAsync();
+                SqliteConnection.ClearPool(backupConnection);
             }
             finally
             {

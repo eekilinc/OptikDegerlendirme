@@ -198,19 +198,25 @@ public partial class MainWindow : Window
 
     private void MainWindow_Closing(object? sender, CancelEventArgs e)
     {
-        if (DataContext is MainViewModel vm && vm.HasUnsavedData && vm.Students.Count > 0)
+        if (DataContext is MainViewModel vm)
         {
-            var result = MessageBox.Show(
-                "Kaydedilmemiş sınav değerlendirme verileri bulunuyor.\nKaydetmeden uygulamadan çıkmak istediğinize emin misiniz?",
-                "Kaydedilmemiş Veri Uyarısı",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning,
-                MessageBoxResult.No);
-
-            if (result == MessageBoxResult.No)
+            if (vm.HasUnsavedData && vm.Students.Count > 0)
             {
-                e.Cancel = true;
+                var result = MessageBox.Show(
+                    "Kaydedilmemiş sınav değerlendirme verileri bulunuyor.\nKaydetmeden uygulamadan çıkmak istediğinize emin misiniz?",
+                    "Kaydedilmemiş Veri Uyarısı",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning,
+                    MessageBoxResult.No);
+
+                if (result == MessageBoxResult.No)
+                {
+                    e.Cancel = true;
+                    return;
+                }
             }
+
+            vm.FlushDatabaseOnExit();
         }
     }
 

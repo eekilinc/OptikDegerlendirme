@@ -28,11 +28,37 @@ namespace OptikFormApp.Services
 
         public ObservableCollection<ToastNotificationModel> ActiveNotifications => _notifications;
 
+        private readonly object _syncLock = new();
+
         public NotificationService()
         {
-            _dispatcher = Dispatcher.CurrentDispatcher;
+            _dispatcher = System.Windows.Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
             _notifications = new ObservableCollection<ToastNotificationModel>();
             _autoDismissTokens = new System.Collections.Generic.Dictionary<string, CancellationTokenSource>();
+        }
+
+        private void RunOnUiThread(Action action)
+        {
+            var appDispatcher = System.Windows.Application.Current?.Dispatcher;
+            if (appDispatcher != null && !appDispatcher.HasShutdownStarted && !appDispatcher.HasShutdownFinished)
+            {
+                if (appDispatcher.CheckAccess())
+                    action();
+                else
+                    appDispatcher.Invoke(action);
+                return;
+            }
+
+            if (_dispatcher.CheckAccess() && !_dispatcher.HasShutdownStarted && !_dispatcher.HasShutdownFinished)
+            {
+                action();
+                return;
+            }
+
+            lock (_syncLock)
+            {
+                action();
+            }
         }
 
         public void Show(string message, string title = "", ToastType type = ToastType.Info, TimeSpan? duration = null)
@@ -46,10 +72,10 @@ namespace OptikFormApp.Services
                 IsPersistent = type == ToastType.Error
             };
 
-            _dispatcher.Invoke(() =>
+            RunOnUiThread(() =>
             {
                 _notifications.Add(notification);
-                
+
                 if (_notifications.Count > 5)
                 {
                     var oldest = _notifications.FirstOrDefault(n => !n.IsPersistent);
@@ -60,7 +86,7 @@ namespace OptikFormApp.Services
                 }
             });
 
-            if (!notification.IsPersistent)
+            if (!notification.IsPersistent && System.Windows.Application.Current != null)
             {
                 StartAutoDismiss(notification);
             }
@@ -88,7 +114,7 @@ namespace OptikFormApp.Services
 
         public void Dismiss(string notificationId)
         {
-            _dispatcher.Invoke(() =>
+            RunOnUiThread(() =>
             {
                 var notification = _notifications.FirstOrDefault(n => n.Id == notificationId);
                 if (notification != null)
@@ -107,10 +133,10 @@ namespace OptikFormApp.Services
 
         public void ClearAll()
         {
-            _dispatcher.Invoke(() =>
+            RunOnUiThread(() =>
             {
                 _notifications.Clear();
-                
+
                 foreach (var cts in _autoDismissTokens.Values)
                 {
                     cts.Cancel();
@@ -137,9 +163,9 @@ namespace OptikFormApp.Services
                     {
                         await Task.Delay(checkInterval, cts.Token);
                         elapsed += checkInterval;
-                        
+
                         var progress = 100 - (elapsed / totalMs * 100);
-                        _dispatcher.Invoke(() =>
+                        RunOnUiThread(() =>
                         {
                             notification.Progress = progress;
                         });
@@ -147,7 +173,7 @@ namespace OptikFormApp.Services
 
                     if (!cts.Token.IsCancellationRequested)
                     {
-                        _dispatcher.Invoke(() => Dismiss(notification.Id));
+                        Dismiss(notification.Id);
                     }
                 }
                 catch (TaskCanceledException)

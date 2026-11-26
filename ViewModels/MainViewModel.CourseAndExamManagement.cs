@@ -68,7 +68,14 @@ namespace OptikFormApp.ViewModels
                     }
                 });
 
-                await EvaluateAsync();
+                if (AnswerKeys.Any(k => !string.IsNullOrWhiteSpace(k.Answers)))
+                {
+                    await EvaluateAsync();
+                }
+                else
+                {
+                    System.Windows.Application.Current?.Dispatcher.Invoke(() => StudentsView?.Refresh());
+                }
                 HasUnsavedData = false;
                 AddToLog($"{exam.Title} başarıyla yüklendi.", LogLevel.Success);
             }
@@ -189,6 +196,66 @@ namespace OptikFormApp.ViewModels
             }
             
             AddToLog($"'{c.Name}' dersi ve {exams.Count} sınavı silindi.", LogLevel.Warning);
+        }
+
+        public void FlushDatabaseOnExit()
+        {
+            try
+            {
+                _dbService?.Dispose();
+            }
+            catch { }
+        }
+
+        private async Task RefreshWorkspaceAfterRestoreAsync(bool reloadSettings)
+        {
+            if (reloadSettings)
+            {
+                var saved = _settingsService.Load();
+                System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+                {
+                    SchoolName = saved.SchoolName;
+                    DefaultExcelPath = saved.DefaultExcelPath;
+                    NetCoefficient = saved.NetCoefficient;
+                    BaseScore = saved.BaseScore;
+                    WrongDeductionFactor = saved.WrongDeductionFactor;
+                    ThemeIndex = saved.ThemeIndex;
+                    LayoutIndex = saved.LayoutIndex;
+                    FontSize = saved.FontSize > 0 ? saved.FontSize : 14;
+                    LoadAcademicToolsSettings(saved);
+                    ApplyTheme(ThemeIndex == 1);
+                    ApplyFontSize(FontSize);
+                });
+            }
+
+            System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+            {
+                SelectedExam = null;
+                SelectedCourse = null;
+                CourseExams.Clear();
+                Students.Clear();
+                Statistics.Clear();
+                ValidationIssues.Clear();
+                AccuracyData.Clear();
+                ScoreDistData.Clear();
+                HasUnsavedData = false;
+            });
+
+            await LoadCoursesAsync();
+
+            System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+            {
+                CourseSearchText = string.Empty;
+                if (Courses.Count > 0)
+                {
+                    SelectedCourse = Courses[0];
+                    StatusMessage = $"Yedek başarıyla geri yüklendi ({Courses.Count} ders arşivi hazır).";
+                }
+                else
+                {
+                    StatusMessage = "Yedek geri yüklendi.";
+                }
+            });
         }
     }
 }

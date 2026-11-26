@@ -65,7 +65,7 @@
                         <StackPanel Grid.Row="0" Grid.Column="2" Margin="8,0,0,0">
                             <TextBlock Text="Kitapçık" FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,4"/>
                             <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="6" Padding="12,7" MinWidth="56" HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding SelectedStudentDetail.BookletType}" FontSize="13.5" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding SelectedStudentDetail.BookletType}" FontSize="13.5" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
                             </Border>
                         </StackPanel>
 
@@ -99,7 +99,8 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Width="42" Height="42" Margin="3" CornerRadius="6" 
+                                    <Border Width="42" Height="42" Margin="3" CornerRadius="6"
+                                            BorderBrush="{DynamicResource Border}" BorderThickness="1"
                                             Background="{Binding State, Converter={StaticResource AnswerStateToBgConverter}}">
                                         <Grid>
                                             <TextBlock Text="{Binding QuestionNumber}" FontSize="9" 

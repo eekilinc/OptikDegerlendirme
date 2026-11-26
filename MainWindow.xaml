@@ -6,7 +6,7 @@
         xmlns:modals="clr-namespace:OptikFormApp.Views.Modals"
         Title="MAKÜ Ağlasun MYO — Optik Değerlendirme ve İstatistik Sistemi" Height="780" Width="1260" MinWidth="740" MinHeight="540"
         Icon="pack://application:,,,/OptikFormApp;component/Assets/app_logo.png"
-        WindowStartupLocation="CenterScreen" Background="{DynamicResource AppBg}"
+        WindowStartupLocation="CenterScreen" Background="{DynamicResource AppBg}" Foreground="{DynamicResource TextMain}"
         FontFamily="Segoe UI Variable, Segoe UI, -apple-system, system-ui, sans-serif"
         AutomationProperties.Name="Optik Değerlendirme Ana Pencere"
         AllowDrop="True"

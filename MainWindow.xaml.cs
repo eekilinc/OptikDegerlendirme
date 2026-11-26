@@ -2,9 +2,11 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using OptikFormApp.ViewModels;
 
@@ -12,6 +14,9 @@ namespace OptikFormApp;
 
 public partial class MainWindow : Window
 {
+    [DllImport("dwmapi.dll", PreserveSig = true)]
+    private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+
     private Border? _dropOverlay;
     private double _savedSidebarWidth = 268.0;
     private bool _sidebarAutoCollapsed;
@@ -23,11 +28,32 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         ConfigureInitialViewport();
+        SourceInitialized += (_, _) => ApplyWindowDarkTitleBar(DataContext is MainViewModel m && m.IsDarkTheme);
 
         if (DataContext is MainViewModel vm)
         {
             vm.PropertyChanged += OnMainViewModelPropertyChanged;
             SyncSidebarColumn(vm.IsSidebarCollapsed);
+        }
+    }
+
+    private void ApplyWindowDarkTitleBar(bool isDark)
+    {
+        try
+        {
+            IntPtr hwnd = new WindowInteropHelper(this).Handle;
+            if (hwnd == IntPtr.Zero) return;
+
+            int useDark = isDark ? 1 : 0;
+            // Windows 11 & Windows 10 20H1+ (20) ve eski Windows 10 yapıları (19)
+            if (DwmSetWindowAttribute(hwnd, 20, ref useDark, sizeof(int)) != 0)
+            {
+                _ = DwmSetWindowAttribute(hwnd, 19, ref useDark, sizeof(int));
+            }
+        }
+        catch
+        {
+            // DWM desteklenmeyen ortamlarda sessizce geç
         }
     }
 
@@ -65,6 +91,10 @@ public partial class MainWindow : Window
         if (e.PropertyName == nameof(MainViewModel.IsSidebarCollapsed))
         {
             SyncSidebarColumn(vm.IsSidebarCollapsed);
+        }
+        else if (e.PropertyName == nameof(MainViewModel.IsDarkTheme) || e.PropertyName == nameof(MainViewModel.ThemeIndex))
+        {
+            ApplyWindowDarkTitleBar(vm.IsDarkTheme);
         }
     }
 

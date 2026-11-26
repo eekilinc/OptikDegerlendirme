@@ -1,11 +1,12 @@
 using System;
-using System.Collections.Concurrent;
-using System.Diagnostics;
+using System.Globalization;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Threading;
+using OptikFormApp.Models;
 using OptikFormApp.ViewModels;
 using Xunit;
 
@@ -98,13 +99,6 @@ namespace OptikFormApp.Tests
                         vm.IsLogDrawerOpen = false;
                         window.UpdateLayout();
 
-                        // Koyu ve açık tema geçişlerini doğrula
-                        vm.ThemeIndex = 1;
-                        window.UpdateLayout();
-                        vm.ThemeIndex = 0;
-                        window.UpdateLayout();
-
-                        // Tüm modal pencereleri tek tek görünür hale getirerek gizli XAML / Binding hatalarını denetle
                         Action[] modalToggles =
                         {
                             () => { vm.IsModalOpen = true; window.UpdateLayout(); vm.IsModalOpen = false; },
@@ -127,25 +121,86 @@ namespace OptikFormApp.Tests
                             () => { vm.IsLearningOutcomesOpen = true; window.UpdateLayout(); vm.IsLearningOutcomesOpen = false; },
                             () => { vm.IsTemplateManagerOpen = true; window.UpdateLayout(); vm.IsTemplateManagerOpen = false; },
                             () => { vm.IsStudentDetailOpen = true; window.UpdateLayout(); vm.IsStudentDetailOpen = false; },
-                            () => { vm.IsValidationDetailsOpen = true; window.UpdateLayout(); vm.IsValidationDetailsOpen = false; }
+                            () => { vm.IsValidationDetailsOpen = true; window.UpdateLayout(); vm.IsValidationDetailsOpen = false; },
+                            () => { vm.Progress.StartOperation("Test", "İşleniyor...", 100, true); window.UpdateLayout(); vm.Progress.CompleteOperation(); }
                         };
 
-                        foreach (var toggle in modalToggles)
+                        // Hem Açık Tema (0) hem Koyu Tema (1) altında tüm modalları ve sekmeleri doğrula
+                        foreach (int themeIdx in new[] { 0, 1 })
                         {
-                            toggle();
-                            dispatcher.Invoke(() => { }, DispatcherPriority.SystemIdle);
-                        }
-                    }
-
-                    // 3. Tüm ana sekmeleri tek tek aktif ederek alt görünümlerin bağlamalarını doğrula
-                    if (window.Content is Panel root && FindFirstTabControl(root) is TabControl mainTabs)
-                    {
-                        for (int i = 0; i < mainTabs.Items.Count; i++)
-                        {
-                            mainTabs.SelectedIndex = i;
+                            vm.ThemeIndex = themeIdx;
                             window.UpdateLayout();
-                            dispatcher.Invoke(() => { }, DispatcherPriority.SystemIdle);
+
+                            foreach (var toggle in modalToggles)
+                            {
+                                toggle();
+                                dispatcher.Invoke(() => { }, DispatcherPriority.SystemIdle);
+                            }
+
+                            if (window.Content is Panel root && FindFirstTabControl(root) is TabControl mainTabs)
+                            {
+                                for (int i = 0; i < mainTabs.Items.Count; i++)
+                                {
+                                    mainTabs.SelectedIndex = i;
+                                    window.UpdateLayout();
+                                    dispatcher.Invoke(() => { }, DispatcherPriority.SystemIdle);
+                                }
+                            }
                         }
+
+                        // Koyu tema aktifken özel şablonları ve kontrast ayrışmasını doğrula
+                        vm.ThemeIndex = 1;
+                        Assert.True(Application.Current.Resources["IsDarkThemeActive"] is true);
+
+                        var cardBg = ((SolidColorBrush)Application.Current.Resources["CardBg"]).Color;
+                        var altRowBg = ((SolidColorBrush)Application.Current.Resources["AltRowBg"]).Color;
+                        var headerBg = ((SolidColorBrush)Application.Current.Resources["HeaderBg"]).Color;
+                        var appBg = ((SolidColorBrush)Application.Current.Resources["AppBg"]).Color;
+                        Assert.NotEqual(cardBg, altRowBg);
+                        Assert.NotEqual(cardBg, headerBg);
+                        Assert.NotEqual(cardBg, appBg);
+
+                        var answerFgConverter = new AnswerStateToBrushConverter();
+                        var unevaluatedFg = ((SolidColorBrush)answerFgConverter.Convert(AnswerState.NotEvaluated, typeof(Brush), null!, CultureInfo.InvariantCulture)).Color;
+                        Assert.NotEqual(cardBg, unevaluatedFg);
+
+                        var answerBgConverter = new AnswerStateToBackgroundConverter();
+                        var correctBg = ((SolidColorBrush)answerBgConverter.Convert(AnswerState.Correct, typeof(Brush), null!, CultureInfo.InvariantCulture)).Color;
+                        Assert.NotEqual(Colors.White, correctBg);
+
+                        var logConverter = new LogLevelToBrushConverter();
+                        var infoBrush = ((SolidColorBrush)logConverter.Convert(LogLevel.Info, typeof(Brush), null!, CultureInfo.InvariantCulture)).Color;
+                        Assert.NotEqual(cardBg, infoBrush);
+
+                        // Özel kontrol şablonlarını (ComboBox, CheckBox, RadioButton, ScrollBar, ToolTip) örnekle ve ölç
+                        var templateHost = new StackPanel();
+                        var combo = new ComboBox { ItemsSource = new[] { "Açık Tema", "Koyu Tema" }, SelectedIndex = 1 };
+                        var editableCombo = new ComboBox { IsEditable = true, Text = "BİL101" };
+                        var check = new CheckBox { Content = "Harf Notu Sütunu", IsChecked = true };
+                        var indeterminateCheck = new CheckBox { Content = "Tümü", IsChecked = null };
+                        var radio = new RadioButton { Content = "A Kitapçığı", IsChecked = true };
+                        var vScroll = new ScrollBar { Orientation = Orientation.Vertical, Minimum = 0, Maximum = 100, Value = 40, Height = 80 };
+                        var hScroll = new ScrollBar { Orientation = Orientation.Horizontal, Minimum = 0, Maximum = 100, Value = 40, Width = 80 };
+                        var toolTip = new ToolTip { Content = "Koyu tema ipucu testi" };
+
+                        templateHost.Children.Add(combo);
+                        templateHost.Children.Add(editableCombo);
+                        templateHost.Children.Add(check);
+                        templateHost.Children.Add(indeterminateCheck);
+                        templateHost.Children.Add(radio);
+                        templateHost.Children.Add(vScroll);
+                        templateHost.Children.Add(hScroll);
+                        templateHost.Measure(new Size(400, 400));
+                        templateHost.Arrange(new Rect(0, 0, 400, 400));
+                        templateHost.UpdateLayout();
+
+                        toolTip.Measure(new Size(200, 80));
+                        toolTip.Arrange(new Rect(0, 0, 200, 80));
+                        toolTip.UpdateLayout();
+
+                        // Varsayılan temaya geri al
+                        vm.ThemeIndex = 0;
+                        window.UpdateLayout();
                     }
                 }
                 catch (Exception ex)
@@ -162,10 +217,10 @@ namespace OptikFormApp.Tests
 
         private static TabControl? FindFirstTabControl(DependencyObject parent)
         {
-            int count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(parent);
+            int count = VisualTreeHelper.GetChildrenCount(parent);
             for (int i = 0; i < count; i++)
             {
-                var child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i);
+                var child = VisualTreeHelper.GetChild(parent, i);
                 if (child is TabControl tc) return tc;
                 var nested = FindFirstTabControl(child);
                 if (nested != null) return nested;

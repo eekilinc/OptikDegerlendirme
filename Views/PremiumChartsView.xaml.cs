@@ -55,7 +55,9 @@ namespace OptikFormApp.Views
                 e.PropertyName == nameof(MainViewModel.ClassGradingStats) ||
                 e.PropertyName == nameof(MainViewModel.Statistics) ||
                 e.PropertyName == nameof(MainViewModel.QuestionStats) ||
-                e.PropertyName == nameof(MainViewModel.ScoreDistribution))
+                e.PropertyName == nameof(MainViewModel.ScoreDistribution) ||
+                e.PropertyName == nameof(MainViewModel.IsDarkTheme) ||
+                e.PropertyName == nameof(MainViewModel.ThemeIndex))
             {
                 Dispatcher.Invoke(RenderAllCharts);
             }

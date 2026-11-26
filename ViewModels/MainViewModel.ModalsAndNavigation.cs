@@ -40,43 +40,48 @@ namespace OptikFormApp.ViewModels
             _settingsService.Save(s);
         }
 
-        private void ApplyTheme(bool dark) 
+        private void ApplyTheme(bool dark)
         {
             if (Application.Current == null) return;
+            if (!Application.Current.Dispatcher.CheckAccess())
+            {
+                Application.Current.Dispatcher.Invoke(() => ApplyTheme(dark));
+                return;
+            }
             var res = Application.Current.Resources;
             var cc = new BrushConverter();
             
             if (dark) 
             {
-                res["AppBg"] = cc.ConvertFromString("#0F172A");      // Slate-900
-                res["CardBg"] = cc.ConvertFromString("#1E293B");     // Slate-800  
-                res["TextMain"] = cc.ConvertFromString("#F8FAFC");    // Slate-50
-                res["TextMuted"] = cc.ConvertFromString("#94A3B8");  // Slate-400
-                res["Border"] = cc.ConvertFromString("#334155");     // Slate-700
-                res["HeaderBg"] = cc.ConvertFromString("#0F172A");    // Slate-900
-                res["AltRowBg"] = cc.ConvertFromString("#1E293B");   // Slate-800
-                res["HoverBg"] = cc.ConvertFromString("#475569");    // Slate-600
-                res["ModalBackdrop"] = cc.ConvertFromString("#B3000000"); // Black with opacity
-                res["Accent"] = cc.ConvertFromString("#3B82F6");     // Blue-600
-                res["AccentHover"] = cc.ConvertFromString("#2563EB");  // Blue-700
-                res["Success"] = cc.ConvertFromString("#10B981");     // Green-600
-                res["Warning"] = cc.ConvertFromString("#F59E0B");     // Amber-600
-                res["Error"] = cc.ConvertFromString("#EF4444");       // Red-600
+                res["AppBg"] = cc.ConvertFromString("#0B1120");      // Slate-950 (Ana zemin)
+                res["HeaderBg"] = cc.ConvertFromString("#111827");   // Slate-900 (Üst/alt şerit ve gömülü alanlar)
+                res["CardBg"] = cc.ConvertFromString("#1E293B");     // Slate-800 (Yükseltilmiş kart yüzeyi)
+                res["AltRowBg"] = cc.ConvertFromString("#162032");   // Tablo alternatif satır zemini (CardBg'den ayrışır)
+                res["HoverBg"] = cc.ConvertFromString("#283548");    // Dengeli kurumsal vurgu/seçim yüzeyi
+                res["TextMain"] = cc.ConvertFromString("#F1F5F9");   // Göz yormayan yüksek kontrast metin
+                res["TextMuted"] = cc.ConvertFromString("#94A3B8");  // Slate-400 ikincil metin
+                res["Border"] = cc.ConvertFromString("#334155");     // Slate-700 kenarlık
+                res["ModalBackdrop"] = cc.ConvertFromString("#B8020617"); // Derin koyu arka plan karartması
+                res["Accent"] = cc.ConvertFromString("#3B82F6");     // Blue-500
+                res["AccentHover"] = cc.ConvertFromString("#60A5FA"); // Blue-400 (Koyu zeminde yüksek okunabilirlik)
+                res["Success"] = cc.ConvertFromString("#10B981");     // Emerald-500
+                res["Warning"] = cc.ConvertFromString("#F59E0B");     // Amber-500
+                res["Error"] = cc.ConvertFromString("#EF4444");       // Red-500
                 
-                res["AccentBgLight"] = cc.ConvertFromString("#1E1B4B"); // Dark blue-purple
-                res["SuccessBgLight"] = cc.ConvertFromString("#064E3B"); // Dark green
-                res["WarningBgLight"] = cc.ConvertFromString("#451A03"); // Dark orange
-                res["ErrorBgLight"] = cc.ConvertFromString("#450A0A"); // Dark red
+                res["AccentBgLight"] = cc.ConvertFromString("#172554");  // Koyu kurumsal lacivert rozet zemini
+                res["SuccessBgLight"] = cc.ConvertFromString("#064E3B"); // Koyu zümrüt rozet zemini
+                res["WarningBgLight"] = cc.ConvertFromString("#451A03"); // Koyu kehribar rozet zemini
+                res["ErrorBgLight"] = cc.ConvertFromString("#450A0A");   // Koyu bordo rozet zemini
                 res["AccentPurple"] = cc.ConvertFromString("#A78BFA");
-                res["AccentViolet"] = cc.ConvertFromString("#7C3AED");
-                res["AccentOrange"] = cc.ConvertFromString("#D97706");
-                res["AccentGreen"] = cc.ConvertFromString("#059669");
-                res["AccentRed"] = cc.ConvertFromString("#B91C1C");
-                res["AccentCyan"] = cc.ConvertFromString("#06B6D4");
-                res["AccentTeal"] = cc.ConvertFromString("#14B8A6");
+                res["AccentViolet"] = cc.ConvertFromString("#8B5CF6");
+                res["AccentOrange"] = cc.ConvertFromString("#F59E0B");
+                res["AccentGreen"] = cc.ConvertFromString("#34D399");
+                res["AccentRed"] = cc.ConvertFromString("#DC2626");
+                res["AccentCyan"] = cc.ConvertFromString("#22D3EE");
+                res["AccentTeal"] = cc.ConvertFromString("#2DD4BF");
                 
-                res["GlassCardBgColor"] = cc.ConvertFromString("#FFFFFF");
-                res["GlassCardBorderColor"] = cc.ConvertFromString("#FFFFFF");
+                res["GlassCardBgColor"] = cc.ConvertFromString("#1E293B");
+                res["GlassCardBorderColor"] = cc.ConvertFromString("#334155");
                 res["ShadowColor"] = cc.ConvertFromString("#000000");
             } 
             else 
@@ -148,11 +153,29 @@ namespace OptikFormApp.ViewModels
             res[SystemColors.ControlTextBrushKey] = res["TextMain"];
             res[SystemColors.HighlightBrushKey] = res["HoverBg"];
             res[SystemColors.HighlightTextBrushKey] = res["TextMain"];
+
+            // Dönüştürücü tabanlı hücre renklerini (cevap kutuları, log satırları, detay modalı) anında tazele
+            res["IsDarkThemeActive"] = dark;
+            StudentsView?.Refresh();
+            if (Logs != null)
+            {
+                System.Windows.Data.CollectionViewSource.GetDefaultView(Logs)?.Refresh();
+            }
+            if (SelectedStudentDetail != null)
+            {
+                System.Windows.Data.CollectionViewSource.GetDefaultView(SelectedStudentDetail.ColoredAnswers)?.Refresh();
+                OnPropertyChanged(nameof(SelectedStudentDetail));
+            }
         }
 
         private void ApplyFontSize(double size)
         {
             if (Application.Current == null) return;
+            if (!Application.Current.Dispatcher.CheckAccess())
+            {
+                Application.Current.Dispatcher.Invoke(() => ApplyFontSize(size));
+                return;
+            }
             var res = Application.Current.Resources;
             res["GlobalFontSize"] = size;
             res["GlobalHeaderFontSize"] = size + 4;

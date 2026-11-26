@@ -8,9 +8,11 @@
     <Grid Visibility="{Binding IsBookletMappingOpen, Converter={StaticResource BoolToVis}}" 
           Background="{DynamicResource ModalBackdrop}">
         
-        <Border Width="620" 
-                VerticalAlignment="Center" 
-                HorizontalAlignment="Center"
+        <Border MaxWidth="640"
+                MaxHeight="660"
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch"
+                Margin="20,16"
                 CornerRadius="24"
                 Padding="0">
             <Border.Style>

@@ -10,13 +10,13 @@
           Background="{DynamicResource ModalBackdrop}">
         
         <!-- Premium Modal Container -->
-        <Border Width="660" 
-                Height="560"
-                VerticalAlignment="Center" 
-                HorizontalAlignment="Center"
+        <Border MaxWidth="660" 
+                MaxHeight="560"
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch"
                 CornerRadius="20"
                 Padding="0"
-                Margin="20"
+                Margin="20,16"
                 Background="{DynamicResource CardBg}">
             <Border.Effect>
                 <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.25" BlurRadius="50" ShadowDepth="15"/>
@@ -150,8 +150,9 @@
                         </Style>
                     </TabControl.Resources>
 
-                    <!-- TAB 1: GENEL BAKIŞ (Sıfır Scroll, Kusursuz Dashboard Görünümü) -->
+                    <!-- TAB 1: GENEL BAKIŞ -->
                     <TabItem Header="📌 Genel Bakış">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                         <Grid Margin="22,14" VerticalAlignment="Center">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -285,6 +286,7 @@
                                 </Border>
                             </UniformGrid>
                         </Grid>
+                        </ScrollViewer>
                     </TabItem>
 
                     <!-- TAB 2: ÖZELLİKLER & MODÜLLER -->
@@ -353,7 +355,7 @@
                     <!-- TAB 3: GELİŞTİRİCİ & KÜNYE -->
                     <TabItem Header="👨‍💻 Geliştirici &amp; Künye">
                         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="22,14">
-                            <StackPanel HorizontalAlignment="Center" Width="520">
+                            <StackPanel HorizontalAlignment="Stretch" MaxWidth="520">
                                 <Border Width="56" 
                                         Height="56" 
                                         CornerRadius="28" 

@@ -2,39 +2,30 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OptikFormApp.Views"
              mc:Ignorable="d" 
              d:DesignHeight="1200" d:DesignWidth="1100">
     
     <UserControl.Resources>
-        <!-- Chart Animasyonları -->
-        <Storyboard x:Key="ChartFadeIn">
-            <DoubleAnimation Storyboard.TargetProperty="Opacity" 
-                           From="0" To="1" Duration="0:0:0.6">
-                <DoubleAnimation.EasingFunction>
-                    <CubicEase EasingMode="EaseOut"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-        </Storyboard>
-
         <Style x:Key="ChartCard" TargetType="Border">
             <Setter Property="Background" Value="{DynamicResource CardBg}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="16"/>
-            <Setter Property="Padding" Value="24"/>
-            <Setter Property="Margin" Value="0,0,0,24"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Padding" Value="18"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.05" BlurRadius="18" ShadowDepth="3"/>
+                    <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.04" BlurRadius="14" ShadowDepth="2"/>
                 </Setter.Value>
             </Setter>
         </Style>
 
         <Style x:Key="MiniStatBadge" TargetType="Border">
-            <Setter Property="CornerRadius" Value="10"/>
-            <Setter Property="Padding" Value="14,10"/>
-            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Margin" Value="0,2,8,2"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
     </UserControl.Resources>
@@ -43,7 +34,7 @@
         <!-- VERİ VAR DURUMU -->
         <ScrollViewer x:Name="ChartScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                       Visibility="{Binding Students.Count, Converter={StaticResource DataToVisConverter}}">
-            <StackPanel Margin="24">
+            <StackPanel Margin="16,12">
                 
                 <!-- 1. PUAN DAĞILIMI VE GAUSSIAN NORMAL DAĞILIM (ÇAN EĞRİSİ) -->
                 <Border Style="{StaticResource ChartCard}">
@@ -51,64 +42,68 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="280"/>
+                            <RowDefinition Height="260"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <!-- Başlık & Rozetler -->
-                        <Grid Grid.Row="0" Margin="0,0,0,15">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Border Width="38" Height="38" CornerRadius="10" Background="#EEF2FF" Margin="0,0,12,0">
-                                    <TextBlock Text="📈" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <!-- Responsive Başlık & Rozetler -->
+                        <local:ResponsiveToolbarPanel Grid.Row="0" StretchFirst="True" MinFirstWidth="280" HorizontalSpacing="12" VerticalSpacing="8" Margin="0,0,0,12">
+                            <Grid VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Width="36" Height="36" CornerRadius="9" Background="{DynamicResource HoverBg}" Margin="0,0,11,0">
+                                    <TextBlock Text="&#xE9D9;" FontFamily="{StaticResource FluentIconFont}" FontSize="15" Foreground="{DynamicResource Accent}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
-                                <StackPanel>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                     <TextBlock Text="Puan Dağılımı ve Gauss Çan Eğrisi (Normal Dağılım)" 
-                                               FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
+                                               FontSize="15.5" FontWeight="Bold" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis"/>
                                     <TextBlock Text="Öğrenci puanlarının frekans çubukları ile teorik çan eğrisi uyumu" 
-                                               FontSize="12" Foreground="{DynamicResource TextMuted}"/>
+                                               FontSize="11.5" Foreground="{DynamicResource TextMuted}" TextTrimming="CharacterEllipsis"/>
                                 </StackPanel>
-                            </StackPanel>
+                            </Grid>
 
                             <!-- Mini Özet Rozetleri -->
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                <Border Style="{StaticResource MiniStatBadge}" Background="#F0FDF4" BorderBrush="#BBF7D0">
+                            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Border Style="{StaticResource MiniStatBadge}" Background="{DynamicResource SuccessBgLight}" BorderBrush="{DynamicResource Border}">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Ortalama: " FontSize="11" Foreground="#166534"/>
-                                        <TextBlock Text="{Binding ClassGradingStats.MeanScore, StringFormat={}{0:F1}}" FontSize="11" FontWeight="Bold" Foreground="#166534"/>
+                                        <TextBlock Text="Ortalama: " FontSize="11" Foreground="{DynamicResource Success}"/>
+                                        <TextBlock Text="{Binding ClassGradingStats.MeanScore, StringFormat={}{0:F1}}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource Success}"/>
                                     </StackPanel>
                                 </Border>
-                                <Border Style="{StaticResource MiniStatBadge}" Background="#FEF3C7" BorderBrush="#FDE68A">
+                                <Border Style="{StaticResource MiniStatBadge}" Background="{DynamicResource WarningBgLight}" BorderBrush="{DynamicResource Border}">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Medyan: " FontSize="11" Foreground="#92400E"/>
-                                        <TextBlock Text="{Binding ClassStats.MedianScore, StringFormat={}{0:F1}}" FontSize="11" FontWeight="Bold" Foreground="#92400E"/>
+                                        <TextBlock Text="Medyan: " FontSize="11" Foreground="{DynamicResource Warning}"/>
+                                        <TextBlock Text="{Binding ClassStats.MedianScore, StringFormat={}{0:F1}}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource Warning}"/>
                                     </StackPanel>
                                 </Border>
-                                <Border Style="{StaticResource MiniStatBadge}" Background="#EFF6FF" BorderBrush="#BFDBFE">
+                                <Border Style="{StaticResource MiniStatBadge}" Background="{DynamicResource AccentBgLight}" BorderBrush="{DynamicResource Border}" Margin="0,2,0,2">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Sapma: " FontSize="11" Foreground="#1E40AF"/>
-                                        <TextBlock Text="{Binding ClassGradingStats.StandardDeviation, StringFormat={}±{0:F1}}" FontSize="11" FontWeight="Bold" Foreground="#1E40AF"/>
+                                        <TextBlock Text="Sapma: " FontSize="11" Foreground="{DynamicResource Accent}"/>
+                                        <TextBlock Text="{Binding ClassGradingStats.StandardDeviation, StringFormat={}±{0:F1}}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource Accent}"/>
                                     </StackPanel>
                                 </Border>
-                            </StackPanel>
-                        </Grid>
+                            </WrapPanel>
+                        </local:ResponsiveToolbarPanel>
 
                         <!-- Gösterge Lejantı -->
-                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
-                            <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
-                                <Border Width="14" Height="14" Background="{DynamicResource Accent}" CornerRadius="3" Margin="0,0,6,0"/>
+                        <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                            <StackPanel Orientation="Horizontal" Margin="0,2,18,2">
+                                <Border Width="12" Height="12" Background="{DynamicResource Accent}" CornerRadius="3" Margin="0,0,6,0"/>
                                 <TextBlock Text="Öğrenci Puan Sayısı (Frekans)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Border Width="20" Height="3" Background="{DynamicResource Error}" CornerRadius="1.5" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                <Border Width="18" Height="3" Background="{DynamicResource Error}" CornerRadius="1.5" Margin="0,0,6,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Teorik Normal Dağılım Çan Eğrisi (Gaussian)" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
                             </StackPanel>
-                        </StackPanel>
+                        </WrapPanel>
 
                         <!-- Çizim Canvas Alanı -->
-                        <Border Grid.Row="2" Name="BellCurveHost" Background="Transparent" ClipToBounds="True"/>
+                        <Border Grid.Row="2" Name="BellCurveHost" Background="Transparent" ClipToBounds="True" SizeChanged="ChartHost_SizeChanged"/>
 
                         <!-- X Ekseni Alt Açıklamaları -->
-                        <Grid Grid.Row="3" Margin="40,8,40,0">
+                        <Grid Grid.Row="3" Margin="32,6,32,0">
                             <TextBlock Text="0 (En Düşük)" HorizontalAlignment="Left" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
                             <TextBlock Text="50 (Baraj / Orta)" HorizontalAlignment="Center" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
                             <TextBlock Text="100 (Tam Puan)" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
@@ -116,38 +111,41 @@
                     </Grid>
                 </Border>
 
-                <!-- 2. HARF NOTU DAĞILIMI (BDS ÇAN EĞRİSİ NOTLARI) -->
-                <Border Style="{StaticResource ChartCard}">
+                <!-- 2. HARF NOTU DAĞILIMI (Yalnızca Ayarlardan Harf Notu açıldığında gösterilir) -->
+                <Border Style="{StaticResource ChartCard}"
+                        Visibility="{Binding ShowLetterGradeColumn, Converter={StaticResource BoolToVis}}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="240"/>
+                            <RowDefinition Height="230"/>
                         </Grid.RowDefinitions>
 
-                        <!-- Başlık -->
-                        <Grid Grid.Row="0" Margin="0,0,0,15">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Border Width="38" Height="38" CornerRadius="10" Background="#FDF4FF" Margin="0,0,12,0">
-                                    <TextBlock Text="🎓" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <local:ResponsiveToolbarPanel Grid.Row="0" StretchFirst="True" MinFirstWidth="260" HorizontalSpacing="12" VerticalSpacing="8" Margin="0,0,0,12">
+                            <Grid VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Width="36" Height="36" CornerRadius="9" Background="{DynamicResource AccentBgLight}" Margin="0,0,11,0">
+                                    <TextBlock Text="&#xE7BE;" FontFamily="{StaticResource FluentIconFont}" FontSize="15" Foreground="{DynamicResource AccentPurple}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
-                                <StackPanel>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                     <TextBlock Text="Harf Notu Dağılımı (YÖK Bağıl Değerlendirme)" 
-                                               FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
+                                               FontSize="15.5" FontWeight="Bold" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis"/>
                                     <TextBlock Text="Bağıl T-Skoru veya mutlak sisteme göre öğrenci harf notu yelpazesi" 
-                                               FontSize="12" Foreground="{DynamicResource TextMuted}"/>
+                                               FontSize="11.5" Foreground="{DynamicResource TextMuted}" TextTrimming="CharacterEllipsis"/>
                                 </StackPanel>
-                            </StackPanel>
+                            </Grid>
 
-                            <Border HorizontalAlignment="Right" Background="#F5F3FF" BorderBrush="#DDD6FE" BorderThickness="1" CornerRadius="10" Padding="12,6">
+                            <Border Background="{DynamicResource AccentBgLight}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="8" Padding="10,5">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Sınıf Düzeyi: " FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                    <TextBlock Text="{Binding ClassGradingStats.ClassLevelDescription}" FontSize="12" FontWeight="Bold" Foreground="#7C3AED"/>
+                                    <TextBlock Text="{Binding ClassGradingStats.ClassLevelDescription}" FontSize="11.5" FontWeight="Bold" Foreground="{DynamicResource AccentPurple}"/>
                                 </StackPanel>
                             </Border>
-                        </Grid>
+                        </local:ResponsiveToolbarPanel>
 
-                        <!-- Harf Notu Çubuk Çizim Alanı -->
-                        <Border Grid.Row="1" Name="GradeDistributionHost" Background="Transparent" ClipToBounds="True"/>
+                        <Border Grid.Row="1" Name="GradeDistributionHost" Background="Transparent" ClipToBounds="True" SizeChanged="ChartHost_SizeChanged"/>
                     </Grid>
                 </Border>
 
@@ -157,116 +155,121 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="270"/>
+                            <RowDefinition Height="265"/>
                         </Grid.RowDefinitions>
 
                         <Grid Grid.Row="0" Margin="0,0,0,10">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Border Width="38" Height="38" CornerRadius="10" Background="#ECFDF5" Margin="0,0,12,0">
-                                    <TextBlock Text="📊" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <StackPanel>
-                                    <TextBlock Text="Soru Başarı Profili (% Doğru, Yanlış ve Boş)" 
-                                               FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
-                                    <TextBlock Text="Soru bazında başarı yüzdeleri ve öğrenci tercih yoğunlukları" 
-                                               FontSize="12" Foreground="{DynamicResource TextMuted}"/>
-                                </StackPanel>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Width="36" Height="36" CornerRadius="9" Background="{DynamicResource SuccessBgLight}" Margin="0,0,11,0">
+                                <TextBlock Text="&#xE9D2;" FontFamily="{StaticResource FluentIconFont}" FontSize="15" Foreground="{DynamicResource Success}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="Soru Başarı Profili (% Doğru, Yanlış ve Boş)" 
+                                           FontSize="15.5" FontWeight="Bold" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="Soru bazında başarı yüzdeleri ve öğrenci tercih yoğunlukları" 
+                                           FontSize="11.5" Foreground="{DynamicResource TextMuted}" TextTrimming="CharacterEllipsis"/>
                             </StackPanel>
                         </Grid>
 
-                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
-                            <StackPanel Orientation="Horizontal" Margin="0,0,15,0">
+                        <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                            <StackPanel Orientation="Horizontal" Margin="0,2,15,2">
                                 <Border Width="12" Height="12" Background="{DynamicResource Success}" CornerRadius="3" Margin="0,0,5,0"/>
                                 <TextBlock Text="Doğru Yanıt" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,15,0">
+                            <StackPanel Orientation="Horizontal" Margin="0,2,15,2">
                                 <Border Width="12" Height="12" Background="{DynamicResource Error}" CornerRadius="3" Margin="0,0,5,0"/>
                                 <TextBlock Text="Yanlış Yanıt" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
                                 <Border Width="12" Height="12" Background="{DynamicResource TextMuted}" CornerRadius="3" Margin="0,0,5,0"/>
                                 <TextBlock Text="Boş Bırakılan" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
                             </StackPanel>
-                        </StackPanel>
+                        </WrapPanel>
 
-                        <!-- Soru Başarı Canvas -->
                         <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                            <Border Name="QuestionSuccessHost" Background="Transparent" MinWidth="800" Height="260"/>
+                            <Border Name="QuestionSuccessHost" Background="Transparent" MinWidth="680" Height="255" SizeChanged="ChartHost_SizeChanged"/>
                         </ScrollViewer>
                     </Grid>
                 </Border>
 
-                <!-- 4. MADDE AYIRT EDİCİLİK İNDEKSİ & KİTAPÇIK ANALİZİ YAN YANA -->
-                <Grid Margin="0,0,0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.3*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
+                <!-- 4. MADDE AYIRT EDİCİLİK İNDEKSİ & KİTAPÇIK ANALİZİ (Genişte 2 Sütun, Darda 1 Sütun) -->
+                <local:ResponsiveUniformGrid MaxColumns="2" MinColumns="1" MinColumnWidth="390" Margin="-6,0,-6,4">
                     <!-- Madde Ayırt Edicilik Dağılımı -->
-                    <Border Grid.Column="0" Style="{StaticResource ChartCard}" Margin="0,0,12,0">
+                    <Border Style="{StaticResource ChartCard}" Margin="6,0,6,12">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="200"/>
                             </Grid.RowDefinitions>
 
-                            <StackPanel Grid.Row="0" Margin="0,0,0,10">
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Border Width="34" Height="34" CornerRadius="8" Background="#FEF2F2" Margin="0,0,10,0">
-                                        <TextBlock Text="🎯" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <StackPanel>
-                                        <TextBlock Text="Madde Ayırt Edicilik Kalitesi (r_pbi)" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
-                                        <TextBlock Text="Soruların başarılı ve zayıf öğrencileri ayırt etme gücü" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                    </StackPanel>
+                            <Grid Grid.Row="0" Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Width="34" Height="34" CornerRadius="8" Background="{DynamicResource ErrorBgLight}" Margin="0,0,10,0">
+                                    <TextBlock Text="&#xE9D5;" FontFamily="{StaticResource FluentIconFont}" FontSize="14" Foreground="{DynamicResource Error}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="Madde Ayırt Edicilik Kalitesi (r_pbi)" FontSize="14.5" FontWeight="Bold" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="Soruların başarılı ve zayıf öğrencileri ayırt etme gücü" FontSize="11" Foreground="{DynamicResource TextMuted}" TextTrimming="CharacterEllipsis"/>
                                 </StackPanel>
-                            </StackPanel>
+                            </Grid>
 
-                            <Border Grid.Row="1" Name="DiscriminationQualityHost" Background="Transparent"/>
+                            <Border Grid.Row="1" Name="DiscriminationQualityHost" Background="Transparent" ClipToBounds="True" SizeChanged="ChartHost_SizeChanged"/>
                         </Grid>
                     </Border>
 
                     <!-- Kitapçık Performansı -->
-                    <Border Grid.Column="1" Style="{StaticResource ChartCard}" Margin="12,0,0,0">
+                    <Border Style="{StaticResource ChartCard}" Margin="6,0,6,12">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="200"/>
                             </Grid.RowDefinitions>
 
-                            <StackPanel Grid.Row="0" Margin="0,0,0,10">
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Border Width="34" Height="34" CornerRadius="8" Background="#F0F9FF" Margin="0,0,10,0">
-                                        <TextBlock Text="📚" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <StackPanel>
-                                        <TextBlock Text="Kitapçık Performans Dengesi" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
-                                        <TextBlock Text="Farklı kitapçıkların ortalama puan ve katılım dengesi" FontSize="11" Foreground="{DynamicResource TextMuted}"/>
-                                    </StackPanel>
+                            <Grid Grid.Row="0" Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Width="34" Height="34" CornerRadius="8" Background="{DynamicResource HoverBg}" Margin="0,0,10,0">
+                                    <TextBlock Text="&#xE82D;" FontFamily="{StaticResource FluentIconFont}" FontSize="14" Foreground="{DynamicResource Accent}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="Kitapçık Performans Dengesi" FontSize="14.5" FontWeight="Bold" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="Farklı kitapçıkların ortalama puan ve katılım dengesi" FontSize="11" Foreground="{DynamicResource TextMuted}" TextTrimming="CharacterEllipsis"/>
                                 </StackPanel>
-                            </StackPanel>
+                            </Grid>
 
-                            <Border Grid.Row="1" Name="BookletComparisonHost" Background="Transparent"/>
+                            <Border Grid.Row="1" Name="BookletComparisonHost" Background="Transparent" ClipToBounds="True" SizeChanged="ChartHost_SizeChanged"/>
                         </Grid>
                     </Border>
-                </Grid>
+                </local:ResponsiveUniformGrid>
 
             </StackPanel>
         </ScrollViewer>
 
         <!-- VERİ YOK DURUMU (EMPTY STATE) -->
         <Border Visibility="{Binding Students.Count, Converter={StaticResource CountToVisConverter}}" 
-                VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="520" Padding="30">
+                VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="520" Padding="24">
             <StackPanel HorizontalAlignment="Center">
-                <Border Width="90" Height="90" Background="{DynamicResource AltRowBg}" CornerRadius="45" Margin="0,0,0,24" HorizontalAlignment="Center">
-                    <TextBlock Text="📈" FontSize="46" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Border Width="64" Height="64" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="15" Margin="0,0,0,14" HorizontalAlignment="Center">
+                    <TextBlock Text="&#xE9D9;" FontFamily="{StaticResource FluentIconFont}" FontSize="26" Foreground="{DynamicResource Accent}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
-                <TextBlock Text="Grafiksel Analiz Verisi Bulunamadı" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                <TextBlock Text="Gauss çan eğrisi, harf notu dağılımı ve soru başarı profillerini görüntülemek için öğrenci verisi yükleyip 'Hesapla (F5)' butonuna basınız." 
-                           FontSize="14" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,0,0,24" TextAlignment="Center" TextWrapping="Wrap"/>
-                <Button Content="⚡ Puanları Hesapla (F5)" Command="{Binding EvaluateCommand}" Style="{StaticResource PipelineButton}" 
-                        Background="#7C3AED" Foreground="White" Padding="25,12" HorizontalAlignment="Center" FontWeight="Bold"/>
+                <TextBlock Text="Grafiksel Analiz Verisi Bulunamadı" FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center" Margin="0,0,0,6"/>
+                <TextBlock Text="Gauss çan eğrisi, başarı dağılımı ve soru profillerini görüntülemek için öğrenci verisi yükleyip Hesapla (F5) işlemini çalıştırın." 
+                           FontSize="12" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,0,0,18" TextAlignment="Center" TextWrapping="Wrap"/>
+                <Button Command="{Binding EvaluateCommand}" Style="{StaticResource PipelineButton}" 
+                        Background="{DynamicResource AccentViolet}" BorderBrush="{DynamicResource AccentViolet}" Foreground="White" Padding="20,9" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE945;" FontFamily="{StaticResource FluentIconFont}" FontSize="12" Margin="0,0,7,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Puanları Hesapla (F5)" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Border>
     </Grid>

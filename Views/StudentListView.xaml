@@ -4,39 +4,35 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:OptikFormApp.ViewModels"
+             xmlns:local="clr-namespace:OptikFormApp.Views"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <UserControl.Resources>
         <vm:BindingProxy x:Key="Proxy" Data="{Binding}"/>
     </UserControl.Resources>
-    <Grid Margin="14,10,14,6">
+    <Grid Margin="12,10,12,6">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <!-- Arama Çubuğu, Hızlı Filtreler ve Yoklama Eşleştirme -->
-        <Grid Grid.Row="0" Margin="0,2,0,12">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
+        <!-- Esnek Arama Çubuğu, Hızlı Filtreler ve Yoklama Eşleştirme -->
+        <local:ResponsiveToolbarPanel Grid.Row="0" StretchFirst="True" MinFirstWidth="230" HorizontalSpacing="12" VerticalSpacing="8" Margin="0,2,0,10">
             <!-- Arama Çubuğu -->
-            <Border Grid.Column="0" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="8" Padding="12,7" Margin="0,0,12,0">
+            <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="8" Padding="11,6.5">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="&#xE721;" FontFamily="{StaticResource FluentIconFont}" FontSize="12.5" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="0,0,9,0"/>
+                    <TextBlock Grid.Column="0" Text="&#xE721;" FontFamily="{StaticResource FluentIconFont}" FontSize="12" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="0,0,8,0"/>
                     <TextBox Grid.Column="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
                              Background="Transparent" BorderThickness="0" VerticalAlignment="Center"
-                             FontSize="12.5" Padding="0" Foreground="{DynamicResource TextMain}">
+                             FontSize="12" Padding="0" Foreground="{DynamicResource TextMain}">
                         <TextBox.Resources>
                             <VisualBrush x:Key="HintBrush" TileMode="None" Opacity="0.55" Stretch="None" AlignmentX="Left">
                                 <VisualBrush.Visual>
-                                    <TextBlock Text="Öğrenci numarası veya ad soyad ile filtrele..." FontSize="12.5" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Text="Öğrenci numarası veya ad soyad ile filtrele..." FontSize="12" Foreground="{DynamicResource TextMuted}"/>
                                 </VisualBrush.Visual>
                             </VisualBrush>
                         </TextBox.Resources>
@@ -56,43 +52,43 @@
                 </Grid>
             </Border>
 
-            <!-- Hızlı Filtreler & Yoklama Eşleştirme -->
-            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+            <!-- Hızlı Filtreler & Yoklama Eşleştirme (Dar Ekranda Temiz Sarmalanır) -->
+            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <Button Content="Tümü" Command="{Binding SetQuickFilterCommand}" CommandParameter="All"
-                        Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,5,0" FontSize="11.5" FontWeight="SemiBold"/>
+                        Style="{StaticResource OutlineButton}" Padding="9,5.5" Margin="0,2,5,2" FontSize="11" FontWeight="SemiBold"/>
                 <Button Command="{Binding SetQuickFilterCommand}" CommandParameter="Passed"
-                        Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,5,0" FontSize="11.5" FontWeight="SemiBold">
+                        Style="{StaticResource OutlineButton}" Padding="9,5.5" Margin="0,2,5,2" FontSize="11" FontWeight="SemiBold">
                     <StackPanel Orientation="Horizontal">
                         <Ellipse Width="6" Height="6" Fill="{DynamicResource Success}" Margin="0,0,5,0" VerticalAlignment="Center"/>
                         <TextBlock Text="Geçenler" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding SetQuickFilterCommand}" CommandParameter="Conditional"
-                        Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,5,0" FontSize="11.5" FontWeight="SemiBold">
+                        Style="{StaticResource OutlineButton}" Padding="9,5.5" Margin="0,2,5,2" FontSize="11" FontWeight="SemiBold">
                     <StackPanel Orientation="Horizontal">
                         <Ellipse Width="6" Height="6" Fill="{DynamicResource Warning}" Margin="0,0,5,0" VerticalAlignment="Center"/>
                         <TextBlock Text="Şartlı" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding SetQuickFilterCommand}" CommandParameter="Failed"
-                        Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,10,0" FontSize="11.5" FontWeight="SemiBold">
+                        Style="{StaticResource OutlineButton}" Padding="9,5.5" Margin="0,2,8,2" FontSize="11" FontWeight="SemiBold">
                     <StackPanel Orientation="Horizontal">
                         <Ellipse Width="6" Height="6" Fill="{DynamicResource Error}" Margin="0,0,5,0" VerticalAlignment="Center"/>
                         <TextBlock Text="Kalanlar" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
-                <Border Width="1" Height="18" Background="{DynamicResource Border}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <Border Width="1" Height="16" Background="{DynamicResource Border}" Margin="0,2,8,2" VerticalAlignment="Center"/>
 
-                <Button Command="{Binding OpenRosterMatchCommand}" Style="{StaticResource OutlineButton}" Padding="11,6" FontSize="11.5" FontWeight="SemiBold"
+                <Button Command="{Binding OpenRosterMatchCommand}" Style="{StaticResource OutlineButton}" Padding="10,5.5" Margin="0,2,0,2" FontSize="11" FontWeight="SemiBold"
                         ToolTip="OBS sınıf listesiyle karşılaştır (Sınava girmeyenler ve numara hataları)">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE8FD;" FontFamily="{StaticResource FluentIconFont}" FontSize="11.5" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="&#xE8FD;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Margin="0,0,5,0" VerticalAlignment="Center"/>
                         <TextBlock Text="Yoklama Eşleştir" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
-            </StackPanel>
-        </Grid>
+            </WrapPanel>
+        </local:ResponsiveToolbarPanel>
 
         <DataGrid Grid.Row="1" ItemsSource="{Binding StudentsView}" RowHeight="{Binding GridRowHeight}"
                   Visibility="{Binding Students.Count, Converter={StaticResource DataToVisConverter}}"
@@ -103,6 +99,8 @@
                   EnableRowVirtualization="True"
                   EnableColumnVirtualization="False"
                   ScrollViewer.CanContentScroll="True"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
                   MouseDoubleClick="DataGrid_MouseDoubleClick"
@@ -135,7 +133,7 @@
                 </Style>
             </DataGrid.CellStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="#" Binding="{Binding RowNumber}" SortMemberPath="RowNumber" Width="Auto">
+                <DataGridTextColumn Header="#" Binding="{Binding RowNumber}" SortMemberPath="RowNumber" Width="Auto" MinWidth="36">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -144,9 +142,15 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="ÖĞRENCİ NO" Binding="{Binding StudentId}" SortMemberPath="StudentId" Width="Auto"/>
-                <DataGridTextColumn Header="AD SOYAD" Binding="{Binding FullName}" SortMemberPath="FullName" Width="1.5*"/>
-                <DataGridTextColumn Header="KİTAPÇIK" Binding="{Binding BookletType}" SortMemberPath="BookletType" Width="Auto">
+                <DataGridTextColumn Header="ÖĞRENCİ NO" Binding="{Binding StudentId}" SortMemberPath="StudentId" Width="Auto" MinWidth="92"/>
+                <DataGridTextColumn Header="AD SOYAD" Binding="{Binding FullName}" SortMemberPath="FullName" Width="1.4*" MinWidth="145">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="KİTAPÇIK" Binding="{Binding BookletType}" SortMemberPath="BookletType" Width="Auto" MinWidth="68">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -155,29 +159,31 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 
-                <DataGridTemplateColumn Header="ÖĞRENCİ CEVAPLARI" Width="*">
+                <DataGridTemplateColumn Header="ÖĞRENCİ CEVAPLARI" Width="1.2*" MinWidth="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ItemsControl ItemsSource="{Binding ColoredAnswers}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Character}" Foreground="{Binding State, Converter={StaticResource AnswerStateConverter}}" FontFamily="Consolas" FontSize="14" FontWeight="Bold" Margin="0,0,1,0"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <Border ClipToBounds="True">
+                                <ItemsControl ItemsSource="{Binding ColoredAnswers}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Character}" Foreground="{Binding State, Converter={StaticResource AnswerStateConverter}}" FontFamily="Consolas" FontSize="13.5" FontWeight="Bold" Margin="0,0,1,0"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="D" Binding="{Binding CorrectCount}" SortMemberPath="CorrectCount" Width="45"/>
-                <DataGridTextColumn Header="Y" Binding="{Binding IncorrectCount}" SortMemberPath="IncorrectCount" Width="45"/>
-                <DataGridTextColumn Header="B" Binding="{Binding EmptyCount}" SortMemberPath="EmptyCount" Width="45"/>
+                <DataGridTextColumn Header="D" Binding="{Binding CorrectCount}" SortMemberPath="CorrectCount" Width="42"/>
+                <DataGridTextColumn Header="Y" Binding="{Binding IncorrectCount}" SortMemberPath="IncorrectCount" Width="42"/>
+                <DataGridTextColumn Header="B" Binding="{Binding EmptyCount}" SortMemberPath="EmptyCount" Width="42"/>
                 
-                <DataGridTextColumn Header="NET" Binding="{Binding NetCount, StringFormat={}{0:N2}}" SortMemberPath="NetCount" Width="60">
+                <DataGridTextColumn Header="NET" Binding="{Binding NetCount, StringFormat={}{0:N2}}" SortMemberPath="NetCount" Width="58">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -187,7 +193,7 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="PUAN" Binding="{Binding Score, StringFormat={}{0:N2}}" SortMemberPath="Score" Width="65">
+                <DataGridTextColumn Header="PUAN" Binding="{Binding Score, StringFormat={}{0:N2}}" SortMemberPath="Score" Width="62">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="FontWeight" Value="Bold"/>
@@ -197,7 +203,7 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="SIRA" Binding="{Binding Rank}" SortMemberPath="Rank" Width="50">
+                <DataGridTextColumn Header="SIRA" Binding="{Binding Rank}" SortMemberPath="Rank" Width="48">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -208,7 +214,7 @@
                 </DataGridTextColumn>
 
                 <!-- HARF NOTU ROZETİ (Tek sınavda varsayılan gizli, Ayarlardan açılabilir) -->
-                <DataGridTemplateColumn Header="HARF" SortMemberPath="LetterGrade" Width="65"
+                <DataGridTemplateColumn Header="HARF" SortMemberPath="LetterGrade" Width="62"
                                         Visibility="{Binding Data.ShowLetterGradeColumn, Source={StaticResource Proxy}, Converter={StaticResource BoolToVis}}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -289,7 +295,7 @@
                 </DataGridTemplateColumn>
 
                 <!-- DURUM ROZETİ -->
-                <DataGridTemplateColumn Header="DURUM" SortMemberPath="Status" Width="90">
+                <DataGridTemplateColumn Header="DURUM" SortMemberPath="Status" Width="86">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Border CornerRadius="8" Padding="6,2" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -333,7 +339,7 @@
                 </DataGridTemplateColumn>
 
                 <!-- DETAY / İŞLEM -->
-                <DataGridTemplateColumn Header="DETAY" Width="55">
+                <DataGridTemplateColumn Header="DETAY" Width="52">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button ToolTip="Öğrenci Detayı / Cevapları Düzenle"
@@ -351,19 +357,19 @@
 
         <!-- KURUMSAL BOŞ DURUM (EMPTY STATE) -->
         <Border Grid.Row="1" Visibility="{Binding Students.Count, Converter={StaticResource CountToVisConverter}}" 
-                VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="520" Padding="24">
+                VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="520" Padding="20">
             <StackPanel>
-                <Border Width="68" Height="68" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="16" Margin="0,0,0,16" HorizontalAlignment="Center">
-                    <TextBlock Text="&#xE8E5;" FontFamily="{StaticResource FluentIconFont}" FontSize="28" Foreground="{DynamicResource Accent}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Border Width="64" Height="64" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="15" Margin="0,0,0,14" HorizontalAlignment="Center">
+                    <TextBlock Text="&#xE8E5;" FontFamily="{StaticResource FluentIconFont}" FontSize="26" Foreground="{DynamicResource Accent}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
-                <TextBlock Text="Henüz Optik Sınav Verisi Yüklenmedi" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
+                <TextBlock Text="Henüz Optik Sınav Verisi Yüklenmedi" FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
                 <TextBlock Text="Değerlendirmeye başlamak için optik okuyucu dosyasını (.txt veya .dat) bu pencereye sürükleyip bırakın ya da aşağıdaki butonu kullanın."
-                           FontSize="12.5" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,8,0,20" TextAlignment="Center" TextWrapping="Wrap" LineHeight="19"/>
+                           FontSize="12" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,8,0,18" TextAlignment="Center" TextWrapping="Wrap" LineHeight="18"/>
                 <Button Command="{Binding LoadTxtCommand}" Style="{StaticResource PipelineButton}" 
-                        Background="{DynamicResource Accent}" BorderBrush="{DynamicResource Accent}" Foreground="White" Padding="22,10" HorizontalAlignment="Center">
+                        Background="{DynamicResource Accent}" BorderBrush="{DynamicResource Accent}" Foreground="White" Padding="20,9" HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE8E5;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="Optik Veri Dosyası Seç (Ctrl+O)" FontSize="12.5" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock Text="&#xE8E5;" FontFamily="{StaticResource FluentIconFont}" FontSize="12.5" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Optik Veri Dosyası Seç (Ctrl+O)" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
             </StackPanel>

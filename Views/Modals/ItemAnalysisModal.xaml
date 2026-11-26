@@ -7,10 +7,11 @@
              mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="1000">
     <Grid Visibility="{Binding IsItemAnalysisOpen, Converter={StaticResource BoolToVis}}"
           Background="{DynamicResource ModalBackdrop}">
-        <Border Width="1020" 
-                Height="680"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
+        <Border MaxWidth="1040" 
+                MaxHeight="700"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Margin="20,16"
                 CornerRadius="24"
                 Padding="0">
             <Border.Style>
@@ -271,7 +272,7 @@
                         <Grid Margin="0,10,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="320"/>
+                                <ColumnDefinition Width="0.44*" MinWidth="210" MaxWidth="320"/>
                             </Grid.ColumnDefinitions>
 
                             <!-- Question Stats DataGrid -->
@@ -511,7 +512,7 @@
                     <TabItem Header="🎯 Çeldirici Analizi (Üst/Alt %27)">
                         <Grid Margin="0,10,0,0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="260"/>
+                                <ColumnDefinition Width="0.35*" MinWidth="175" MaxWidth="260"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 

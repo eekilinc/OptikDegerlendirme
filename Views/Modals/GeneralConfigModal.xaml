@@ -30,9 +30,11 @@
           Background="{DynamicResource ModalBackdrop}">
         
         <!-- Premium Modal -->
-        <Border Width="520" 
+        <Border MaxWidth="540"
+                MaxHeight="650"
                 VerticalAlignment="Center" 
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Stretch"
+                Margin="20,16"
                 CornerRadius="24"
                 Padding="0">
             <Border.Style>
@@ -55,15 +57,14 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- Premium Green Header -->
                 <Border Grid.Row="0" 
-                        Height="100"
                         CornerRadius="24,24,0,0" 
-                        Padding="28,24">
+                        Padding="24,18">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                             <GradientStop Color="{DynamicResource SuccessColor}" Offset="0"/>
@@ -110,8 +111,9 @@
                     </Grid>
                 </Border>
 
-                <!-- Content Cards -->
-                <StackPanel Grid.Row="1" Margin="24,20,24,10">
+                <!-- Content Cards (Scrollable for 720p/768p screens) -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Margin="22,16,22,10">
 
                     <!-- Öğretim Elemanı Profili & Tablo Tercihi -->
                     <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="16" Padding="18,14" Margin="0,0,0,12">
@@ -629,6 +631,7 @@
                         </StackPanel>
                     </Border>
                 </StackPanel>
+                </ScrollViewer>
 
                 <!-- Premium Footer -->
                 <Border Grid.Row="2" 

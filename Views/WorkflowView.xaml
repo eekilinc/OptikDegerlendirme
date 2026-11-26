@@ -2,72 +2,68 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OptikFormApp.Views"
              mc:Ignorable="d" 
              d:DesignHeight="72" d:DesignWidth="1200">
-    <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="12" Padding="14,9" Margin="0,0,0,12">
+    <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="12" Padding="12,8" Margin="0,0,0,10">
         <Border.Effect>
             <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.04" BlurRadius="14" ShadowDepth="2"/>
         </Border.Effect>
-        
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
 
+        <local:ResponsiveToolbarPanel MinFirstWidth="245" StretchFirst="False" HorizontalSpacing="12" VerticalSpacing="8">
             <!-- Sol Kurumsal Kimlik Bloğu -->
-            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
-                <Border Width="38" Height="38" CornerRadius="9" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" Margin="0,0,11,0" Padding="5">
+            <Grid VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Width="36" Height="36" CornerRadius="9" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" Margin="0,0,10,0" Padding="4.5">
                     <Image Source="/Assets/app_logo.png" Stretch="Uniform"/>
                 </Border>
-                <StackPanel VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="BURDUR MEHMET AKİF ERSOY ÜNİVERSİTESİ" FontSize="9.5" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,1,0,0">
-                        <TextBlock Text="Ağlasun MYO — Optik Değerlendirme Sistemi" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
-                    </StackPanel>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="BURDUR MEHMET AKİF ERSOY ÜNİVERSİTESİ" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Text="Ağlasun MYO — Optik Değerlendirme" FontSize="12.5" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,1,0,0" TextTrimming="CharacterEllipsis"/>
                 </StackPanel>
-            </StackPanel>
+            </Grid>
 
-            <!-- Sağ Kurumsal İşlem Akışı Grupları -->
-            <WrapPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
+            <!-- Sağ Kurumsal İşlem Akışı Grupları (Tam Esnek Sarmalama) -->
+            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
                 
                 <!-- 1. ADIM ADIM İŞLEM AKIŞI (Yükle -> Anahtar -> Hesapla -> Kaydet) -->
-                <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="9" Padding="4" Margin="0,2,8,2">
-                    <StackPanel Orientation="Horizontal">
+                <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="9" Padding="3.5" Margin="0,2,6,2">
+                    <WrapPanel Orientation="Horizontal">
                         <!-- 1. Veri Yükle -->
                         <Button Command="{Binding LoadTxtCommand}" Style="{StaticResource PipelineButton}" 
-                                Background="{DynamicResource Accent}" BorderBrush="{DynamicResource Accent}" Foreground="White" Padding="11,6" Margin="0,0,4,0"
+                                Background="{DynamicResource Accent}" BorderBrush="{DynamicResource Accent}" Foreground="White" Padding="10,5.5" Margin="0,1,4,1"
                                 ToolTip="1. Adım: Optik okuyucu TXT veya DAT dosyasını yükle (Ctrl+O)">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE8E5;" FontFamily="{StaticResource FluentIconFont}" FontSize="12" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                <TextBlock Text="1. Veri Yükle" FontSize="11.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE8E5;" FontFamily="{StaticResource FluentIconFont}" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock Text="1. Veri Yükle" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
                         <!-- 2. Cevap Anahtarı -->
-                        <Button Command="{Binding OpenModalCommand}" Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,4,0"
+                        <Button Command="{Binding OpenModalCommand}" Style="{StaticResource OutlineButton}" Padding="9,5.5" Margin="0,1,4,1"
                                 ToolTip="2. Adım: Kitapçık cevap anahtarlarını düzenle">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE8D7;" FontFamily="{StaticResource FluentIconFont}" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                <TextBlock Text="2. Cevap Anahtarı" FontSize="11.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE8D7;" FontFamily="{StaticResource FluentIconFont}" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock Text="2. Cevap Anahtarı" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
                         
                         <!-- 3. Hesapla -->
                         <Button Command="{Binding EvaluateCommand}" Style="{StaticResource PipelineButton}" 
-                                Background="{DynamicResource AccentViolet}" BorderBrush="{DynamicResource AccentViolet}" Foreground="White" Padding="12,6" Margin="0,0,4,0"
+                                Background="{DynamicResource AccentViolet}" BorderBrush="{DynamicResource AccentViolet}" Foreground="White" Padding="10,5.5" Margin="0,1,4,1"
                                 ToolTip="3. Adım: Cevap anahtarına göre puanları ve istatistikleri hesapla (F5)">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE945;" FontFamily="{StaticResource FluentIconFont}" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                <TextBlock Text="3. Hesapla (F5)" FontSize="11.5" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE945;" FontFamily="{StaticResource FluentIconFont}" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock Text="3. Hesapla (F5)" FontSize="11" FontWeight="Bold" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
                         <!-- 4. Kaydet -->
-                        <Button Command="{Binding OpenSaveExamModalCommand}" IsEnabled="{Binding Students.Count}" Padding="11,6"
+                        <Button Command="{Binding OpenSaveExamModalCommand}" IsEnabled="{Binding Students.Count}" Padding="10,5.5" Margin="0,1,0,1"
                                 ToolTip="4. Adım: Değerlendirilen sınavı ders arşivine kaydet (Ctrl+S)">
                             <Button.Style>
                                 <Style TargetType="Button" BasedOn="{StaticResource PipelineButton}">
@@ -83,7 +79,7 @@
                                 </Style>
                             </Button.Style>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock FontFamily="{StaticResource FluentIconFont}" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0">
+                                <TextBlock FontFamily="{StaticResource FluentIconFont}" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,5,0">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Text" Value="&#xE73E;"/>
@@ -95,7 +91,7 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                                <TextBlock FontSize="11.5" FontWeight="SemiBold" VerticalAlignment="Center">
+                                <TextBlock FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Text" Value="Kaydedildi"/>
@@ -109,51 +105,51 @@
                                 </TextBlock>
                             </StackPanel>
                         </Button>
-                    </StackPanel>
+                    </WrapPanel>
                 </Border>
                 
                 <!-- 2. PARAMETRELER -->
-                <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="9" Padding="4" Margin="0,2,8,2">
-                    <Button Command="{Binding OpenGeneralConfigCommand}" Style="{StaticResource OutlineButton}" Padding="10,6"
+                <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="9" Padding="3.5" Margin="0,2,6,2">
+                    <Button Command="{Binding OpenGeneralConfigCommand}" Style="{StaticResource OutlineButton}" Padding="9,5.5"
                             ToolTip="Yanlış götürme katsayısı, baraj puanı ve öğretim elemanı profili">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE713;" FontFamily="{StaticResource FluentIconFont}" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <TextBlock Text="Parametreler" FontSize="11.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <TextBlock Text="&#xE713;" FontFamily="{StaticResource FluentIconFont}" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBlock Text="Parametreler" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                 </Border>
                 
                 <!-- 3. KURUMSAL ÇIKTI & OBS GRUBU (Veri yüklendiğinde görünür) -->
-                <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="9" Padding="4" Margin="0,2,0,2"
+                <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="9" Padding="3.5" Margin="0,2,0,2"
                         Visibility="{Binding Students.Count, Converter={StaticResource DataToVisConverter}}">
-                    <StackPanel Orientation="Horizontal">
+                    <WrapPanel Orientation="Horizontal">
                         <Button Command="{Binding OpenObsExportCommand}" Style="{StaticResource PipelineButton}" 
-                                Background="{DynamicResource Accent}" BorderBrush="{DynamicResource Accent}" Foreground="White" Padding="10,6" Margin="0,0,4,0"
+                                Background="{DynamicResource Accent}" BorderBrush="{DynamicResource Accent}" Foreground="White" Padding="9,5.5" Margin="0,1,4,1"
                                 ToolTip="MAKÜ OBS uyumlu yuvarlanmış not aktarımı ve kopyalama">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE898;" FontFamily="{StaticResource FluentIconFont}" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                <TextBlock Text="OBS Aktarım" FontSize="11.5" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE898;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock Text="OBS Aktarım" FontSize="11" FontWeight="Bold" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding ExportExcelCommand}" Style="{StaticResource PipelineButton}" 
-                                Background="{DynamicResource Success}" BorderBrush="{DynamicResource Success}" Foreground="White" Padding="10,6" Margin="0,0,4,0"
+                                Background="{DynamicResource Success}" BorderBrush="{DynamicResource Success}" Foreground="White" Padding="9,5.5" Margin="0,1,4,1"
                                 ToolTip="Tüm öğrenci ve soru detaylarını Excel (.xlsx) olarak dışa aktar (Ctrl+E)">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE9D2;" FontFamily="{StaticResource FluentIconFont}" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                <TextBlock Text="Excel" FontSize="11.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE9D2;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock Text="Excel" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding ExportFullReportCommand}" Style="{StaticResource PipelineButton}" 
-                                Background="{DynamicResource AccentRed}" BorderBrush="{DynamicResource AccentRed}" Foreground="White" Padding="11,6"
+                                Background="{DynamicResource AccentRed}" BorderBrush="{DynamicResource AccentRed}" Foreground="White" Padding="10,5.5" Margin="0,1,0,1"
                                 ToolTip="Kapak sayfalı ve imza bloklu resmi Akademik PDF Rapor oluştur (Ctrl+Shift+R)">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE8A5;" FontFamily="{StaticResource FluentIconFont}" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                <TextBlock Text="PDF Rapor" FontSize="11.5" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE8A5;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock Text="PDF Rapor" FontSize="11" FontWeight="Bold" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                    </StackPanel>
+                    </WrapPanel>
                 </Border>
             </WrapPanel>
-        </Grid>
+        </local:ResponsiveToolbarPanel>
     </Border>
 </UserControl>

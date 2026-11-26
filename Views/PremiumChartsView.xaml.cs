@@ -24,6 +24,14 @@ namespace OptikFormApp.Views
             SizeChanged += (s, e) => RenderAllCharts();
         }
 
+        private void ChartHost_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (Math.Abs(e.NewSize.Width - e.PreviousSize.Width) > 2.0)
+            {
+                RenderAllCharts();
+            }
+        }
+
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (_vm != null)
@@ -524,7 +532,7 @@ namespace OptikFormApp.Views
                 .ToList();
 
             double startY = 15;
-            double barMaxW = width - 120;
+            double barMaxW = Math.Max(60, width - 210);
             Color[] bColors = { Color.FromRgb(59, 130, 246), Color.FromRgb(16, 185, 129), Color.FromRgb(245, 158, 11), Color.FromRgb(139, 92, 246) };
 
             for (int i = 0; i < bookletGroups.Count; i++)

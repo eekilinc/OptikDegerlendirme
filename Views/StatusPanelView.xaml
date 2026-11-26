@@ -8,7 +8,7 @@
     <StackPanel>
         <!-- 1. DOĞRULAMA UYARI BANDI (Sadece hata varsa görünür) -->
         <Border Visibility="{Binding ValidationIssuesCount, Converter={StaticResource NumericToVis}}" 
-                Background="{DynamicResource ErrorBgLight}" BorderBrush="{DynamicResource Error}" BorderThickness="0,1,0,0" Padding="18,7">
+                Background="{DynamicResource ErrorBgLight}" BorderBrush="{DynamicResource Error}" BorderThickness="0,1,0,0" Padding="16,6">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -16,18 +16,18 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="&#xE7BA;" FontFamily="{StaticResource FluentIconFont}" FontSize="14" Foreground="{DynamicResource Error}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Grid.Column="0" Text="&#xE7BA;" FontFamily="{StaticResource FluentIconFont}" FontSize="13.5" Foreground="{DynamicResource Error}" VerticalAlignment="Center" Margin="0,0,10,0"/>
                 
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding ValidationIssuesCount, StringFormat='{}{0} Adet Veri Doğrulama Uyarısı Tespit Edildi'}" FontWeight="Bold" Foreground="{DynamicResource Error}" FontSize="12" VerticalAlignment="Center"/>
-                    <TextBlock Text=" — Eksik kodlama veya okuma anomalilerini inceleyin." FontSize="11.5" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center"/>
-                </StackPanel>
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,10,0">
+                    <Run Text="{Binding ValidationIssuesCount, StringFormat='{}{0} Adet Veri Doğrulama Uyarısı Tespit Edildi'}" FontWeight="Bold" Foreground="{DynamicResource Error}" FontSize="11.5"/>
+                    <Run Text=" — Eksik kodlama veya okuma anomalilerini inceleyin." FontSize="11" Foreground="{DynamicResource TextMain}"/>
+                </TextBlock>
 
-                <Button Grid.Column="2" Padding="12,4" Background="{DynamicResource Error}" Foreground="White" FontWeight="SemiBold" FontSize="11"
+                <Button Grid.Column="2" Padding="11,4" Background="{DynamicResource Error}" Foreground="White" FontWeight="SemiBold" FontSize="10.5"
                         BorderThickness="0" Cursor="Hand" VerticalAlignment="Center"
                         Command="{Binding ShowValidationDetailsCommand}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE721;" FontFamily="{StaticResource FluentIconFont}" FontSize="10.5" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Text="&#xE721;" FontFamily="{StaticResource FluentIconFont}" FontSize="10" VerticalAlignment="Center" Margin="0,0,5,0"/>
                         <TextBlock Text="Detayları İncele" VerticalAlignment="Center"/>
                     </StackPanel>
                     <Button.Template>
@@ -48,11 +48,11 @@
 
         <!-- 2. AÇILIR/KAPANIR İŞLEM KAYITLARI (LOG) ÇEKMECESİ -->
         <Border Visibility="{Binding IsLogDrawerOpen, Converter={StaticResource BoolToVis}}"
-                Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" Padding="18,10">
+                Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" Padding="16,9">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="115"/>
+                    <RowDefinition Height="108"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Margin="0,0,0,6">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -68,10 +68,14 @@
                         <ItemsControl ItemsSource="{Binding Logs}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" Margin="0,1.5">
-                                        <TextBlock Text="{Binding DisplayTime}" FontFamily="Consolas, Cascadia Mono" Foreground="{DynamicResource TextMuted}" FontSize="10.5" Width="62"/>
-                                        <TextBlock Text="{Binding Message}" Foreground="{Binding Level, Converter={StaticResource LogLevelConverter}}" FontSize="11" TextWrapping="Wrap"/>
-                                    </StackPanel>
+                                    <Grid Margin="0,1.5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="62"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding DisplayTime}" FontFamily="Consolas, Cascadia Mono" Foreground="{DynamicResource TextMuted}" FontSize="10.5"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Message}" Foreground="{Binding Level, Converter={StaticResource LogLevelConverter}}" FontSize="11" TextWrapping="Wrap"/>
+                                    </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -80,33 +84,41 @@
             </Grid>
         </Border>
 
-        <!-- 3. KURUMSAL İNCE ALT DURUM ÇUBUĞU (32px Sabit Yükseklik) -->
-        <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" Height="32" Padding="16,0">
+        <!-- 3. KURUMSAL İNCE ALT DURUM ÇUBUĞU (30px Sabit Yükseklik, Dar Ekran Korumalı) -->
+        <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" Height="30" Padding="14,0">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" MinWidth="180"/>
+                    <ColumnDefinition Width="Auto" MaxWidth="340"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Sol: Sistem Durumu -->
-                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Ellipse Width="7" Height="7" Fill="{DynamicResource Success}" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                    <TextBlock Text="Durum:" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" FontSize="11.5" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                    <TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource TextMain}" FontSize="11.5" FontWeight="Medium" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                </StackPanel>
+                <Grid Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Ellipse Grid.Column="0" Width="7" Height="7" Fill="{DynamicResource Success}" Margin="0,0,7,0" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="Durum:" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" FontSize="11" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="2" Text="{Binding StatusMessage}" Foreground="{DynamicResource TextMain}" FontSize="11" FontWeight="Medium" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding StatusMessage}"/>
+                </Grid>
 
-                <!-- Sağ: Kural Özeti & Log Çekmecesi Butonu -->
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding GradingRulesSummary}" FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="0,0,14,0"/>
-                    <Border Width="1" Height="14" Background="{DynamicResource Border}" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                    <Button Command="{Binding ToggleLogDrawerCommand}" Background="Transparent" BorderThickness="0" Padding="8,4" Cursor="Hand"
+                <!-- Orta/Sağ: Kural Özeti -->
+                <TextBlock Grid.Column="1" Text="{Binding GradingRulesSummary}" FontSize="10.5" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,10,0" ToolTip="{Binding GradingRulesSummary}"/>
+
+                <!-- Sağ: Log Çekmecesi Butonu -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="1" Height="13" Background="{DynamicResource Border}" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                    <Button Command="{Binding ToggleLogDrawerCommand}" Background="Transparent" BorderThickness="0" Padding="7,3" Cursor="Hand"
                             ToolTip="Sistem İşlem Kayıtlarını Aç / Kapat">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Text="&#xE8FD;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                        <TextBlock Text="{Binding Logs.Count, StringFormat='İşlem Kayıtları ({0})'}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="&#xE8FD;" FontFamily="{StaticResource FluentIconFont}" FontSize="10.5" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                        <TextBlock Text="{Binding Logs.Count, StringFormat='İşlem Kayıtları ({0})'}" FontSize="10.5" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
                                 <ControlTemplate.Triggers>

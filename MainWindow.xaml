@@ -4,12 +4,13 @@
         xmlns:vm="clr-namespace:OptikFormApp.ViewModels"
         xmlns:views="clr-namespace:OptikFormApp.Views"
         xmlns:modals="clr-namespace:OptikFormApp.Views.Modals"
-        Title="MAKÜ Ağlasun MYO — Optik Değerlendirme ve İstatistik Sistemi" Height="780" Width="1240" MinWidth="920" MinHeight="620"
+        Title="MAKÜ Ağlasun MYO — Optik Değerlendirme ve İstatistik Sistemi" Height="780" Width="1260" MinWidth="740" MinHeight="540"
         Icon="/Assets/app_logo.png"
         WindowStartupLocation="CenterScreen" Background="{DynamicResource AppBg}"
         FontFamily="Segoe UI Variable, Segoe UI, -apple-system, system-ui, sans-serif"
         AutomationProperties.Name="Optik Değerlendirme Ana Pencere"
         AllowDrop="True"
+        SizeChanged="MainWindow_SizeChanged"
         Closing="MainWindow_Closing"
         Drop="MainWindow_Drop"
         DragEnter="MainWindow_DragEnter"
@@ -30,33 +31,33 @@
     </Window.InputBindings>
 
     <Grid>
-        <!-- KURUMSAL UYGULAMA KABUĞU -->
+        <!-- KURUMSAL RESPONSIVE UYGULAMA KABUĞU -->
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="SidebarColumn" Width="268" MinWidth="205" MaxWidth="380"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/> <!-- 0: Üst Menü & Bağlam Çubuğu -->
+                <RowDefinition Height="Auto"/> <!-- 0: Üst Menü & Esnek Bağlam Çubuğu -->
                 <RowDefinition Height="Auto"/> <!-- 1: Güncelleme Bandı -->
                 <RowDefinition Height="*"/>    <!-- 2: Ana Çalışma Alanı -->
                 <RowDefinition Height="Auto"/> <!-- 3: Kurumsal İnce Alt Durum Şeridi -->
             </Grid.RowDefinitions>
 
-            <!-- 0. ÜST MENÜ VE AKTİF DERS/SINAV BAĞLAM ŞERİDİ -->
-            <Border Grid.Row="0" Grid.ColumnSpan="2" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,0,0,1">
+            <!-- 0. ÜST MENÜ VE RESPONSIVE AKTİF DERS/SINAV BAĞLAM ŞERİDİ -->
+            <Border Grid.Row="0" Grid.ColumnSpan="3" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,0,0,1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
                     <!-- Sol Kenar Çubuğu Aç/Kapat Butonu -->
-                    <Button Grid.Column="0" Command="{Binding ToggleSidebarCommand}"
+                    <Button Grid.Column="0" Click="SidebarToggleButton_Click"
                             Background="Transparent" Foreground="{DynamicResource TextMain}"
-                            Padding="12,8" Margin="6,2,2,2" BorderThickness="0" Cursor="Hand"
+                            Padding="11,8" Margin="6,2,2,2" BorderThickness="0" Cursor="Hand"
                             ToolTip="Sol Ders ve Sınav Panelini Daralt / Genişlet">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
@@ -73,7 +74,7 @@
                     </Button>
 
                     <!-- Üst Menü -->
-                    <Menu Grid.Column="1" Background="Transparent" Padding="4,4" VerticalAlignment="Center">
+                    <Menu Grid.Column="1" Background="Transparent" Padding="2,4" VerticalAlignment="Center">
                         <MenuItem Header="_Dosya">
                             <MenuItem Header="Optik Verisi Yükle (.txt / .dat)" Command="{Binding LoadTxtCommand}" InputGestureText="Ctrl+O"/>
                             <Separator/>
@@ -145,20 +146,32 @@
                         </MenuItem>
                     </Menu>
 
-                    <!-- Sağ: Kurumsal Aktif Ders / Sınav Bağlam Şeridi (Breadcrumb) -->
-                    <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,16,0">
-                        <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="6" Padding="10,4">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Text="&#xE82D;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Foreground="{DynamicResource Accent}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                <TextBlock Text="{Binding ActiveContextCourseText}" FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" MaxWidth="220" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
-                                <TextBlock Text="›" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" Margin="8,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="&#xE7C3;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                <TextBlock Text="{Binding ActiveContextExamText}" FontSize="11.5" FontWeight="Medium" Foreground="{DynamicResource TextMuted}" MaxWidth="200" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
-                            </StackPanel>
+                    <!-- Sağ: Esnek Daralabilen Aktif Ders / Sınav Bağlam Şeridi -->
+                    <Grid Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8,0,14,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="6" Padding="9,4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*" MaxWidth="220"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*" MaxWidth="200"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="&#xE82D;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Foreground="{DynamicResource Accent}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock Grid.Column="1" Text="{Binding ActiveContextCourseText}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" ToolTip="{Binding ActiveContextCourseText}"/>
+                                <TextBlock Grid.Column="2" Text="›" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" Margin="6,0" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="3" Text="&#xE7C3;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock Grid.Column="4" Text="{Binding ActiveContextExamText}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource TextMuted}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" ToolTip="{Binding ActiveContextExamText}"/>
+                            </Grid>
                         </Border>
 
                         <!-- Kayıt Durumu Göstergesi (Veri yüklüyse) -->
-                        <Border CornerRadius="6" Padding="8,4" Margin="8,0,0,0"
+                        <Border Grid.Column="1" CornerRadius="6" Padding="8,4" Margin="7,0,0,0"
                                 Visibility="{Binding Students.Count, Converter={StaticResource DataToVisConverter}}">
                             <Border.Style>
                                 <Style TargetType="Border">
@@ -171,7 +184,7 @@
                                 </Style>
                             </Border.Style>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Ellipse Width="6" Height="6" Margin="0,0,6,0" VerticalAlignment="Center">
+                                <Ellipse Width="6" Height="6" Margin="0,0,5,0" VerticalAlignment="Center">
                                     <Ellipse.Style>
                                         <Style TargetType="Ellipse">
                                             <Setter Property="Fill" Value="{DynamicResource Success}"/>
@@ -199,29 +212,34 @@
                                 </TextBlock>
                             </StackPanel>
                         </Border>
-                    </StackPanel>
+                    </Grid>
                 </Grid>
             </Border>
 
             <!-- 1. OTOMATİK GÜNCELLEME BİLDİRİM BANDI -->
-            <Border Grid.Row="1" Grid.ColumnSpan="2"
+            <Border Grid.Row="1" Grid.ColumnSpan="3"
                     Visibility="{Binding HasUpdateAvailable, Converter={StaticResource BoolToVis}}"
                     Background="{DynamicResource HoverBg}" BorderBrush="{DynamicResource Accent}" BorderThickness="0,0,0,1" Padding="16,7">
                 <Grid>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="&#xE896;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Foreground="{DynamicResource Accent}" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding LatestVersionTag, StringFormat='Yeni sürüm mevcut: {0}'}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource Accent}" VerticalAlignment="Center"/>
-                        <TextBlock Text=" — Yeni özellikler ve iyileştirmeler için GitHub Release sayfasından indirebilirsiniz." FontSize="11.5" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="&#xE896;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Foreground="{DynamicResource Accent}" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,12,0">
+                        <Run Text="{Binding LatestVersionTag, StringFormat='Yeni sürüm mevcut: {0}'}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource Accent}"/>
+                        <Run Text=" — Yeni özellikler ve iyileştirmeler için GitHub Release sayfasından indirebilirsiniz." FontSize="11.5" Foreground="{DynamicResource TextMain}"/>
+                    </TextBlock>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button Content="İndir" Command="{Binding OpenUpdateUrlCommand}" Background="{DynamicResource Accent}" Foreground="White" Padding="12,4" FontSize="11" FontWeight="Bold" Margin="0,0,8,0"/>
                         <Button Content="&#xE711;" FontFamily="{StaticResource FluentIconFont}" Command="{Binding DismissUpdateBannerCommand}" Background="Transparent" Foreground="{DynamicResource TextMuted}" Padding="6,4" FontSize="10" BorderThickness="0"/>
                     </StackPanel>
                 </Grid>
             </Border>
 
-            <!-- 2A. DARALTILABİLİR SOL KENAR ÇUBUĞU (DERSLER & SINAV ARŞİVİ) -->
-            <views:SidebarView Grid.Row="2" Grid.Column="0" Width="272">
+            <!-- 2A. DARALTILABİLİR VE BOYUTLANDIRILABİLİR SOL KENAR ÇUBUĞU -->
+            <views:SidebarView Grid.Row="2" Grid.Column="0">
                 <views:SidebarView.Style>
                     <Style TargetType="UserControl">
                         <Setter Property="Visibility" Value="Visible"/>
@@ -234,8 +252,25 @@
                 </views:SidebarView.Style>
             </views:SidebarView>
 
-            <!-- 2B. ANA ÇALIŞMA ALANI (Çift çerçeveler temizlendi, maksimum veri alanı) -->
-            <Grid Grid.Row="2" Grid.Column="1" Margin="18,14,18,12">
+            <!-- 2B. SÜRÜKLENEBİLİR KENAR ÇUBUĞU AYIRICI (GRIDSPLITTER) -->
+            <GridSplitter Grid.Row="2" Grid.Column="1" Width="5"
+                          HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                          Background="Transparent" ShowsPreview="False" Cursor="SizeWE"
+                          ToolTip="Sol menü genişliğini ayarlamak için sürükleyin">
+                <GridSplitter.Style>
+                    <Style TargetType="GridSplitter">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSidebarCollapsed}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </GridSplitter.Style>
+            </GridSplitter>
+
+            <!-- 2C. ANA ÇALIŞMA ALANI -->
+            <Grid x:Name="WorkspaceGrid" Grid.Row="2" Grid.Column="2" Margin="14,12,16,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -245,19 +280,42 @@
                 <!-- ÜST KURUMSAL İŞLEM ÇUBUĞU -->
                 <views:WorkflowView Grid.Row="0" />
 
-                <!-- KURUMSAL KPI GÖSTERGE PANELİ -->
+                <!-- KURUMSAL RESPONSIVE / DARALTILABİLİR KPI GÖSTERGE PANELİ -->
                 <views:DashboardKpiView Grid.Row="1"
                                         Visibility="{Binding Students.Count, Converter={StaticResource DataToVisConverter}}"/>
 
-                <!-- ANA VERİ VE ANALİZ SEKMELERİ -->
+                <!-- ANA VERİ VE ANALİZ SEKMELERİ (Yatay Kaydırma Korumalı Başlık Şeridi) -->
                 <Border Grid.Row="2" Style="{StaticResource GlassCard}" ClipToBounds="True">
                     <TabControl Background="Transparent" BorderThickness="0" Margin="0">
+                        <TabControl.Template>
+                            <ControlTemplate TargetType="TabControl">
+                                <Grid ClipToBounds="True" SnapsToDevicePixels="True" KeyboardNavigation.TabNavigation="Local">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Border Grid.Row="0" BorderBrush="{DynamicResource Border}" BorderThickness="0,0,0,1" Background="Transparent">
+                                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                                      VerticalScrollBarVisibility="Disabled"
+                                                      PanningMode="HorizontalOnly"
+                                                      PreviewMouseWheel="TabHeaderScrollViewer_PreviewMouseWheel">
+                                            <StackPanel Orientation="Horizontal" IsItemsHost="True" Margin="6,0"/>
+                                        </ScrollViewer>
+                                    </Border>
+                                    <ContentPresenter x:Name="PART_SelectedContentHost"
+                                                      Grid.Row="1"
+                                                      ContentSource="SelectedContent"
+                                                      Margin="{TemplateBinding Padding}"
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </TabControl.Template>
                         <TabControl.Resources>
                             <Style TargetType="TabItem">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="TabItem">
-                                            <Border Name="Border" Padding="16,11" Margin="2,4,2,0" CornerRadius="8,8,0,0" BorderThickness="0,0,0,2.5" BorderBrush="Transparent" Background="Transparent" Cursor="Hand">
+                                            <Border Name="Border" Padding="13,10" Margin="1,3,1,0" CornerRadius="8,8,0,0" BorderThickness="0,0,0,2.5" BorderBrush="Transparent" Background="Transparent" Cursor="Hand">
                                                 <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="0"/>
                                             </Border>
                                             <ControlTemplate.Triggers>
@@ -286,8 +344,8 @@
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE716;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Margin="0,0,7,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Öğrenci Listesi" FontSize="12.5" VerticalAlignment="Center"/>
+                                    <TextBlock Text="&#xE716;" FontFamily="{StaticResource FluentIconFont}" FontSize="12.5" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Öğrenci Listesi" FontSize="12" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </TabItem.Header>
                             <views:StudentListView />
@@ -297,8 +355,8 @@
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE9D2;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Margin="0,0,7,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Madde Analizi" FontSize="12.5" VerticalAlignment="Center"/>
+                                    <TextBlock Text="&#xE9D2;" FontFamily="{StaticResource FluentIconFont}" FontSize="12.5" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Madde Analizi" FontSize="12" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </TabItem.Header>
                             <views:StatisticsView />
@@ -308,8 +366,8 @@
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE9D9;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Margin="0,0,7,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Grafikler &amp; Çan Eğrisi" FontSize="12.5" VerticalAlignment="Center"/>
+                                    <TextBlock Text="&#xE9D9;" FontFamily="{StaticResource FluentIconFont}" FontSize="12.5" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Grafikler &amp; Çan Eğrisi" FontSize="12" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </TabItem.Header>
                             <views:PremiumChartsView />
@@ -319,8 +377,8 @@
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE9D5;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Margin="0,0,7,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Kazanım Analizi" FontSize="12.5" VerticalAlignment="Center"/>
+                                    <TextBlock Text="&#xE9D5;" FontFamily="{StaticResource FluentIconFont}" FontSize="12.5" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Kazanım Analizi" FontSize="12" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </TabItem.Header>
                             <views:OutcomesView />
@@ -330,8 +388,8 @@
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE8FD;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Margin="0,0,7,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Soru Zorluk Düzeyleri" FontSize="12.5" VerticalAlignment="Center"/>
+                                    <TextBlock Text="&#xE8FD;" FontFamily="{StaticResource FluentIconFont}" FontSize="12.5" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Soru Zorluk Düzeyleri" FontSize="12" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </TabItem.Header>
                             <views:QuestionDifficultyView />
@@ -341,8 +399,8 @@
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE8A5;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Margin="0,0,7,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Kapsamlı İstatistik Raporu" FontSize="12.5" VerticalAlignment="Center"/>
+                                    <TextBlock Text="&#xE8A5;" FontFamily="{StaticResource FluentIconFont}" FontSize="12.5" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Kapsamlı İstatistik Raporu" FontSize="12" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </TabItem.Header>
                             <views:StatisticsReportView />
@@ -352,7 +410,7 @@
             </Grid>
 
             <!-- 3. KURUMSAL KOMPAKT ALT DURUM ÇUBUĞU VE AÇILIR LOG ÇEKMECESİ -->
-            <views:StatusPanelView Grid.Row="3" Grid.ColumnSpan="2" />
+            <views:StatusPanelView Grid.Row="3" Grid.ColumnSpan="3" />
         </Grid>
 
         <!-- TOAST NOTIFICATION HOST -->
@@ -360,7 +418,7 @@
                                      Panel.ZIndex="2000" 
                                      HorizontalAlignment="Right"
                                      VerticalAlignment="Top"
-                                     Margin="0,60,20,0"/>
+                                     Margin="0,56,16,0"/>
 
         <!-- MODAL OVERLAYS -->
         <modals:ProgressModal Panel.ZIndex="1500" />

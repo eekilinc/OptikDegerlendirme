@@ -31,9 +31,11 @@
           Background="{DynamicResource ModalBackdrop}">
         
         <!-- Glassmorphism Modal - Tema Uyumlu -->
-        <Border Width="520" 
+        <Border MaxWidth="540"
+                MaxHeight="620"
                 VerticalAlignment="Center" 
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Stretch"
+                Margin="20,16"
                 CornerRadius="24"
                 Padding="0">
             <Border.Style>
@@ -56,16 +58,15 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- Premium Header with Gradient -->
                 <Border Grid.Row="0" 
-                        Height="100"
                         CornerRadius="24,24,0,0" 
-                        Padding="28,24">
+                        Padding="24,18">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Setter Property="Background">
@@ -138,8 +139,9 @@
                     </Grid>
                 </Border>
 
-                <!-- Content Cards -->
-                <StackPanel Grid.Row="1" Margin="24,20,24,10">
+                <!-- Content Cards (Scrollable) -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Margin="22,16,22,10">
                     
                     <!-- Theme Card with Icon -->
                     <Border CornerRadius="16" 
@@ -424,6 +426,7 @@
                         </Grid>
                     </Border>
                 </StackPanel>
+                </ScrollViewer>
 
                 <!-- Info Banner -->
                 <Border Grid.Row="2" 

@@ -30,9 +30,11 @@
           Background="{DynamicResource ModalBackdrop}">
         
         <!-- Premium Modal -->
-        <Border Width="580" 
+        <Border MaxWidth="600"
+                MaxHeight="640"
                 VerticalAlignment="Center" 
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Stretch"
+                Margin="20,16"
                 CornerRadius="24"
                 Padding="0">
             <Border.Style>
@@ -55,15 +57,14 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- Premium Blue Header -->
                 <Border Grid.Row="0" 
-                        Height="100"
                         CornerRadius="24,24,0,0" 
-                        Padding="28,24">
+                        Padding="24,18">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                             <GradientStop Color="{DynamicResource AccentColor}" Offset="0"/>
@@ -110,8 +111,9 @@
                     </Grid>
                 </Border>
 
-                <!-- Premium Shortcut Cards -->
-                <Grid Grid.Row="1" Margin="24,24,24,16">
+                <!-- Premium Shortcut Cards (Scrollable) -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <Grid Margin="22,18,22,12">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="16"/>
@@ -638,6 +640,7 @@
                         </Border>
                     </StackPanel>
                 </Grid>
+                </ScrollViewer>
 
                 <!-- Premium Footer -->
                 <Border Grid.Row="2" 

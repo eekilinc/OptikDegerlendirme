@@ -148,7 +148,7 @@ namespace OptikFormApp.ViewModels
         public ICommand OpenUpdateUrlCommand { get; private set; } = null!;
         public ICommand DismissUpdateBannerCommand { get; private set; } = null!;
 
-        // 6. Kurumsal Kabuk UX: Daraltılabilir Sol Menü, Ders Arama, Bağlam Şeridi ve Log Çekmecesi
+        // 6. Kurumsal Kabuk UX: Daraltılabilir Sol Menü, KPI Daraltma, Ders Arama, Bağlam Şeridi ve Log Çekmecesi
         private bool _isSidebarCollapsed = false;
         public bool IsSidebarCollapsed
         {
@@ -156,6 +156,14 @@ namespace OptikFormApp.ViewModels
             set { _isSidebarCollapsed = value; OnPropertyChanged(); }
         }
         public ICommand ToggleSidebarCommand { get; private set; } = null!;
+
+        private bool _isKpiCollapsed = false;
+        public bool IsKpiCollapsed
+        {
+            get => _isKpiCollapsed;
+            set { _isKpiCollapsed = value; OnPropertyChanged(); }
+        }
+        public ICommand ToggleKpiCommand { get; private set; } = null!;
 
         private bool _isLogDrawerOpen = false;
         public bool IsLogDrawerOpen
@@ -456,6 +464,7 @@ namespace OptikFormApp.ViewModels
             DismissUpdateBannerCommand = new RelayCommand(_ => HasUpdateAvailable = false);
 
             ToggleSidebarCommand = new RelayCommand(_ => IsSidebarCollapsed = !IsSidebarCollapsed);
+            ToggleKpiCommand = new RelayCommand(_ => IsKpiCollapsed = !IsKpiCollapsed);
             ToggleLogDrawerCommand = new RelayCommand(_ => IsLogDrawerOpen = !IsLogDrawerOpen);
 
             // Sessiz arka plan sürüm kontrolü

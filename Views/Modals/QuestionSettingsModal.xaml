@@ -10,10 +10,11 @@
           Background="{DynamicResource ModalBackdrop}">
         
         <!-- Premium Modal -->
-        <Border Width="580" 
-                Height="620"
-                VerticalAlignment="Center" 
-                HorizontalAlignment="Center"
+        <Border MaxWidth="600" 
+                MaxHeight="630"
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch"
+                Margin="20,16"
                 CornerRadius="24"
                 Padding="0">
             <Border.Style>

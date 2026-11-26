@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="260" d:DesignWidth="440">
     <Grid Visibility="{Binding IsConfirmModalOpen, Converter={StaticResource BoolToVis}}" Background="{DynamicResource ModalBackdrop}">
-        <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="16" Width="420" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="28">
+        <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="16" MaxWidth="430" Margin="20,16" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="26">
             <Border.Effect>
                 <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.2" BlurRadius="40" ShadowDepth="10"/>
             </Border.Effect>

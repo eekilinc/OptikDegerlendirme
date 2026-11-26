@@ -9,9 +9,11 @@
     <Grid Visibility="{Binding IsBulkAnswerEntryOpen, Converter={StaticResource BoolToVis}}" 
           Background="{DynamicResource ModalBackdrop}">
         
-        <Border Width="450" 
+        <Border MaxWidth="460"
+                MaxHeight="520"
                 VerticalAlignment="Center" 
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Stretch"
+                Margin="20,16"
                 CornerRadius="20"
                 Padding="0">
             <Border.Style>

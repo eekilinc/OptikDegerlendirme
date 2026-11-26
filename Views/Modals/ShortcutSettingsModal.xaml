@@ -9,10 +9,11 @@
           Visibility="{Binding IsShortcutSettingsOpen, Converter={StaticResource BoolToVis}}"
           Panel.ZIndex="1200">
         
-        <Border Width="650" 
-                Height="550"
-                VerticalAlignment="Center" 
-                HorizontalAlignment="Center"
+        <Border MaxWidth="650" 
+                MaxHeight="560"
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch"
+                Margin="20,16"
                 Background="{DynamicResource CardBg}"
                 BorderBrush="{DynamicResource Border}"
                 BorderThickness="1"

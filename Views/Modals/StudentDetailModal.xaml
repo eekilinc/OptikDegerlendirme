@@ -6,24 +6,39 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="700">
     <Grid Visibility="{Binding IsStudentDetailOpen, Converter={StaticResource BoolToVis}}" Background="{DynamicResource ModalBackdrop}">
-        <Border Background="{DynamicResource CardBg}" CornerRadius="12" Width="700" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="30">
+        <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1"
+                CornerRadius="16" MaxWidth="700" MaxHeight="600" Margin="20,16"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="24">
             <Border.Effect>
-                <DropShadowEffect Color="Black" Opacity="0.15" BlurRadius="25" ShadowDepth="5"/>
+                <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.2" BlurRadius="35" ShadowDepth="8"/>
             </Border.Effect>
-            <StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
                 <!-- Header -->
-                <Grid Margin="0,0,0,20">
+                <Grid Grid.Row="0" Margin="0,0,0,14">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Öğrenci Detayları" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
-                    <Button Grid.Column="1" Content="✕" Command="{Binding CloseStudentDetailCommand}" 
-                            Style="{StaticResource OutlineButton}" Width="35" Height="35" Padding="0"/>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Width="34" Height="34" CornerRadius="8" Background="{DynamicResource HoverBg}" Margin="0,0,10,0">
+                            <TextBlock Text="&#xE77B;" FontFamily="{StaticResource FluentIconFont}" FontSize="15" Foreground="{DynamicResource Accent}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="Öğrenci Detayları ve Optik Cevaplar" FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Button Grid.Column="1" Content="✕" IsCancel="True" Command="{Binding CloseStudentDetailCommand}" 
+                            Style="{StaticResource OutlineButton}" Width="32" Height="32" Padding="0"/>
                 </Grid>
 
                 <!-- Student Info Edit Section -->
-                <Border Background="{DynamicResource AltRowBg}" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                <Border Grid.Row="1" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="16,14" Margin="0,0,0,14">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -31,37 +46,33 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1.3*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Student Number -->
-                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,0">
-                            <TextBlock Text="Öğrenci Numarası" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,5"/>
+                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,0">
+                            <TextBlock Text="Öğrenci Numarası" FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,4"/>
                             <TextBox Text="{Binding SelectedStudentDetail.StudentId, UpdateSourceTrigger=PropertyChanged}" 
-                                     Padding="10,8" FontSize="14" x:Name="StudentIdTextBox"/>
+                                     Padding="10,7" FontSize="13.5" x:Name="StudentIdTextBox"/>
                         </StackPanel>
 
-                        <!-- Full Name -->
-                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="10,0,0,0">
-                            <TextBlock Text="Ad Soyad" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,5"/>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,8,0">
+                            <TextBlock Text="Ad Soyad" FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,4"/>
                             <TextBox Text="{Binding SelectedStudentDetail.FullName, UpdateSourceTrigger=PropertyChanged}" 
-                                     Padding="10,8" FontSize="14"/>
+                                     Padding="10,7" FontSize="13.5"/>
                         </StackPanel>
 
-                        <!-- Booklet Type (Read-only) -->
-                        <StackPanel Grid.Row="0" Grid.Column="2" Margin="10,0,0,0">
-                            <TextBlock Text="Kitapçık" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,5"/>
-                            <Border Background="{DynamicResource CardBg}" CornerRadius="4" Padding="12,8" MinWidth="60" HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding SelectedStudentDetail.BookletType}" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <StackPanel Grid.Row="0" Grid.Column="2" Margin="8,0,0,0">
+                            <TextBlock Text="Kitapçık" FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,4"/>
+                            <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="6" Padding="12,7" MinWidth="56" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding SelectedStudentDetail.BookletType}" FontSize="13.5" FontWeight="Bold" HorizontalAlignment="Center"/>
                             </Border>
                         </StackPanel>
 
-                        <!-- Score Summary -->
-                        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" Margin="0,15,0,0">
-                            <TextBlock FontSize="13" Foreground="{DynamicResource TextMuted}">
+                        <WrapPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" Margin="0,12,0,0">
+                            <TextBlock FontSize="12.5" Foreground="{DynamicResource TextMuted}">
                                 <Run Text="Doğru: "/>
-                                <Run Text="{Binding SelectedStudentDetail.CorrectCount}" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
+                                <Run Text="{Binding SelectedStudentDetail.CorrectCount}" FontWeight="Bold" Foreground="{DynamicResource Success}"/>
                                 <Run Text="  |  Yanlış: "/>
                                 <Run Text="{Binding SelectedStudentDetail.IncorrectCount}" FontWeight="Bold" Foreground="{DynamicResource Error}"/>
                                 <Run Text="  |  Boş: "/>
@@ -69,17 +80,17 @@
                                 <Run Text="  |  Net: "/>
                                 <Run Text="{Binding SelectedStudentDetail.NetCount, StringFormat={}{0:N2}}" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
                                 <Run Text="  |  Puan: "/>
-                                <Run Text="{Binding SelectedStudentDetail.Score, StringFormat={}{0:N2}}" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource Accent}"/>
+                                <Run Text="{Binding SelectedStudentDetail.Score, StringFormat={}{0:N2}}" FontWeight="Bold" FontSize="13.5" Foreground="{DynamicResource Accent}"/>
                             </TextBlock>
-                        </StackPanel>
+                        </WrapPanel>
                     </Grid>
                 </Border>
 
-                <!-- Wrong Answers Section -->
-                <TextBlock Text="Yanlış ve Boş Cevaplar" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,10"/>
+                <!-- Answers Section -->
+                <TextBlock Grid.Row="2" Text="Soru Bazlı İşaretlenen Cevaplar" FontSize="12.5" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,8"/>
                 
-                <Border Background="{DynamicResource AltRowBg}" CornerRadius="8" Padding="15" MaxHeight="300" Margin="0,0,0,20">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Border Grid.Row="3" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="12" Margin="0,0,0,14">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                         <ItemsControl ItemsSource="{Binding SelectedStudentDetail.ColoredAnswers}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -88,15 +99,15 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Width="45" Height="45" Margin="3" CornerRadius="6" 
+                                    <Border Width="42" Height="42" Margin="3" CornerRadius="6" 
                                             Background="{Binding State, Converter={StaticResource AnswerStateToBgConverter}}">
                                         <Grid>
                                             <TextBlock Text="{Binding QuestionNumber}" FontSize="9" 
                                                        Foreground="{DynamicResource TextMuted}" 
                                                        HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,2,0,0"/>
-                                            <TextBlock Text="{Binding Character}" FontSize="16" FontWeight="Bold" 
+                                            <TextBlock Text="{Binding Character}" FontSize="15" FontWeight="Bold" 
                                                        Foreground="{Binding State, Converter={StaticResource AnswerStateConverter}}"
-                                                       HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,4"/>
+                                                       HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
@@ -106,17 +117,17 @@
                 </Border>
 
                 <!-- Buttons -->
-                <Grid>
+                <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Content="Vazgeç" Command="{Binding CloseStudentDetailCommand}" 
-                            Style="{StaticResource OutlineButton}" Margin="0,0,5,0"/>
-                    <Button Grid.Column="1" Content="💾 Değişiklikleri Kaydet" Command="{Binding SaveStudentDetailCommand}" 
-                            Background="{DynamicResource Accent}" Foreground="White" Margin="5,0,0,0"/>
+                    <Button Grid.Column="0" Content="Vazgeç (Esc)" Command="{Binding CloseStudentDetailCommand}" 
+                            Style="{StaticResource OutlineButton}" Padding="14,8" Margin="0,0,6,0"/>
+                    <Button Grid.Column="1" Content="Değişiklikleri Kaydet" IsDefault="True" Command="{Binding SaveStudentDetailCommand}" 
+                            Background="{DynamicResource Accent}" Foreground="White" Padding="14,8" Margin="6,0,0,0"/>
                 </Grid>
-            </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

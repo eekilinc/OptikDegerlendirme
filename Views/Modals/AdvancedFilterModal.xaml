@@ -10,10 +10,11 @@
           Background="{DynamicResource ModalBackdrop}">
         
         <!-- Premium Modal -->
-        <Border Width="440" 
-                Height="550"
-                HorizontalAlignment="Center"
+        <Border MaxWidth="480"
+                MaxHeight="600"
+                HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
+                Margin="20,16"
                 CornerRadius="24"
                 Padding="0">
             <Border.Style>
@@ -30,14 +31,8 @@
                 <DropShadowEffect Color="Black" Opacity="0.3" BlurRadius="60" ShadowDepth="20"/>
             </Border.Effect>
             
-            <Grid Margin="28">
+            <Grid Margin="24">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
@@ -45,10 +40,10 @@
 
                 <!-- Premium Header -->
                 <Border Grid.Row="0" 
-                        Height="70"
-                        CornerRadius="16,16,0,0" 
-                        Padding="0,0,0,16"
-                        Margin="-28,-28,-28,0"
+                        Height="68"
+                        CornerRadius="24,24,0,0" 
+                        Padding="0"
+                        Margin="-24,-24,-24,14"
                         BorderThickness="0,0,0,1">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -94,7 +89,16 @@
                     </Grid>
                 </Border>
                 
-                <Border Grid.Row="0" Margin="0,50,0,0" Background="Transparent"/>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,12">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
                 <!-- Score Range -->
                 <Grid Grid.Row="1" Margin="0,0,0,16">
@@ -479,12 +483,11 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Spacer -->
-                <Grid Grid.Row="6" Height="10"/>
+                </Grid>
+                </ScrollViewer>
 
                 <!-- Premium Footer -->
-                <StackPanel Grid.Row="7" 
-                            Grid.RowSpan="2"
+                <StackPanel Grid.Row="2" 
                             Orientation="Horizontal" 
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom">

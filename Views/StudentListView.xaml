@@ -9,34 +9,34 @@
     <UserControl.Resources>
         <vm:BindingProxy x:Key="Proxy" Data="{Binding}"/>
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="14,10,14,6">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <!-- Search Bar and Quick Filter Pills -->
-        <Grid Grid.Row="0" Margin="0,5,0,15">
+        <!-- Arama Çubuğu, Hızlı Filtreler ve Yoklama Eşleştirme -->
+        <Grid Grid.Row="0" Margin="0,2,0,12">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Search Bar -->
-            <Border Grid.Column="0" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="15,8" Margin="0,0,12,0">
+            <!-- Arama Çubuğu -->
+            <Border Grid.Column="0" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="8" Padding="12,7" Margin="0,0,12,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="🔍" VerticalAlignment="Center" Margin="0,0,10,0" Opacity="0.5"/>
+                    <TextBlock Grid.Column="0" Text="&#xE721;" FontFamily="{StaticResource FluentIconFont}" FontSize="12.5" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="0,0,9,0"/>
                     <TextBox Grid.Column="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
                              Background="Transparent" BorderThickness="0" VerticalAlignment="Center"
-                             FontSize="13" Foreground="{DynamicResource TextMain}">
+                             FontSize="12.5" Padding="0" Foreground="{DynamicResource TextMain}">
                         <TextBox.Resources>
-                            <VisualBrush x:Key="HintBrush" TileMode="None" Opacity="0.5" Stretch="None" AlignmentX="Left">
+                            <VisualBrush x:Key="HintBrush" TileMode="None" Opacity="0.55" Stretch="None" AlignmentX="Left">
                                 <VisualBrush.Visual>
-                                    <TextBlock Text="Öğrenci adı veya numarası ile ara..."/>
+                                    <TextBlock Text="Öğrenci numarası veya ad soyad ile filtrele..." FontSize="12.5" Foreground="{DynamicResource TextMuted}"/>
                                 </VisualBrush.Visual>
                             </VisualBrush>
                         </TextBox.Resources>
@@ -56,16 +56,41 @@
                 </Grid>
             </Border>
 
-            <!-- Quick Filter Pills -->
+            <!-- Hızlı Filtreler & Yoklama Eşleştirme -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                 <Button Content="Tümü" Command="{Binding SetQuickFilterCommand}" CommandParameter="All"
-                        Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,6,0" FontSize="11" FontWeight="SemiBold"/>
-                <Button Content="🟢 Geçenler" Command="{Binding SetQuickFilterCommand}" CommandParameter="Passed"
-                        Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,6,0" FontSize="11" FontWeight="SemiBold"/>
-                <Button Content="🟡 Şartlı" Command="{Binding SetQuickFilterCommand}" CommandParameter="Conditional"
-                        Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,6,0" FontSize="11" FontWeight="SemiBold"/>
-                <Button Content="🔴 Kalanlar" Command="{Binding SetQuickFilterCommand}" CommandParameter="Failed"
-                        Style="{StaticResource OutlineButton}" Padding="10,6" FontSize="11" FontWeight="SemiBold"/>
+                        Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,5,0" FontSize="11.5" FontWeight="SemiBold"/>
+                <Button Command="{Binding SetQuickFilterCommand}" CommandParameter="Passed"
+                        Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,5,0" FontSize="11.5" FontWeight="SemiBold">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="6" Height="6" Fill="{DynamicResource Success}" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Geçenler" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding SetQuickFilterCommand}" CommandParameter="Conditional"
+                        Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,5,0" FontSize="11.5" FontWeight="SemiBold">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="6" Height="6" Fill="{DynamicResource Warning}" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Şartlı" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding SetQuickFilterCommand}" CommandParameter="Failed"
+                        Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,10,0" FontSize="11.5" FontWeight="SemiBold">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="6" Height="6" Fill="{DynamicResource Error}" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Kalanlar" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Border Width="1" Height="18" Background="{DynamicResource Border}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+
+                <Button Command="{Binding OpenRosterMatchCommand}" Style="{StaticResource OutlineButton}" Padding="11,6" FontSize="11.5" FontWeight="SemiBold"
+                        ToolTip="OBS sınıf listesiyle karşılaştır (Sınava girmeyenler ve numara hataları)">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE8FD;" FontFamily="{StaticResource FluentIconFont}" FontSize="11.5" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Yoklama Eşleştir" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Grid>
 
@@ -311,28 +336,36 @@
                 <DataGridTemplateColumn Header="DETAY" Width="55">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="👁️" ToolTip="Öğrenci Detayı / Düzenle"
+                            <Button ToolTip="Öğrenci Detayı / Cevapları Düzenle"
                                     Command="{Binding DataContext.OpenStudentDetailCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     CommandParameter="{Binding}"
-                                    Background="Transparent" BorderThickness="0" Cursor="Hand" FontSize="13"
-                                    HorizontalAlignment="Center" VerticalAlignment="Center" Padding="4,2"/>
+                                    Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" Padding="6,4">
+                                <TextBlock Text="&#xE721;" FontFamily="{StaticResource FluentIconFont}" FontSize="12" Foreground="{DynamicResource Accent}"/>
+                            </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 
-        <!-- EMPTY STATE -->
+        <!-- KURUMSAL BOŞ DURUM (EMPTY STATE) -->
         <Border Grid.Row="1" Visibility="{Binding Students.Count, Converter={StaticResource CountToVisConverter}}" 
-                VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="500">
+                VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="520" Padding="24">
             <StackPanel>
-                <Border Width="80" Height="80" Background="{DynamicResource AltRowBg}" CornerRadius="40" Margin="0,0,0,20">
-                    <TextBlock Text="📂" FontSize="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Border Width="68" Height="68" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="16" Margin="0,0,0,16" HorizontalAlignment="Center">
+                    <TextBlock Text="&#xE8E5;" FontFamily="{StaticResource FluentIconFont}" FontSize="28" Foreground="{DynamicResource Accent}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
-                <TextBlock Text="Kayıtlı Öğrenci Bulunamadı" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
-                <TextBlock Text="Henüz bir optik veri dosyası yüklenmemiş veya filtrelere uygun kayıt yok." FontSize="14" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,10,0,25" TextAlignment="Center"/>
-                <Button Content="📂 Veri Yükle (Ctrl+O)" Command="{Binding LoadTxtCommand}" Style="{StaticResource PipelineButton}" 
-                        Background="{DynamicResource Accent}" Foreground="White" Padding="25,12" HorizontalAlignment="Center"/>
+                <TextBlock Text="Henüz Optik Sınav Verisi Yüklenmedi" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
+                <TextBlock Text="Değerlendirmeye başlamak için optik okuyucu dosyasını (.txt veya .dat) bu pencereye sürükleyip bırakın ya da aşağıdaki butonu kullanın."
+                           FontSize="12.5" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,8,0,20" TextAlignment="Center" TextWrapping="Wrap" LineHeight="19"/>
+                <Button Command="{Binding LoadTxtCommand}" Style="{StaticResource PipelineButton}" 
+                        Background="{DynamicResource Accent}" BorderBrush="{DynamicResource Accent}" Foreground="White" Padding="22,10" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE8E5;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Optik Veri Dosyası Seç (Ctrl+O)" FontSize="12.5" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Border>
     </Grid>

@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="80" d:DesignWidth="1200">
-    <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="14" Padding="16,10" Margin="0,0,0,16">
+             d:DesignHeight="72" d:DesignWidth="1200">
+    <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="12" Padding="14,9" Margin="0,0,0,12">
         <Border.Effect>
-            <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.04" BlurRadius="16" ShadowDepth="2"/>
+            <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.04" BlurRadius="14" ShadowDepth="2"/>
         </Border.Effect>
         
         <Grid>
@@ -16,41 +16,59 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Sol Logo ve Sistem Başlığı -->
-            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,20,0">
-                <Border Width="40" Height="40" CornerRadius="10" Background="{DynamicResource HoverBg}" Margin="0,0,12,0" Padding="5">
+            <!-- Sol Kurumsal Kimlik Bloğu -->
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
+                <Border Width="38" Height="38" CornerRadius="9" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" Margin="0,0,11,0" Padding="5">
                     <Image Source="/Assets/app_logo.png" Stretch="Uniform"/>
                 </Border>
                 <StackPanel VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="AĞLASUN MYO" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
-                        <Border Background="{DynamicResource AccentBgLight}" CornerRadius="4" Padding="5,1.5" Margin="8,0,0,0" VerticalAlignment="Center">
-                            <TextBlock Text="PRO" FontSize="9" FontWeight="ExtraBold" Foreground="{DynamicResource Accent}"/>
-                        </Border>
+                        <TextBlock Text="BURDUR MEHMET AKİF ERSOY ÜNİVERSİTESİ" FontSize="9.5" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
                     </StackPanel>
-                    <TextBlock Text="Optik Değerlendirme &amp; İstatistik Sistemi" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,2,0,0"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,1,0,0">
+                        <TextBlock Text="Ağlasun MYO — Optik Değerlendirme Sistemi" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
 
-            <!-- Sağ Buton Grupları (İşlemler, Ayarlar, Dışa Aktar) -->
+            <!-- Sağ Kurumsal İşlem Akışı Grupları -->
             <WrapPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
                 
-                <!-- 1. Temel İşlem Pipeline Grubu -->
-                <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="5,4" Margin="0,0,8,0">
+                <!-- 1. ADIM ADIM İŞLEM AKIŞI (Yükle -> Anahtar -> Hesapla -> Kaydet) -->
+                <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="9" Padding="4" Margin="0,2,8,2">
                     <StackPanel Orientation="Horizontal">
-                        <!-- Yükle -->
+                        <!-- 1. Veri Yükle -->
                         <Button Command="{Binding LoadTxtCommand}" Style="{StaticResource PipelineButton}" 
-                                Background="{DynamicResource Accent}" BorderBrush="{DynamicResource Accent}" Foreground="White" Padding="12,6" Margin="0,0,5,0"
-                                ToolTip="Optik txt veya dat dosyasını içe aktar (Ctrl+O)">
+                                Background="{DynamicResource Accent}" BorderBrush="{DynamicResource Accent}" Foreground="White" Padding="11,6" Margin="0,0,4,0"
+                                ToolTip="1. Adım: Optik okuyucu TXT veya DAT dosyasını yükle (Ctrl+O)">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="📂" FontSize="12" Margin="0,0,6,0"/>
-                                <TextBlock Text="Veri Yükle" FontSize="12" FontWeight="Bold"/>
+                                <TextBlock Text="&#xE8E5;" FontFamily="{StaticResource FluentIconFont}" FontSize="12" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                <TextBlock Text="1. Veri Yükle" FontSize="11.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 2. Cevap Anahtarı -->
+                        <Button Command="{Binding OpenModalCommand}" Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,4,0"
+                                ToolTip="2. Adım: Kitapçık cevap anahtarlarını düzenle">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE8D7;" FontFamily="{StaticResource FluentIconFont}" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock Text="2. Cevap Anahtarı" FontSize="11.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
                         
-                        <!-- Kaydet -->
-                        <Button Command="{Binding OpenSaveExamModalCommand}" IsEnabled="{Binding Students.Count}" 
-                                Padding="12,6" Margin="0,0,5,0">
+                        <!-- 3. Hesapla -->
+                        <Button Command="{Binding EvaluateCommand}" Style="{StaticResource PipelineButton}" 
+                                Background="{DynamicResource AccentViolet}" BorderBrush="{DynamicResource AccentViolet}" Foreground="White" Padding="12,6" Margin="0,0,4,0"
+                                ToolTip="3. Adım: Cevap anahtarına göre puanları ve istatistikleri hesapla (F5)">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE945;" FontFamily="{StaticResource FluentIconFont}" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock Text="3. Hesapla (F5)" FontSize="11.5" FontWeight="Bold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 4. Kaydet -->
+                        <Button Command="{Binding OpenSaveExamModalCommand}" IsEnabled="{Binding Students.Count}" Padding="11,6"
+                                ToolTip="4. Adım: Değerlendirilen sınavı ders arşivine kaydet (Ctrl+S)">
                             <Button.Style>
                                 <Style TargetType="Button" BasedOn="{StaticResource PipelineButton}">
                                     <Setter Property="Background" Value="{DynamicResource Success}"/>
@@ -58,26 +76,26 @@
                                     <Setter Property="Foreground" Value="White"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding HasUnsavedData}" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource Error}"/>
-                                            <Setter Property="BorderBrush" Value="{DynamicResource AccentRed}"/>
+                                            <Setter Property="Background" Value="{DynamicResource AccentOrange}"/>
+                                            <Setter Property="BorderBrush" Value="{DynamicResource AccentOrange}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock FontSize="12" Margin="0,0,6,0">
+                                <TextBlock FontFamily="{StaticResource FluentIconFont}" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="✓"/>
+                                            <Setter Property="Text" Value="&#xE73E;"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding HasUnsavedData}" Value="True">
-                                                    <Setter Property="Text" Value="💾"/>
+                                                    <Setter Property="Text" Value="&#xE74E;"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                                <TextBlock FontSize="12" FontWeight="Bold">
+                                <TextBlock FontSize="11.5" FontWeight="SemiBold" VerticalAlignment="Center">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Text" Value="Kaydedildi"/>
@@ -91,65 +109,46 @@
                                 </TextBlock>
                             </StackPanel>
                         </Button>
-                        
-                        <!-- Puanla / Hesapla -->
-                        <Button Command="{Binding EvaluateCommand}" Style="{StaticResource PipelineButton}" 
-                                Background="{DynamicResource AccentViolet}" BorderBrush="{DynamicResource AccentViolet}" Foreground="White" Padding="14,6"
-                                ToolTip="Cevap anahtarına göre puanları ve istatistikleri hesapla (F5)">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="⚡" FontSize="12" Margin="0,0,6,0"/>
-                                <TextBlock Text="Hesapla (F5)" FontSize="12" FontWeight="Bold"/>
-                            </StackPanel>
-                        </Button>
                     </StackPanel>
                 </Border>
                 
-                <!-- 2. Sınav Ayarları Grubu -->
-                <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="5,4" Margin="0,0,8,0">
-                    <StackPanel Orientation="Horizontal">
-                        <Button Command="{Binding OpenModalCommand}" Style="{StaticResource OutlineButton}" Padding="10,6" Margin="0,0,5,0"
-                                ToolTip="Kitapçık cevap anahtarlarını düzenle">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="🔑" FontSize="12" Margin="0,0,5,0"/>
-                                <TextBlock Text="Cevap Anahtarı" FontSize="12" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Command="{Binding OpenGeneralConfigCommand}" Style="{StaticResource OutlineButton}" Padding="10,6"
-                                ToolTip="Yanlış götürme katsayısı, baraj puanı ve BDS ayarları">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="⚙" FontSize="12" Margin="0,0,5,0"/>
-                                <TextBlock Text="Ayarlar" FontSize="12" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
+                <!-- 2. PARAMETRELER -->
+                <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="9" Padding="4" Margin="0,2,8,2">
+                    <Button Command="{Binding OpenGeneralConfigCommand}" Style="{StaticResource OutlineButton}" Padding="10,6"
+                            ToolTip="Yanlış götürme katsayısı, baraj puanı ve öğretim elemanı profili">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE713;" FontFamily="{StaticResource FluentIconFont}" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBlock Text="Parametreler" FontSize="11.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </Border>
                 
-                <!-- 3. Dışa Aktarma Grubu -->
-                <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="5,4" 
+                <!-- 3. KURUMSAL ÇIKTI & OBS GRUBU (Veri yüklendiğinde görünür) -->
+                <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="9" Padding="4" Margin="0,2,0,2"
                         Visibility="{Binding Students.Count, Converter={StaticResource DataToVisConverter}}">
                     <StackPanel Orientation="Horizontal">
-                        <Button Command="{Binding ExportExcelCommand}" Style="{StaticResource PipelineButton}" 
-                                Background="{DynamicResource AccentOrange}" BorderBrush="{DynamicResource Warning}" Foreground="White" Padding="10,6" Margin="0,0,5,0"
-                                ToolTip="Tüm detayları Excel (.xlsx) olarak aktar">
+                        <Button Command="{Binding OpenObsExportCommand}" Style="{StaticResource PipelineButton}" 
+                                Background="{DynamicResource Accent}" BorderBrush="{DynamicResource Accent}" Foreground="White" Padding="10,6" Margin="0,0,4,0"
+                                ToolTip="MAKÜ OBS uyumlu yuvarlanmış not aktarımı ve kopyalama">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="📊" FontSize="12" Margin="0,0,5,0"/>
-                                <TextBlock Text="Excel" FontSize="12" FontWeight="Bold"/>
+                                <TextBlock Text="&#xE898;" FontFamily="{StaticResource FluentIconFont}" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock Text="OBS Aktarım" FontSize="11.5" FontWeight="Bold" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding ExportCsvCommand}" Style="{StaticResource PipelineButton}" 
-                                Background="{DynamicResource Warning}" BorderBrush="{DynamicResource Warning}" Foreground="White" Padding="10,6" Margin="0,0,5,0"
-                                ToolTip="Not listesini CSV olarak dışa aktar">
+                        <Button Command="{Binding ExportExcelCommand}" Style="{StaticResource PipelineButton}" 
+                                Background="{DynamicResource Success}" BorderBrush="{DynamicResource Success}" Foreground="White" Padding="10,6" Margin="0,0,4,0"
+                                ToolTip="Tüm öğrenci ve soru detaylarını Excel (.xlsx) olarak dışa aktar (Ctrl+E)">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="📄" FontSize="12" Margin="0,0,5,0"/>
-                                <TextBlock Text="CSV" FontSize="12" FontWeight="Bold"/>
+                                <TextBlock Text="&#xE9D2;" FontFamily="{StaticResource FluentIconFont}" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock Text="Excel" FontSize="11.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding ExportFullReportCommand}" Style="{StaticResource PipelineButton}" 
-                                Background="{DynamicResource Error}" BorderBrush="{DynamicResource Error}" Foreground="White" Padding="11,6"
-                                ToolTip="Kapsamlı karne ve analiz raporunu PDF olarak yazdır">
+                                Background="{DynamicResource AccentRed}" BorderBrush="{DynamicResource AccentRed}" Foreground="White" Padding="11,6"
+                                ToolTip="Kapak sayfalı ve imza bloklu resmi Akademik PDF Rapor oluştur (Ctrl+Shift+R)">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="📑" FontSize="12" Margin="0,0,5,0"/>
-                                <TextBlock Text="PDF Rapor" FontSize="12" FontWeight="Bold"/>
+                                <TextBlock Text="&#xE8A5;" FontFamily="{StaticResource FluentIconFont}" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock Text="PDF Rapor" FontSize="11.5" FontWeight="Bold" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
                     </StackPanel>

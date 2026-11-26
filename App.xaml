@@ -34,6 +34,16 @@
         <vm:SeverityToBrushConverter x:Key="SeverityToBrushConverter"/>
         <vm:SeverityToIconConverter x:Key="SeverityToIconConverter"/>
 
+        <!-- Kurumsal Ikon Tipografisi (Windows 11 Segoe Fluent Icons + Windows 10 MDL2 Fallback) -->
+        <FontFamily x:Key="FluentIconFont">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
+
+        <Style x:Key="FluentIcon" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource FluentIconFont}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        </Style>
+
         <!-- Premium Modal Styles -->
         <Style x:Key="PremiumModalContainer" TargetType="Grid">
             <Setter Property="Background">

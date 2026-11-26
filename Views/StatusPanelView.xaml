@@ -4,12 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="800">
+             d:DesignHeight="160" d:DesignWidth="1100">
     <StackPanel>
-        <!-- VALIDATION ALERT PANEL -->
+        <!-- 1. DOĞRULAMA UYARI BANDI (Sadece hata varsa görünür) -->
         <Border Visibility="{Binding ValidationIssuesCount, Converter={StaticResource NumericToVis}}" 
-                Background="{DynamicResource ErrorBgLight}" BorderBrush="{DynamicResource Error}" BorderThickness="1" CornerRadius="12" 
-                Margin="0,15,0,0" Padding="16,12">
+                Background="{DynamicResource ErrorBgLight}" BorderBrush="{DynamicResource Error}" BorderThickness="0,1,0,0" Padding="18,7">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -17,25 +16,28 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="⚠️" FontSize="20" VerticalAlignment="Center" Margin="0,0,14,0"/>
+                <TextBlock Grid.Column="0" Text="&#xE7BA;" FontFamily="{StaticResource FluentIconFont}" FontSize="14" Foreground="{DynamicResource Error}" VerticalAlignment="Center" Margin="0,0,10,0"/>
                 
-                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding ValidationIssuesCount, StringFormat='{}{0} Adet Veri Doğrulama Sorunu Tespit Edildi!'}" FontWeight="Bold" Foreground="{DynamicResource Error}" FontSize="13"/>
-                    <TextBlock Text="Bazı satırlarda okuma hataları veya eksik işaretlemeler var." FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,2,0,0"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding ValidationIssuesCount, StringFormat='{}{0} Adet Veri Doğrulama Uyarısı Tespit Edildi'}" FontWeight="Bold" Foreground="{DynamicResource Error}" FontSize="12" VerticalAlignment="Center"/>
+                    <TextBlock Text=" — Eksik kodlama veya okuma anomalilerini inceleyin." FontSize="11.5" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center"/>
                 </StackPanel>
 
-                <Button Grid.Column="2" Content="🔍 Detayları Gör" Padding="12,6" 
-                        Background="{DynamicResource Error}" Foreground="White" FontWeight="SemiBold" FontSize="12"
+                <Button Grid.Column="2" Padding="12,4" Background="{DynamicResource Error}" Foreground="White" FontWeight="SemiBold" FontSize="11"
                         BorderThickness="0" Cursor="Hand" VerticalAlignment="Center"
                         Command="{Binding ShowValidationDetailsCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE721;" FontFamily="{StaticResource FluentIconFont}" FontSize="10.5" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Text="Detayları İncele" VerticalAlignment="Center"/>
+                    </StackPanel>
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
-                            <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="bd" Property="Opacity" Value="0.9"/>
+                                    <Setter TargetName="bd" Property="Opacity" Value="0.88"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -44,71 +46,79 @@
             </Grid>
         </Border>
 
-        <!-- Enhanced Status Bar & Logs -->
-        <Grid Margin="0,16,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1.2*"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- Status Card -->
-            <Border Grid.Column="0" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="12" Padding="14,10" Margin="0,0,10,0">
-                <Border.Effect>
-                    <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.03" BlurRadius="10" ShadowDepth="2"/>
-                </Border.Effect>
-                <Grid>
+        <!-- 2. AÇILIR/KAPANIR İŞLEM KAYITLARI (LOG) ÇEKMECESİ -->
+        <Border Visibility="{Binding IsLogDrawerOpen, Converter={StaticResource BoolToVis}}"
+                Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" Padding="18,10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="115"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Margin="0,0,0,6">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Border Width="24" Height="24" CornerRadius="6" Background="{DynamicResource HoverBg}" Margin="0,0,10,0" Padding="3">
-                            <Image Source="/Assets/app_logo.png" Stretch="Uniform"/>
-                        </Border>
-                        <TextBlock Text="Durum:" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" Margin="0,0,6,0" VerticalAlignment="Center" FontSize="12"/>
-                        <TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource TextMain}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                        
-                        <ItemsControl ItemsSource="{Binding ValidationIssues}" Margin="16,0,0,0">
-                            <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Background="{DynamicResource ErrorBgLight}" BorderBrush="{DynamicResource Error}" BorderThickness="1" CornerRadius="4" Padding="6,2" Margin="0,0,8,0" ToolTip="{Binding Message}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="⚠️" FontSize="10" Margin="0,0,4,0"/>
-                                            <TextBlock Text="{Binding Title}" Foreground="{DynamicResource Error}" FontSize="10" FontWeight="Bold"/>
-                                        </StackPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <TextBlock Text="&#xE8FD;" FontFamily="{StaticResource FluentIconFont}" FontSize="12" Foreground="{DynamicResource Accent}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBlock Text="Sistem İşlem Kayıtları" FontWeight="Bold" Foreground="{DynamicResource TextMain}" FontSize="11.5" VerticalAlignment="Center"/>
                     </StackPanel>
+                    <Button Command="{Binding ToggleLogDrawerCommand}" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" Padding="6,2" Cursor="Hand" ToolTip="Kayıt Çekmecesini Kapat">
+                        <TextBlock Text="&#xE711;" FontFamily="{StaticResource FluentIconFont}" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
+                    </Button>
                 </Grid>
-            </Border>
-
-            <!-- Logs Card -->
-            <Border Grid.Column="1" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="12" Padding="14,10">
-                <Border.Effect>
-                    <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.03" BlurRadius="10" ShadowDepth="2"/>
-                </Border.Effect>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6">
-                        <TextBlock Text="📋" FontSize="12" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="İşlem Kayıtları" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" FontSize="11" VerticalAlignment="Center"/>
-                    </StackPanel>
-                    <ScrollViewer Grid.Row="1" Height="75" VerticalScrollBarVisibility="Auto">
+                <Border Grid.Row="1" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="6" Padding="10,6">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                         <ItemsControl ItemsSource="{Binding Logs}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Margin="0,1.5">
-                                        <TextBlock Text="{Binding DisplayTime}" Foreground="{DynamicResource TextMuted}" FontSize="10" Width="52"/>
+                                        <TextBlock Text="{Binding DisplayTime}" FontFamily="Consolas, Cascadia Mono" Foreground="{DynamicResource TextMuted}" FontSize="10.5" Width="62"/>
                                         <TextBlock Text="{Binding Message}" Foreground="{Binding Level, Converter={StaticResource LogLevelConverter}}" FontSize="11" TextWrapping="Wrap"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                </Grid>
-            </Border>
-        </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- 3. KURUMSAL İNCE ALT DURUM ÇUBUĞU (32px Sabit Yükseklik) -->
+        <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" Height="32" Padding="16,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Sol: Sistem Durumu -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse Width="7" Height="7" Fill="{DynamicResource Success}" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Durum:" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" FontSize="11.5" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource TextMain}" FontSize="11.5" FontWeight="Medium" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+
+                <!-- Sağ: Kural Özeti & Log Çekmecesi Butonu -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding GradingRulesSummary}" FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="0,0,14,0"/>
+                    <Border Width="1" Height="14" Background="{DynamicResource Border}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                    <Button Command="{Binding ToggleLogDrawerCommand}" Background="Transparent" BorderThickness="0" Padding="8,4" Cursor="Hand"
+                            ToolTip="Sistem İşlem Kayıtlarını Aç / Kapat">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="&#xE8FD;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                        <TextBlock Text="{Binding Logs.Count, StringFormat='İşlem Kayıtları ({0})'}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bd" Property="Background" Value="{DynamicResource HoverBg}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
     </StackPanel>
 </UserControl>

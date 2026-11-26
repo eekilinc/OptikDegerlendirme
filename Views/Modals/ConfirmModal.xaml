@@ -28,8 +28,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Content="İptal" Command="{Binding CancelConfirmCommand}" Style="{StaticResource OutlineButton}" Padding="16,8" Margin="0,0,6,0" HorizontalAlignment="Stretch"/>
-                    <Button Grid.Column="1" Content="{Binding ConfirmButtonText}" Command="{Binding ConfirmActionCommand}" Background="{DynamicResource Error}" Foreground="White" FontWeight="Bold" Padding="16,8" Margin="6,0,0,0" HorizontalAlignment="Stretch">
+                    <Button Grid.Column="0" Content="İptal (Esc)" IsCancel="True" Command="{Binding CancelConfirmCommand}" Style="{StaticResource OutlineButton}" Padding="16,8" Margin="0,0,6,0" HorizontalAlignment="Stretch"/>
+                    <Button Grid.Column="1" Content="{Binding ConfirmButtonText}" IsDefault="True" Command="{Binding ConfirmActionCommand}" Background="{DynamicResource Error}" Foreground="White" FontWeight="Bold" Padding="16,8" Margin="6,0,0,0" HorizontalAlignment="Stretch">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">

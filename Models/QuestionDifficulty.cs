@@ -62,10 +62,10 @@ namespace OptikFormApp.Models
             {
                 return SuccessRate switch
                 {
-                    >= 80 => "🟢", // Green - Easy
-                    >= 60 => "🟡", // Amber - Medium
-                    >= 40 => "🔴", // Red - Hard
-                    _ => "⚫"  // Gray - Very Hard
+                    >= 80 => "●",
+                    >= 60 => "●",
+                    >= 40 => "●",
+                    _ => "●"
                 };
             }
         }

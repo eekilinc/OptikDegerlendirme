@@ -4,48 +4,63 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400">
+             d:DesignHeight="340" d:DesignWidth="440">
     <Grid Visibility="{Binding IsRenameModalOpen, Converter={StaticResource BoolToVis}}" Background="{DynamicResource ModalBackdrop}">
-        <Border Background="{DynamicResource CardBg}" CornerRadius="12" Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="30">
+        <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="16" Width="430" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Border.Effect>
-                <DropShadowEffect Color="Black" Opacity="0.15" BlurRadius="25" ShadowDepth="5"/>
+                <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.22" BlurRadius="40" ShadowDepth="10"/>
             </Border.Effect>
-            <StackPanel>
-                <TextBlock Text="{Binding RenameModalTitle}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,20"/>
-                
-                <!-- Input 1 Label - Ders için "Ders Kodu", Sınav için "Sınav Adı" -->
-                <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,5">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Text" Value="Ad:"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ShowRenameInput2}" Value="True">
-                                    <Setter Property="Text" Value="Ders Kodu:"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-                <TextBox Text="{Binding RenameInput1, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,15" Padding="10,8" FontSize="14"/>
-                
-                <!-- Input 2 - Sadece ders düzenlemede gösterilir -->
-                <StackPanel Visibility="{Binding ShowRenameInput2, Converter={StaticResource BoolToVis}}">
-                    <TextBlock Text="Ders Adı:" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,5"/>
-                    <TextBox Text="{Binding RenameInput2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,25" Padding="10,8" FontSize="14"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Kurumsal Başlık -->
+                <Border Grid.Row="0" Background="{DynamicResource Accent}" CornerRadius="16,16,0,0" Padding="22,16">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Width="36" Height="36" CornerRadius="9" Background="#25FFFFFF" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE70F;" FontFamily="{StaticResource FluentIconFont}" FontSize="15" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="{Binding RenameModalTitle}" FontSize="16" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Giriş Alanları -->
+                <StackPanel Grid.Row="1" Margin="22,18">
+                    <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,5">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="Sınav Adı:"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ShowRenameInput2}" Value="True">
+                                        <Setter Property="Text" Value="Ders Kodu:"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBox Text="{Binding RenameInput1, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14" Padding="10,9" FontSize="13.5"/>
+                    
+                    <StackPanel Visibility="{Binding ShowRenameInput2, Converter={StaticResource BoolToVis}}">
+                        <TextBlock Text="Ders Adı:" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding RenameInput2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,4" Padding="10,9" FontSize="13.5"/>
+                    </StackPanel>
                 </StackPanel>
-                
-                <!-- Boşluk sınav düzenlemede -->
-                <Border Height="10" Visibility="{Binding ShowRenameInput2, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}"/>
-                
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Content="Vazgeç" Command="{Binding CloseRenameModalCommand}" Style="{StaticResource OutlineButton}" Margin="0,0,5,0"/>
-                    <Button Grid.Column="1" Content="Kaydet" Command="{Binding SaveRenameCommand}" Background="{DynamicResource Accent}" Margin="5,0,0,0"/>
-                </Grid>
-            </StackPanel>
+
+                <!-- Alt Aksiyonlar (Enter = Kaydet, Esc = Vazgeç) -->
+                <Border Grid.Row="2" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" CornerRadius="0,0,16,16" Padding="22,14">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Vazgeç (Esc)" IsCancel="True" Command="{Binding CloseRenameModalCommand}" Style="{StaticResource OutlineButton}" Padding="14,8" Margin="0,0,6,0"/>
+                        <Button Grid.Column="1" Content="Güncelle" IsDefault="True" Command="{Binding SaveRenameCommand}" Background="{DynamicResource Accent}" Padding="14,8" Margin="6,0,0,0"/>
+                    </Grid>
+                </Border>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

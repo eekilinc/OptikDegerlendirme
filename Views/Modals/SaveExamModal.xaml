@@ -275,13 +275,15 @@
                         </Grid.ColumnDefinitions>
                         
                         <Button Grid.Column="0" 
-                                Content="Vazgeç" 
+                                Content="Vazgeç (Esc)" 
+                                IsCancel="True"
                                 Command="{Binding CloseSaveExamModalCommand}" 
                                 Style="{StaticResource OutlineButton}" 
                                 Padding="20,10" FontSize="13"/>
                         
                         <Button Grid.Column="2" 
-                                Content="💾 Sınavı Kaydet" 
+                                Content="Sınavı Kaydet" 
+                                IsDefault="True"
                                 Command="{Binding ConfirmSaveExamCommand}" 
                                 IsEnabled="{Binding Students.Count}" 
                                 Background="{DynamicResource Accent}" 

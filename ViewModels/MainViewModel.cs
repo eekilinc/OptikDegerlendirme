@@ -207,6 +207,7 @@ namespace OptikFormApp.ViewModels
             
             StudentsView = CollectionViewSource.GetDefaultView(Students);
             StudentsView.Filter = FilterStudents;
+            SetupCorporateShellViews();
             
             // Temayı uygula (saved ayarları yüklendikten sonra)
             ApplyTheme(_themeIndex == 1);
@@ -1670,13 +1671,13 @@ namespace OptikFormApp.ViewModels
         public Course? SelectedCourse
         {
             get => _selectedCourse;
-            set { _selectedCourse = value; OnPropertyChanged(); if (value != null) _ = LoadExamsForCourseAsync(value.Id); else CourseExams.Clear(); }
+            set { _selectedCourse = value; OnPropertyChanged(); NotifyActiveContextChanged(); if (value != null) _ = LoadExamsForCourseAsync(value.Id); else CourseExams.Clear(); }
         }
 
         public ExamEntry? SelectedExam
         {
             get => _selectedExam;
-            set { _selectedExam = value; OnPropertyChanged(); if (value != null) _ = LoadExamDataAsync(value); }
+            set { _selectedExam = value; OnPropertyChanged(); NotifyActiveContextChanged(); if (value != null) _ = LoadExamDataAsync(value); }
         }
 
         public bool IsAddCourseOpen { get => _isAddCourseOpen; set { _isAddCourseOpen = value; OnPropertyChanged(); } }

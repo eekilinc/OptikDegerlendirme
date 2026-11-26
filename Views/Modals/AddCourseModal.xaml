@@ -4,30 +4,55 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400">
+             d:DesignHeight="340" d:DesignWidth="440">
     <Grid Visibility="{Binding IsAddCourseOpen, Converter={StaticResource BoolToVis}}" Background="{DynamicResource ModalBackdrop}">
-        <Border Background="{DynamicResource CardBg}" CornerRadius="12" Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="30">
+        <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="16" Width="430" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Border.Effect>
-                <DropShadowEffect Color="Black" Opacity="0.15" BlurRadius="25" ShadowDepth="5"/>
+                <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.22" BlurRadius="40" ShadowDepth="10"/>
             </Border.Effect>
-            <StackPanel>
-                <TextBlock Text="Yeni Ders Ekle" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,15"/>
-                
-                <TextBlock Text="Ders Kodu:" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding NewCourseCode, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,15" Padding="10,8" FontSize="14"/>
-                
-                <TextBlock Text="Ders Adı:" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding NewCourseName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,25" Padding="10,8" FontSize="14"/>
-                
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Content="Vazgeç" Command="{Binding CloseAddCourseCommand}" Style="{StaticResource OutlineButton}" Margin="0,0,5,0"/>
-                    <Button Grid.Column="1" Content="Ekle" Command="{Binding AddCourseCommand}" Background="{DynamicResource Success}" Margin="5,0,0,0"/>
-                </Grid>
-            </StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Kurumsal Başlık -->
+                <Border Grid.Row="0" Background="{DynamicResource Accent}" CornerRadius="16,16,0,0" Padding="22,16">
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border Width="36" Height="36" CornerRadius="9" Background="#25FFFFFF" Margin="0,0,12,0">
+                                <TextBlock Text="&#xE82D;" FontFamily="{StaticResource FluentIconFont}" FontSize="16" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Yeni Ders Tanımla" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                <TextBlock Text="Sınav arşivlerini gruplamak için ders kodu ve adını girin" FontSize="11" Foreground="White" Opacity="0.85"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Form Alanları -->
+                <StackPanel Grid.Row="1" Margin="22,18">
+                    <TextBlock Text="Ders Kodu (Örn: BİL101)" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,5"/>
+                    <TextBox Text="{Binding NewCourseCode, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14" Padding="10,9" FontSize="13.5"/>
+                    
+                    <TextBlock Text="Ders Adı (Örn: Algoritma ve Programlama)" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,5"/>
+                    <TextBox Text="{Binding NewCourseName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,4" Padding="10,9" FontSize="13.5"/>
+                </StackPanel>
+
+                <!-- Alt Aksiyonlar (Enter = Kaydet, Esc = Vazgeç) -->
+                <Border Grid.Row="2" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" CornerRadius="0,0,16,16" Padding="22,14">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Vazgeç (Esc)" IsCancel="True" Command="{Binding CloseAddCourseCommand}" Style="{StaticResource OutlineButton}" Padding="14,8" Margin="0,0,6,0"/>
+                        <Button Grid.Column="1" Content="Dersi Kaydet" IsDefault="True" Command="{Binding AddCourseCommand}" Background="{DynamicResource Accent}" Padding="14,8" Margin="6,0,0,0"/>
+                    </Grid>
+                </Border>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

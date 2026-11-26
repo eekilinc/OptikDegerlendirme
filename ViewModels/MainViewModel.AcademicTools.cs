@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using Microsoft.Win32;
 using OptikFormApp.Models;
@@ -145,6 +147,77 @@ namespace OptikFormApp.ViewModels
 
         public ICommand OpenUpdateUrlCommand { get; private set; } = null!;
         public ICommand DismissUpdateBannerCommand { get; private set; } = null!;
+
+        // 6. Kurumsal Kabuk UX: Daraltılabilir Sol Menü, Ders Arama, Bağlam Şeridi ve Log Çekmecesi
+        private bool _isSidebarCollapsed = false;
+        public bool IsSidebarCollapsed
+        {
+            get => _isSidebarCollapsed;
+            set { _isSidebarCollapsed = value; OnPropertyChanged(); }
+        }
+        public ICommand ToggleSidebarCommand { get; private set; } = null!;
+
+        private bool _isLogDrawerOpen = false;
+        public bool IsLogDrawerOpen
+        {
+            get => _isLogDrawerOpen;
+            set { _isLogDrawerOpen = value; OnPropertyChanged(); }
+        }
+        public ICommand ToggleLogDrawerCommand { get; private set; } = null!;
+
+        private string _courseSearchText = "";
+        public string CourseSearchText
+        {
+            get => _courseSearchText;
+            set
+            {
+                _courseSearchText = value;
+                OnPropertyChanged();
+                CoursesView?.Refresh();
+            }
+        }
+
+        public ICollectionView? CoursesView { get; private set; }
+
+        public string ActiveContextCourseText => SelectedCourse != null
+            ? $"{SelectedCourse.Code} — {SelectedCourse.Name}"
+            : "Ders Seçilmedi";
+
+        public string ActiveContextExamText => SelectedExam != null
+            ? SelectedExam.Title
+            : (Students != null && Students.Count > 0 ? $"Yeni Optik Veri ({Students.Count} Öğrenci)" : "Henüz Sınav Yüklenmedi");
+
+        public void NotifyActiveContextChanged()
+        {
+            OnPropertyChanged(nameof(ActiveContextCourseText));
+            OnPropertyChanged(nameof(ActiveContextExamText));
+        }
+
+        public void SetupCorporateShellViews()
+        {
+            if (Courses != null)
+            {
+                var lcv = new ListCollectionView(Courses);
+                lcv.Filter = obj =>
+                {
+                    if (string.IsNullOrWhiteSpace(_courseSearchText)) return true;
+                    if (obj is Course c)
+                    {
+                        string q = _courseSearchText.Trim();
+                        return (c.Code?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                               (c.Name?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false);
+                    }
+                    return true;
+                };
+                CoursesView = lcv;
+                OnPropertyChanged(nameof(CoursesView));
+            }
+
+            if (Students != null)
+            {
+                Students.CollectionChanged += (_, _) => NotifyActiveContextChanged();
+            }
+        }
 
         public OpticalFormatConfig GetCurrentOpticalFormat() => new()
         {
@@ -381,6 +454,9 @@ namespace OptikFormApp.ViewModels
                 }
             });
             DismissUpdateBannerCommand = new RelayCommand(_ => HasUpdateAvailable = false);
+
+            ToggleSidebarCommand = new RelayCommand(_ => IsSidebarCollapsed = !IsSidebarCollapsed);
+            ToggleLogDrawerCommand = new RelayCommand(_ => IsLogDrawerOpen = !IsLogDrawerOpen);
 
             // Sessiz arka plan sürüm kontrolü
             _ = CheckForUpdatesSilentlyAsync();

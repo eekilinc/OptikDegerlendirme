@@ -4,11 +4,13 @@
         xmlns:vm="clr-namespace:OptikFormApp.ViewModels"
         xmlns:views="clr-namespace:OptikFormApp.Views"
         xmlns:modals="clr-namespace:OptikFormApp.Views.Modals"
-        Title="AĞLASUN MYO Optik Değerlendirme" Height="750" Width="1150" MinWidth="850" MinHeight="600"
+        Title="MAKÜ Ağlasun MYO — Optik Değerlendirme ve İstatistik Sistemi" Height="780" Width="1240" MinWidth="920" MinHeight="620"
         Icon="/Assets/app_logo.png"
-        WindowStartupLocation="CenterScreen" Background="{DynamicResource AppBg}" FontFamily="Segoe UI Variable, Segoe UI, -apple-system, system-ui, sans-serif"
+        WindowStartupLocation="CenterScreen" Background="{DynamicResource AppBg}"
+        FontFamily="Segoe UI Variable, Segoe UI, -apple-system, system-ui, sans-serif"
         AutomationProperties.Name="Optik Değerlendirme Ana Pencere"
         AllowDrop="True"
+        Closing="MainWindow_Closing"
         Drop="MainWindow_Drop"
         DragEnter="MainWindow_DragEnter"
         DragLeave="MainWindow_DragLeave">
@@ -17,214 +19,251 @@
     </Window.DataContext>
 
     <Window.InputBindings>
-        <!-- Dosya kısayolları -->
         <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding LoadTxtCommand}" />
         <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveExamCommand}" />
         <KeyBinding Key="E" Modifiers="Ctrl" Command="{Binding ExportExcelCommand}" />
         <KeyBinding Key="C" Modifiers="Ctrl+Shift" Command="{Binding ExportCsvCommand}" />
         <KeyBinding Key="P" Modifiers="Ctrl" Command="{Binding ExportPdfCommand}" />
         <KeyBinding Key="R" Modifiers="Ctrl+Shift" Command="{Binding ExportFullReportCommand}" />
-        <!-- İşlem kısayolları -->
         <KeyBinding Key="F5" Command="{Binding EvaluateCommand}" />
         <KeyBinding Key="F1" Command="{Binding ShowShortcutsCommand}" />
     </Window.InputBindings>
 
     <Grid>
-        <!-- APP SHELL -->
+        <!-- KURUMSAL UYGULAMA KABUĞU -->
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="280" MinWidth="220" MaxWidth="360"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/> <!-- Top Menu -->
-                <RowDefinition Height="Auto"/> <!-- Update Notification Banner -->
-                <RowDefinition Height="*"/>    <!-- Main View -->
+                <RowDefinition Height="Auto"/> <!-- 0: Üst Menü & Bağlam Çubuğu -->
+                <RowDefinition Height="Auto"/> <!-- 1: Güncelleme Bandı -->
+                <RowDefinition Height="*"/>    <!-- 2: Ana Çalışma Alanı -->
+                <RowDefinition Height="Auto"/> <!-- 3: Kurumsal İnce Alt Durum Şeridi -->
             </Grid.RowDefinitions>
 
-            <!-- MODERN TOP MENU -->
+            <!-- 0. ÜST MENÜ VE AKTİF DERS/SINAV BAĞLAM ŞERİDİ -->
             <Border Grid.Row="0" Grid.ColumnSpan="2" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,0,0,1">
-                <Menu Background="Transparent" Padding="10,5">
-                    <MenuItem Header="_Dosya">
-                        <MenuItem Header="Optik Verisi Yükle (.txt)" Command="{Binding LoadTxtCommand}" InputGestureText="Ctrl+O"/>
-                        <Separator/>
-                        <MenuItem Header="Veri Alışverişi">
-                            <MenuItem Header="JSON'dan Yükle..." Command="{Binding ImportJsonCommand}"/>
-                            <MenuItem Header="JSON'a Aktar..." Command="{Binding ExportJsonCommand}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Sol Kenar Çubuğu Aç/Kapat Butonu -->
+                    <Button Grid.Column="0" Command="{Binding ToggleSidebarCommand}"
+                            Background="Transparent" Foreground="{DynamicResource TextMain}"
+                            Padding="12,8" Margin="6,2,2,2" BorderThickness="0" Cursor="Hand"
+                            ToolTip="Sol Ders ve Sınav Panelini Daralt / Genişlet">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                    <TextBlock Text="&#xE700;" FontFamily="{StaticResource FluentIconFont}" FontSize="14" Foreground="{DynamicResource TextMain}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bd" Property="Background" Value="{DynamicResource HoverBg}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <!-- Üst Menü -->
+                    <Menu Grid.Column="1" Background="Transparent" Padding="4,4" VerticalAlignment="Center">
+                        <MenuItem Header="_Dosya">
+                            <MenuItem Header="Optik Verisi Yükle (.txt / .dat)" Command="{Binding LoadTxtCommand}" InputGestureText="Ctrl+O"/>
                             <Separator/>
-                            <MenuItem Header="Şablonu İçe Aktar..." Command="{Binding ImportTemplateCommand}"/>
-                            <MenuItem Header="Şablonu Dışa Aktar..." Command="{Binding ExportTemplateCommand}"/>
-                        </MenuItem>
-                        <Separator/>
-                        <MenuItem Header="Çıkış" Command="{Binding ExitCommand}"/>
-                    </MenuItem>
-                    <MenuItem Header="_Düzen">
-                        <MenuItem Header="Geri Al" Command="{Binding UndoCommand}" InputGestureText="Ctrl+Z"/>
-                        <MenuItem Header="Yinele" Command="{Binding RedoCommand}" InputGestureText="Ctrl+Y"/>
-                    </MenuItem>
-                    <MenuItem Header="_Sınav">
-                        <MenuItem Header="Sınavı Veritabanına Kaydet" Command="{Binding SaveExamCommand}" InputGestureText="Ctrl+S"/>
-                        <Separator/>
-                        <MenuItem Header="Cevap Anahtarlarını Yönet" Command="{Binding OpenModalCommand}"/>
-                        <MenuItem Header="🔄 Kitapçık Dönüştürücü (Eşleme Matrisi)" Command="{Binding OpenBookletMappingCommand}"/>
-                        <MenuItem Header="Soru Ayarlarını Yönet (İptal/Çoklu)" Command="{Binding OpenQuestionSettingsCommand}"/>
-                        <MenuItem Header="Öğrenim Çıktılarını (Konu) Yönet" Command="{Binding OpenLearningOutcomesCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="📋 Sınıf Listesi Eşleştir (Yoklama / Hata Tespiti)..." Command="{Binding OpenRosterMatchCommand}"/>
-                        <MenuItem Header="🔍 Gelişmiş Filtreleme" Command="{Binding OpenAdvancedFilterCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="Puanları Hesapla" Command="{Binding EvaluateCommand}" InputGestureText="F5"/>
-                    </MenuItem>
-                    <MenuItem Header="_Ders">
-                        <MenuItem Header="Yeni Ders Ekle..." Command="{Binding ShowAddCourseCommand}"/>
-                        <MenuItem Header="Seçili Dersi Sil" Command="{Binding DeleteCourseCommand}" CommandParameter="{Binding SelectedCourse}"/>
-                    </MenuItem>
-                    <MenuItem Header="_Raporlar">
-                        <MenuItem Header="📤 MAKÜ OBS Hazır Not Aktarımı..." Command="{Binding OpenObsExportCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="Excel Raporu Al (.xlsx)" Command="{Binding ExportExcelCommand}" InputGestureText="Ctrl+E"/>
-                        <MenuItem Header="CSV Olarak Dışa Aktar (.csv)" Command="{Binding ExportCsvCommand}" InputGestureText="Ctrl+Shift+C"/>
-                        <MenuItem Header="Not Listesi (No + Puan) (.csv)" Command="{Binding ExportGradeListCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="Toplu PDF Karne Al (.pdf)" Command="{Binding ExportPdfCommand}" InputGestureText="Ctrl+P"/>
-                        <MenuItem Header="📄 Tam Rapor PDF (Tüm Analizler)" Command="{Binding ExportFullReportCommand}" InputGestureText="Ctrl+Shift+R"/>
-                        <Separator/>
-                        <MenuItem Header="📊 Gelişmiş Soru Analizi" Command="{Binding OpenItemAnalysisCommand}"/>
-                        <MenuItem Header="🔮 Başarı Tahmini" Command="{Binding OpenSuccessPredictionCommand}"/>
-                    </MenuItem>
-                    <MenuItem Header="_Ayarlar">
-                        <MenuItem Header="Arayüz Ayarları..." Command="{Binding OpenUISettingsCommand}"/>
-                        <MenuItem Header="Genel Hesaplama &amp; Profil Ayarları..." Command="{Binding OpenGeneralConfigCommand}"/>
-                        <MenuItem Header="📐 Optik Form Format Ayarlayıcı..." Command="{Binding OpenOpticalFormatCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="Sınav Şablonlarını Yönet..." Command="{Binding OpenTemplateManagerCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="📦 Yedekleme ve Geri Yükleme">
-                            <MenuItem Header="Tam Yedek Oluştur (.zip)" Command="{Binding CreateFullBackupCommand}"/>
-                            <MenuItem Header="Sadece Veritabanı Yedekle (.db)" Command="{Binding CreateDatabaseBackupCommand}"/>
-                            <MenuItem Header="Ayarları Dışa Aktar (.json)" Command="{Binding ExportSettingsCommand}"/>
+                            <MenuItem Header="Veri Alışverişi">
+                                <MenuItem Header="JSON'dan Yükle..." Command="{Binding ImportJsonCommand}"/>
+                                <MenuItem Header="JSON'a Aktar..." Command="{Binding ExportJsonCommand}"/>
+                                <Separator/>
+                                <MenuItem Header="Şablonu İçe Aktar..." Command="{Binding ImportTemplateCommand}"/>
+                                <MenuItem Header="Şablonu Dışa Aktar..." Command="{Binding ExportTemplateCommand}"/>
+                            </MenuItem>
                             <Separator/>
-                            <MenuItem Header="Tam Yedek Geri Yükle (.zip)" Command="{Binding RestoreFullBackupCommand}"/>
-                            <MenuItem Header="Veritabanı Geri Yükle (.db)" Command="{Binding RestoreDatabaseCommand}"/>
-                            <MenuItem Header="Ayarları İçe Aktar (.json)" Command="{Binding ImportSettingsCommand}"/>
+                            <MenuItem Header="Çıkış" Command="{Binding ExitCommand}"/>
                         </MenuItem>
-                    </MenuItem>
-                    <MenuItem Header="_Yardım">
-                        <MenuItem Header="Klavye Kısayolları" Command="{Binding ShowShortcutsCommand}" InputGestureText="F1"/>
-                        <Separator/>
-                        <MenuItem Header="Uygulama Hakkında..." Command="{Binding OpenAboutCommand}"/>
-                    </MenuItem>
-                </Menu>
+                        <MenuItem Header="_Düzen">
+                            <MenuItem Header="Geri Al" Command="{Binding UndoCommand}" InputGestureText="Ctrl+Z"/>
+                            <MenuItem Header="Yinele" Command="{Binding RedoCommand}" InputGestureText="Ctrl+Y"/>
+                        </MenuItem>
+                        <MenuItem Header="_Sınav">
+                            <MenuItem Header="Sınavı Veritabanına Kaydet" Command="{Binding SaveExamCommand}" InputGestureText="Ctrl+S"/>
+                            <Separator/>
+                            <MenuItem Header="Cevap Anahtarlarını Yönet" Command="{Binding OpenModalCommand}"/>
+                            <MenuItem Header="Kitapçık Dönüştürücü (Eşleme Matrisi)" Command="{Binding OpenBookletMappingCommand}"/>
+                            <MenuItem Header="Soru Ayarlarını Yönet (İptal / Çoklu Doğru)" Command="{Binding OpenQuestionSettingsCommand}"/>
+                            <MenuItem Header="Öğrenim Çıktılarını (Konu) Yönet" Command="{Binding OpenLearningOutcomesCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="Sınıf Listesi Eşleştir (Yoklama / Hata Tespiti)..." Command="{Binding OpenRosterMatchCommand}"/>
+                            <MenuItem Header="Gelişmiş Filtreleme..." Command="{Binding OpenAdvancedFilterCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="Puanları Hesapla" Command="{Binding EvaluateCommand}" InputGestureText="F5"/>
+                        </MenuItem>
+                        <MenuItem Header="_Ders">
+                            <MenuItem Header="Yeni Ders Ekle..." Command="{Binding ShowAddCourseCommand}"/>
+                            <MenuItem Header="Seçili Dersi Sil" Command="{Binding DeleteCourseCommand}" CommandParameter="{Binding SelectedCourse}"/>
+                        </MenuItem>
+                        <MenuItem Header="_Raporlar">
+                            <MenuItem Header="MAKÜ OBS Hazır Not Aktarımı..." Command="{Binding OpenObsExportCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="Excel Raporu Al (.xlsx)" Command="{Binding ExportExcelCommand}" InputGestureText="Ctrl+E"/>
+                            <MenuItem Header="CSV Olarak Dışa Aktar (.csv)" Command="{Binding ExportCsvCommand}" InputGestureText="Ctrl+Shift+C"/>
+                            <MenuItem Header="Not Listesi (No + Puan) (.csv)" Command="{Binding ExportGradeListCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="Toplu PDF Karne Al (.pdf)" Command="{Binding ExportPdfCommand}" InputGestureText="Ctrl+P"/>
+                            <MenuItem Header="Akademik Tam Rapor PDF (Tüm Analizler)" Command="{Binding ExportFullReportCommand}" InputGestureText="Ctrl+Shift+R"/>
+                            <Separator/>
+                            <MenuItem Header="Gelişmiş Soru / Madde Analizi..." Command="{Binding OpenItemAnalysisCommand}"/>
+                            <MenuItem Header="Başarı Tahmini..." Command="{Binding OpenSuccessPredictionCommand}"/>
+                        </MenuItem>
+                        <MenuItem Header="_Ayarlar">
+                            <MenuItem Header="Arayüz Ayarları..." Command="{Binding OpenUISettingsCommand}"/>
+                            <MenuItem Header="Genel Hesaplama &amp; Profil Ayarları..." Command="{Binding OpenGeneralConfigCommand}"/>
+                            <MenuItem Header="Optik Form Format Ayarlayıcı..." Command="{Binding OpenOpticalFormatCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="Sınav Şablonlarını Yönet..." Command="{Binding OpenTemplateManagerCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="Yedekleme ve Geri Yükleme">
+                                <MenuItem Header="Tam Yedek Oluştur (.zip)" Command="{Binding CreateFullBackupCommand}"/>
+                                <MenuItem Header="Sadece Veritabanı Yedekle (.db)" Command="{Binding CreateDatabaseBackupCommand}"/>
+                                <MenuItem Header="Ayarları Dışa Aktar (.json)" Command="{Binding ExportSettingsCommand}"/>
+                                <Separator/>
+                                <MenuItem Header="Tam Yedek Geri Yükle (.zip)" Command="{Binding RestoreFullBackupCommand}"/>
+                                <MenuItem Header="Veritabanı Geri Yükle (.db)" Command="{Binding RestoreDatabaseCommand}"/>
+                                <MenuItem Header="Ayarları İçe Aktar (.json)" Command="{Binding ImportSettingsCommand}"/>
+                            </MenuItem>
+                        </MenuItem>
+                        <MenuItem Header="_Yardım">
+                            <MenuItem Header="Klavye Kısayolları" Command="{Binding ShowShortcutsCommand}" InputGestureText="F1"/>
+                            <Separator/>
+                            <MenuItem Header="Uygulama Hakkında..." Command="{Binding OpenAboutCommand}"/>
+                        </MenuItem>
+                    </Menu>
+
+                    <!-- Sağ: Kurumsal Aktif Ders / Sınav Bağlam Şeridi (Breadcrumb) -->
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,16,0">
+                        <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="6" Padding="10,4">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="&#xE82D;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Foreground="{DynamicResource Accent}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                <TextBlock Text="{Binding ActiveContextCourseText}" FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" MaxWidth="220" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                <TextBlock Text="›" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" Margin="8,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE7C3;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding ActiveContextExamText}" FontSize="11.5" FontWeight="Medium" Foreground="{DynamicResource TextMuted}" MaxWidth="200" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Kayıt Durumu Göstergesi (Veri yüklüyse) -->
+                        <Border CornerRadius="6" Padding="8,4" Margin="8,0,0,0"
+                                Visibility="{Binding Students.Count, Converter={StaticResource DataToVisConverter}}">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="{DynamicResource SuccessBgLight}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasUnsavedData}" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource WarningBgLight}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Ellipse Width="6" Height="6" Margin="0,0,6,0" VerticalAlignment="Center">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Setter Property="Fill" Value="{DynamicResource Success}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding HasUnsavedData}" Value="True">
+                                                    <Setter Property="Fill" Value="{DynamicResource Warning}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                                <TextBlock FontSize="10.5" FontWeight="Bold" VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="Kaydedildi"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource Success}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding HasUnsavedData}" Value="True">
+                                                    <Setter Property="Text" Value="Kaydedilmedi"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource Warning}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
             </Border>
 
-            <!-- OTOMATİK GÜNCELLEME BİLDİRİM BANDI -->
+            <!-- 1. OTOMATİK GÜNCELLEME BİLDİRİM BANDI -->
             <Border Grid.Row="1" Grid.ColumnSpan="2"
                     Visibility="{Binding HasUpdateAvailable, Converter={StaticResource BoolToVis}}"
-                    Background="{DynamicResource HoverBg}" BorderBrush="{DynamicResource Accent}" BorderThickness="0,0,0,1" Padding="14,7">
+                    Background="{DynamicResource HoverBg}" BorderBrush="{DynamicResource Accent}" BorderThickness="0,0,0,1" Padding="16,7">
                 <Grid>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="🚀" FontSize="13" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="&#xE896;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Foreground="{DynamicResource Accent}" Margin="0,0,8,0" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding LatestVersionTag, StringFormat='Yeni sürüm mevcut: {0}'}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource Accent}" VerticalAlignment="Center"/>
                         <TextBlock Text=" — Yeni özellikler ve iyileştirmeler için GitHub Release sayfasından indirebilirsiniz." FontSize="11.5" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                         <Button Content="İndir" Command="{Binding OpenUpdateUrlCommand}" Background="{DynamicResource Accent}" Foreground="White" Padding="12,4" FontSize="11" FontWeight="Bold" Margin="0,0,8,0"/>
-                        <Button Content="✕" Command="{Binding DismissUpdateBannerCommand}" Background="Transparent" Foreground="{DynamicResource TextMuted}" Padding="6,2" FontSize="11" BorderThickness="0"/>
+                        <Button Content="&#xE711;" FontFamily="{StaticResource FluentIconFont}" Command="{Binding DismissUpdateBannerCommand}" Background="Transparent" Foreground="{DynamicResource TextMuted}" Padding="6,4" FontSize="10" BorderThickness="0"/>
                     </StackPanel>
                 </Grid>
             </Border>
 
-            <!-- SIDEBAR: COURSES & EXAMS -->
-            <views:SidebarView Grid.Row="2" Grid.Column="0" />
+            <!-- 2A. DARALTILABİLİR SOL KENAR ÇUBUĞU (DERSLER & SINAV ARŞİVİ) -->
+            <views:SidebarView Grid.Row="2" Grid.Column="0" Width="272">
+                <views:SidebarView.Style>
+                    <Style TargetType="UserControl">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSidebarCollapsed}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </views:SidebarView.Style>
+            </views:SidebarView>
 
-            <!-- Main Content -->
-            <Grid Grid.Row="2" Grid.Column="1" Margin="25">
+            <!-- 2B. ANA ÇALIŞMA ALANI (Çift çerçeveler temizlendi, maksimum veri alanı) -->
+            <Grid Grid.Row="2" Grid.Column="1" Margin="18,14,18,12">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- MODERN WORKFLOW ACTION BAR -->
-                <Border Grid.Row="0" Style="{StaticResource GlassCard}" Padding="20" Margin="0,0,0,20">
-                    <Border.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#05FFFFFF" Offset="0"/>
-                            <GradientStop Color="#053B82F6" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <Border.RenderTransform>
-                        <TranslateTransform X="0" Y="0"/>
-                    </Border.RenderTransform>
-                    <Border.Triggers>
-                        <EventTrigger RoutedEvent="Loaded">
-                            <EventTrigger.Actions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" 
-                                                       From="-30" To="0" Duration="0:0:0.6">
-                                            <DoubleAnimation.EasingFunction>
-                                                <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" 
-                                                       From="0" To="1" Duration="0:0:0.4"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger.Actions>
-                        </EventTrigger>
-                    </Border.Triggers>
-                    <views:WorkflowView />
-                </Border>
+                <!-- ÜST KURUMSAL İŞLEM ÇUBUĞU -->
+                <views:WorkflowView Grid.Row="0" />
 
-                <!-- EXECUTIVE KPI DASHBOARD (Shown when students loaded) -->
-                <views:DashboardKpiView Grid.Row="1" Margin="0,0,0,15"
+                <!-- KURUMSAL KPI GÖSTERGE PANELİ -->
+                <views:DashboardKpiView Grid.Row="1"
                                         Visibility="{Binding Students.Count, Converter={StaticResource DataToVisConverter}}"/>
 
-                <!-- TAB CONTROL -->
+                <!-- ANA VERİ VE ANALİZ SEKMELERİ -->
                 <Border Grid.Row="2" Style="{StaticResource GlassCard}" ClipToBounds="True">
-                    <Border.Background>
-                        <RadialGradientBrush Center="0.5,0.3" RadiusX="1" RadiusY="1">
-                            <GradientStop Color="#08FFFFFF" Offset="0"/>
-                            <GradientStop Color="#038B5CF6" Offset="1"/>
-                        </RadialGradientBrush>
-                    </Border.Background>
-                    <Border.RenderTransform>
-                        <TranslateTransform X="0" Y="0"/>
-                    </Border.RenderTransform>
-                    <Border.Triggers>
-                        <EventTrigger RoutedEvent="Loaded">
-                            <EventTrigger.Actions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" 
-                                                       From="50" To="0" Duration="0:0:0.8" BeginTime="0:0:0.2">
-                                            <DoubleAnimation.EasingFunction>
-                                                <CubicEase EasingMode="EaseOut"/>
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" 
-                                                       From="0" To="1" Duration="0:0:0.6" BeginTime="0:0:0.2"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger.Actions>
-                        </EventTrigger>
-                    </Border.Triggers>
-
                     <TabControl Background="Transparent" BorderThickness="0" Margin="0">
                         <TabControl.Resources>
                             <Style TargetType="TabItem">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="TabItem">
-                                            <Border Name="Border" Padding="18,12" Margin="2,4,2,0" CornerRadius="8,8,0,0" BorderThickness="0,0,0,3" BorderBrush="Transparent" Background="Transparent" Cursor="Hand">
+                                            <Border Name="Border" Padding="16,11" Margin="2,4,2,0" CornerRadius="8,8,0,0" BorderThickness="0,0,0,2.5" BorderBrush="Transparent" Background="Transparent" Cursor="Hand">
                                                 <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="0"/>
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsSelected" Value="True">
                                                     <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Accent}"/>
-                                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource CardBg}"/>
+                                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource HeaderBg}"/>
                                                     <Setter Property="TextElement.Foreground" Value="{DynamicResource Accent}"/>
                                                     <Setter Property="TextElement.FontWeight" Value="Bold"/>
                                                 </Trigger>
@@ -242,155 +281,119 @@
                                 </Setter>
                             </Style>
                         </TabControl.Resources>
-                        <!-- TAB 1: STUDENTS -->
-                        <TabItem Header="👥 Öğrenci Listesi">
+
+                        <!-- TAB 1: ÖĞRENCİ LİSTESİ -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE716;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Margin="0,0,7,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Öğrenci Listesi" FontSize="12.5" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </TabItem.Header>
                             <views:StudentListView />
                         </TabItem>
 
-                        <!-- TAB 2: STATISTICS -->
-                        <TabItem Header="📊 Madde Analizi">
+                        <!-- TAB 2: MADDE ANALİZİ -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE9D2;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Margin="0,0,7,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Madde Analizi" FontSize="12.5" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </TabItem.Header>
                             <views:StatisticsView />
                         </TabItem>
 
-                        <!-- TAB 3: CHARTS -->
-                        <TabItem Header="📈 Grafiksel Analiz &amp; Çan Eğrisi">
+                        <!-- TAB 3: GRAFİKSEL ANALİZ & ÇAN EĞRİSİ -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE9D9;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Margin="0,0,7,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Grafikler &amp; Çan Eğrisi" FontSize="12.5" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </TabItem.Header>
                             <views:PremiumChartsView />
                         </TabItem>
 
-                        <!-- TAB 4: OUTCOMES -->
-                        <TabItem Header="🎯 Kazanım Analizi">
+                        <!-- TAB 4: KAZANIM ANALİZİ -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE9D5;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Margin="0,0,7,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Kazanım Analizi" FontSize="12.5" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </TabItem.Header>
                             <views:OutcomesView />
                         </TabItem>
 
-                        <!-- TAB 5: QUESTION DIFFICULTY -->
-                        <TabItem Header="⚖️ Soru Zorluk Düzeyleri">
+                        <!-- TAB 5: SORU ZORLUK DÜZEYLERİ -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE8FD;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Margin="0,0,7,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Soru Zorluk Düzeyleri" FontSize="12.5" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </TabItem.Header>
                             <views:QuestionDifficultyView />
                         </TabItem>
 
-                        <!-- TAB 6: STATISTICAL REPORTS -->
-                        <TabItem Header="📋 Kapsamlı İstatistik Raporu">
+                        <!-- TAB 6: KAPSAMLI İSTATİSTİK RAPORU -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE8A5;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Margin="0,0,7,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Kapsamlı İstatistik Raporu" FontSize="12.5" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </TabItem.Header>
                             <views:StatisticsReportView />
                         </TabItem>
                     </TabControl>
                 </Border>
-
-                <!-- STATUS PANEL & LOGS (BOTTOM) -->
-                <Border Grid.Row="3" Margin="0,20,0,0">
-                    <Border.RenderTransform>
-                        <TranslateTransform X="0" Y="0"/>
-                    </Border.RenderTransform>
-                    <Border.Triggers>
-                        <EventTrigger RoutedEvent="Loaded">
-                            <EventTrigger.Actions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" 
-                                                       From="30" To="0" Duration="0:0:0.6" BeginTime="0:0:0.4">
-                                            <DoubleAnimation.EasingFunction>
-                                                <BackEase EasingMode="EaseOut" Amplitude="0.2"/>
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" 
-                                                       From="0" To="1" Duration="0:0:0.4" BeginTime="0:0:0.4"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger.Actions>
-                        </EventTrigger>
-                    </Border.Triggers>
-                    <views:StatusPanelView />
-                </Border>
             </Grid>
+
+            <!-- 3. KURUMSAL KOMPAKT ALT DURUM ÇUBUĞU VE AÇILIR LOG ÇEKMECESİ -->
+            <views:StatusPanelView Grid.Row="3" Grid.ColumnSpan="2" />
         </Grid>
 
-        <!-- TOAST NOTIFICATION HOST (Always on top) -->
+        <!-- TOAST NOTIFICATION HOST -->
         <views:ToastNotificationHost DataContext="{Binding Notifications}" 
                                      Panel.ZIndex="2000" 
                                      HorizontalAlignment="Right"
                                      VerticalAlignment="Top"
-                                     Margin="0,80,20,0"/>
+                                     Margin="0,60,20,0"/>
 
-        <!-- PROGRESS MODAL OVERLAY -->
+        <!-- MODAL OVERLAYS -->
         <modals:ProgressModal Panel.ZIndex="1500" />
-
-        <!-- BOOKLET SETTINGS MODAL OVERLAY -->
-        <modals:BookletSettingsModal Panel.ZIndex="200" />
-
-        <!-- DETAILED ANSWER KEY EDITOR MODAL OVERLAY -->
-        <modals:DetailedAnswerKeyEditorModal Panel.ZIndex="205" />
-
-        <!-- BULK ANSWER ENTRY MODAL OVERLAY -->
-        <modals:BulkAnswerEntryModal Panel.ZIndex="206" />
-
-        <!-- SHORTCUTS MODAL OVERLAY -->
-        <modals:ShortcutsModal Panel.ZIndex="250" />
-
-        <!-- SHORTCUT SETTINGS MODAL OVERLAY -->
-        <modals:ShortcutSettingsModal Panel.ZIndex="260" />
-
-        <!-- INTERFACE SETTINGS OVERLAY -->
-        <modals:UISettingsModal Panel.ZIndex="300" />
-
-        <!-- GENERAL CONFIG MODAL OVERLAY -->
+        <modals:BookletSettingsModal Panel.ZIndex="500" />
+        <modals:DetailedAnswerKeyEditorModal Panel.ZIndex="510" />
+        <modals:BulkAnswerEntryModal Panel.ZIndex="520" />
+        <modals:UISettingsModal Panel.ZIndex="500" />
+        <modals:ShortcutsModal Panel.ZIndex="500" />
+        <modals:ShortcutSettingsModal Panel.ZIndex="500" />
         <modals:GeneralConfigModal Panel.ZIndex="500" />
-
-        <!-- QUESTION SETTINGS MODAL OVERLAY -->
         <modals:QuestionSettingsModal Panel.ZIndex="400" />
-
-        <!-- LEARNING OUTCOMES MODAL OVERLAY -->
         <modals:LearningOutcomesModal Panel.ZIndex="500" />
-
-        <!-- ABOUT OVERLAY -->
         <modals:AboutModal Panel.ZIndex="600" />
-
-        <!-- ADD COURSE MODAL OVERLAY -->
         <modals:AddCourseModal Panel.ZIndex="600" />
-
-        <!-- SAVE EXAM MODAL OVERLAY -->
         <modals:SaveExamModal Panel.ZIndex="602" />
-
-        <!-- RENAME MODAL OVERLAY -->
         <modals:RenameModal Panel.ZIndex="605" />
-
-        <!-- CONFIRM MODAL OVERLAY -->
         <modals:ConfirmModal Panel.ZIndex="606" />
-
-        <!-- TEMPLATE MANAGER MODAL OVERLAY -->
         <modals:TemplateManagerModal Panel.ZIndex="610" />
-
-        <!-- ITEM ANALYSIS MODAL OVERLAY -->
         <modals:ItemAnalysisModal Panel.ZIndex="620" 
                                   Visibility="{Binding IsItemAnalysisOpen, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-        <!-- ADVANCED FILTER MODAL OVERLAY -->
         <modals:AdvancedFilterModal Panel.ZIndex="630" 
                                      Visibility="{Binding IsAdvancedFilterOpen, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-        <!-- SUCCESS PREDICTION MODAL OVERLAY -->
         <modals:SuccessPredictionModal Panel.ZIndex="640" 
                                         Visibility="{Binding IsSuccessPredictionOpen, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-        <!-- STUDENT DETAIL MODAL OVERLAY -->
         <modals:StudentDetailModal Panel.ZIndex="645" 
                                    Visibility="{Binding IsStudentDetailOpen, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-        <!-- BOOKLET MAPPING MODAL OVERLAY -->
         <modals:BookletMappingModal Panel.ZIndex="648" 
                                     Visibility="{Binding IsBookletMappingOpen, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-        <!-- VALIDATION DETAILS MODAL OVERLAY -->
         <modals:ValidationDetailsModal Panel.ZIndex="650" 
                                        Visibility="{Binding IsValidationDetailsOpen, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-        <!-- OBS EXPORT MODAL OVERLAY -->
         <modals:ObsExportModal Panel.ZIndex="655" />
-
-        <!-- ROSTER MATCH MODAL OVERLAY -->
         <modals:RosterMatchModal Panel.ZIndex="656" />
-
-        <!-- OPTICAL FORMAT DESIGNER MODAL OVERLAY -->
         <modals:OpticalFormatModal Panel.ZIndex="657" />
-
-        <!-- BUSY LOADING OVERLAY -->
         <modals:BusyOverlay Panel.ZIndex="1000" />
     </Grid>
 </Window>

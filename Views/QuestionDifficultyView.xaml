@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <!-- 1. Kurumsal Başlık -->
-        <Grid Grid.Row="0" Margin="0,0,0,10">
+        <Grid Grid.Row="0" Margin="0,0,0,10" Visibility="{Binding QuestionDifficulties.Count, Converter={StaticResource DataToVisConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -30,7 +30,8 @@
         </Grid>
 
         <!-- 2. Responsive Kurumsal Özet Kartları (5 -> 3 -> 2 sütun adaptif) -->
-        <local:ResponsiveUniformGrid Grid.Row="1" MaxColumns="5" MinColumns="2" MinColumnWidth="150" Margin="-4,0,-4,8">
+        <local:ResponsiveUniformGrid Grid.Row="1" MaxColumns="5" MinColumns="2" MinColumnWidth="150" Margin="-4,0,-4,8"
+                                     Visibility="{Binding QuestionDifficulties.Count, Converter={StaticResource DataToVisConverter}}">
             <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1,3,1,1" CornerRadius="10" Padding="12,9" Margin="4,0,4,6">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -85,7 +86,8 @@
         </local:ResponsiveUniformGrid>
 
         <!-- 3. Soru Bazında Detaylı Zorluk Listesi (%100 Esnek ActualWidth İlerleme Çubuklu) -->
-        <Border Grid.Row="2" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="12" Padding="12,10">
+        <Border Grid.Row="2" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="12" Padding="12,10"
+                Visibility="{Binding QuestionDifficulties.Count, Converter={StaticResource DataToVisConverter}}">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl ItemsSource="{Binding QuestionDifficulties}">
                     <ItemsControl.ItemTemplate>
@@ -138,6 +140,26 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
+        </Border>
+
+        <!-- EMPTY STATE -->
+        <Border Grid.Row="2" Visibility="{Binding QuestionDifficulties.Count, Converter={StaticResource CountToVisConverter}}"
+                VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="500" Padding="20">
+            <StackPanel>
+                <Border Width="64" Height="64" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="15" Margin="0,0,0,14" HorizontalAlignment="Center">
+                    <TextBlock Text="&#xE8FD;" FontFamily="{StaticResource FluentIconFont}" FontSize="26" Foreground="{DynamicResource Accent}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Border>
+                <TextBlock Text="Soru Zorluk Analizi Henüz Hesaplanmadı" FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
+                <TextBlock Text="Soruların kolay, orta, zor ve çok zor dağılımlarını incelemek için optik veri yükleyip Hesapla (F5) işlemini çalıştırın."
+                           FontSize="12" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,8,0,18" TextAlignment="Center" TextWrapping="Wrap"/>
+                <Button Command="{Binding EvaluateCommand}" Style="{StaticResource PipelineButton}"
+                        Background="{DynamicResource AccentViolet}" BorderBrush="{DynamicResource AccentViolet}" Foreground="White" Padding="20,9" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE945;" FontFamily="{StaticResource FluentIconFont}" FontSize="12" Margin="0,0,7,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Puanları ve Zorluk Düzeylerini Hesapla (F5)" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
         </Border>
     </Grid>
 </UserControl>

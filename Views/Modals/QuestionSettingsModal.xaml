@@ -4,180 +4,87 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="650" d:DesignWidth="600">
-    
+             d:DesignHeight="620" d:DesignWidth="600">
+
     <Grid Visibility="{Binding IsQuestionSettingsOpen, Converter={StaticResource BoolToVis}}" 
           Background="{DynamicResource ModalBackdrop}">
-        
-        <!-- Premium Modal -->
-        <Border MaxWidth="600" 
+
+        <Border MaxWidth="600"
                 MaxHeight="630"
-                VerticalAlignment="Stretch" 
+                VerticalAlignment="Stretch"
                 HorizontalAlignment="Stretch"
                 Margin="20,16"
-                CornerRadius="24"
-                Padding="0">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
+                CornerRadius="14"
+                Background="{DynamicResource CardBg}"
+                BorderBrush="{DynamicResource Border}"
+                BorderThickness="1"
+                ClipToBounds="True">
             <Border.Effect>
-                <DropShadowEffect Color="Black" Opacity="0.25" BlurRadius="60" ShadowDepth="20"/>
+                <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.22" BlurRadius="40" ShadowDepth="10"/>
             </Border.Effect>
-            
+
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="3"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Premium Rose Header -->
-                <Border Grid.Row="0" 
-                        Height="90"
-                        CornerRadius="24,24,0,0" 
-                        Padding="28,24">
-                    <Border.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="{DynamicResource ErrorColor}" Offset="0"/>
-                            <GradientStop Color="{DynamicResource ErrorColor}" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
+                <Border Grid.Row="0" Background="{DynamicResource Accent}"/>
+
+                <!-- Başlık -->
+                <Border Grid.Row="1" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,0,0,1" Padding="20,14">
                     <Grid>
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="⚙️ Soru Ayarları" 
-                                       FontSize="26" 
-                                       FontWeight="Bold"
-                                       Foreground="White"/>
-                            <TextBlock Text="Soru iptali veya çoklu doğru seçeneklerini yönetin" 
-                                       FontSize="13" 
-                                       Foreground="{DynamicResource ErrorBgLight}"
-                                       Margin="0,6,0,0"
-                                       Opacity="0.9"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Width="38" Height="38" CornerRadius="9" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE713;" FontFamily="{StaticResource FluentIconFont}" FontSize="15.5" Foreground="{DynamicResource Accent}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Soru İptali ve Çoklu Doğru Yönetimi" FontSize="15.5" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
+                            <TextBlock Text="Hatalı soruları iptal edin veya birden fazla doğru şık tanımlayın" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,2,0,0"/>
                         </StackPanel>
-                        <Button Command="{Binding CloseQuestionSettingsCommand}"
-                                HorizontalAlignment="Right" 
-                                VerticalAlignment="Top"
-                                Background="#20FFFFFF" 
-                                BorderThickness="0" 
-                                Foreground="White"
-                                Width="36" 
-                                Height="36"
-                                FontSize="18" 
-                                Padding="0"
-                                Cursor="Hand">
-                            <Button.Content>✕</Button.Content>
+                        <Button Grid.Column="2" Command="{Binding CloseQuestionSettingsCommand}" IsCancel="True" VerticalAlignment="Top" Width="28" Height="28" Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" 
-                                            CornerRadius="18"
-                                            BorderThickness="0">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
+                                    <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="6">
+                                        <TextBlock Text="&#xE711;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="bd" Property="Background" Value="{DynamicResource HoverBg}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
                     </Grid>
                 </Border>
 
-                <!-- Info Banner -->
-                <Border Grid.Row="1" 
-                        CornerRadius="12" 
-                        Padding="14,10"
-                        Margin="24,20,24,16"
-                        BorderThickness="1">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Background" Value="{DynamicResource ErrorBgLight}"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource ErrorBgLight}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource Error}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource Error}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="💡" FontSize="16" Margin="0,0,10,0"/>
-                        <TextBlock Text="İptal edilen sorular puanlamaya dahil edilmez. Çoklu doğru seçenekleri için harfleri birleştirin (örn: AB)" 
-                                   FontSize="12"
-                                   TextWrapping="Wrap"
-                                   VerticalAlignment="Center">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{DynamicResource Error}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                            <Setter Property="Foreground" Value="{DynamicResource ErrorBgLight}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </StackPanel>
+                <!-- Bilgi Bandı -->
+                <Border Grid.Row="2" Background="{DynamicResource HoverBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="8" Padding="12,8" Margin="20,14,20,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="&#xE946;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Foreground="{DynamicResource Accent}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Grid.Column="1" Text="İptal edilen sorular değerlendirmeye katılmaz (veya tüm öğrenciler için geçerli sayılır). Çoklu doğru şık için harfleri birleştirerek yazın (örn: AB)."
+                                   FontSize="11.5" Foreground="{DynamicResource TextMain}" TextWrapping="Wrap"/>
+                    </Grid>
                 </Border>
 
-                <!-- DataGrid Container -->
-                <Border Grid.Row="2" 
-                        CornerRadius="16" 
-                        Padding="16"
-                        Margin="24,0,24,0"
-                        BorderThickness="1">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource Border}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource TextMuted}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <DataGrid ItemsSource="{Binding QuestionSettings}" 
-                              AutoGenerateColumns="False" 
-                              CanUserAddRows="False" 
-                              Background="Transparent" 
-                              BorderThickness="0" 
-                              RowHeaderWidth="0" 
-                              GridLinesVisibility="None">
-                        <DataGrid.ColumnHeaderStyle>
-                            <Style TargetType="DataGridColumnHeader">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                <Setter Property="Padding" Value="8,6"/>
-                                <Setter Property="BorderThickness" Value="0"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                        <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.ColumnHeaderStyle>
-                        <DataGrid.RowStyle>
-                            <Style TargetType="DataGridRow">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.RowStyle>
+                <!-- Tablo -->
+                <Border Grid.Row="3" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Margin="20,0,20,14" ClipToBounds="True">
+                    <DataGrid ItemsSource="{Binding QuestionSettings}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="False"
+                              Background="{DynamicResource CardBg}" BorderThickness="0" RowHeaderWidth="0" GridLinesVisibility="None" RowHeight="36">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Kitapçık" Binding="{Binding BookletName}" IsReadOnly="True" Width="70">
+                            <DataGridTextColumn Header="KİTAPÇIK" Binding="{Binding BookletName}" IsReadOnly="True" Width="75">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -187,7 +94,7 @@
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
 
-                            <DataGridTextColumn Header="No" Binding="{Binding QuestionNumber}" IsReadOnly="True" Width="45">
+                            <DataGridTextColumn Header="SORU" Binding="{Binding QuestionNumber}" IsReadOnly="True" Width="55">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -195,52 +102,30 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            
-                            <DataGridTemplateColumn Header="İptal (X)" Width="90">
+
+                            <DataGridTemplateColumn Header="İPTAL" Width="85">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="{Binding IsCancelled, UpdateSourceTrigger=PropertyChanged}" 
-                                                  HorizontalAlignment="Center" 
-                                                  VerticalAlignment="Center"/>
+                                        <CheckBox IsChecked="{Binding IsCancelled, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="Çoklu Aktif" Width="90">
+                            <DataGridTemplateColumn Header="ÇOKLU ŞIK" Width="90">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="{Binding IsMultipleEnabled, UpdateSourceTrigger=PropertyChanged}" 
-                                                  HorizontalAlignment="Center" 
-                                                  VerticalAlignment="Center"/>
+                                        <CheckBox IsChecked="{Binding IsMultipleEnabled, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="Çoklu Doğru Seçenekler" Width="*">
+                            <DataGridTemplateColumn Header="KABUL EDİLEN ŞIKLAR" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding MultipleCorrectAnswers, UpdateSourceTrigger=PropertyChanged}" 
+                                        <TextBox Text="{Binding MultipleCorrectAnswers, UpdateSourceTrigger=PropertyChanged}"
                                                  IsEnabled="{Binding IsMultipleEnabled}"
-                                                 ToolTip="Örn: AB (Hem A hem B doğru kabul edilir)" 
-                                                 Padding="8,4" 
-                                                 Margin="5,0"
-                                                 BorderThickness="1"
-                                                 FontSize="13">
-                                            <TextBox.Style>
-                                                <Style TargetType="TextBox">
-                                                    <Setter Property="Background" Value="White"/>
-                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                                    <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                                            <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                                            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                                            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBox.Style>
-                                        </TextBox>
+                                                 ToolTip="Örn: AB (Hem A hem B doğru kabul edilir)"
+                                                 Padding="8,4" Margin="4,2" FontSize="12.5" CharacterCasing="Upper"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -248,46 +133,10 @@
                     </DataGrid>
                 </Border>
 
-                <!-- Premium Footer -->
-                <Border Grid.Row="3" 
-                        CornerRadius="0,0,24,24" 
-                        Padding="24,20"
-                        Margin="0,20,0,0"
-                        BorderThickness="0,1,0,0">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="✓ Kaydet ve Kapat" 
-                                Command="{Binding CloseQuestionSettingsCommand}" 
-                                Background="{DynamicResource Error}" 
-                                Foreground="White"
-                                Padding="28,12"
-                                FontSize="14"
-                                FontWeight="SemiBold"
-                                BorderThickness="0"
-                                Cursor="Hand">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" 
-                                            CornerRadius="12"
-                                            Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                    </StackPanel>
+                <!-- Alt Çubuk -->
+                <Border Grid.Row="4" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" Padding="20,12">
+                    <Button Content="Kaydet ve Kapat" Command="{Binding CloseQuestionSettingsCommand}" IsDefault="True"
+                            HorizontalAlignment="Right" Background="{DynamicResource Accent}" Foreground="White" Padding="22,8" FontSize="12" FontWeight="SemiBold"/>
                 </Border>
             </Grid>
         </Border>

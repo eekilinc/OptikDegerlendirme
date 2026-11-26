@@ -3,262 +3,109 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:OptikFormApp.Views.Modals"
-             mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="1000">
+             xmlns:views="clr-namespace:OptikFormApp.Views"
+             mc:Ignorable="d" d:DesignHeight="680" d:DesignWidth="1020">
     <Grid Visibility="{Binding IsItemAnalysisOpen, Converter={StaticResource BoolToVis}}"
           Background="{DynamicResource ModalBackdrop}">
-        <Border MaxWidth="1040" 
+        <Border MaxWidth="1040"
                 MaxHeight="700"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Margin="20,16"
-                CornerRadius="24"
-                Padding="0">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
+                CornerRadius="14"
+                Background="{DynamicResource CardBg}"
+                BorderBrush="{DynamicResource Border}"
+                BorderThickness="1"
+                ClipToBounds="True">
             <Border.Effect>
-                <DropShadowEffect Color="Black" Opacity="0.3" BlurRadius="60" ShadowDepth="20"/>
+                <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.24" BlurRadius="45" ShadowDepth="12"/>
             </Border.Effect>
-            
-            <Grid Margin="24">
+
+            <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="3"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Premium Header -->
-                <Border Grid.Row="0" 
-                        Height="80"
-                        CornerRadius="24,24,0,0" 
-                        Padding="28,24">
-                    <Border.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="{DynamicResource WarningColor}" Offset="0"/>
-                            <GradientStop Color="{DynamicResource AccentOrangeColor}" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
+                <Border Grid.Row="0" Background="{DynamicResource Accent}"/>
+
+                <!-- 1. Kurumsal Başlık -->
+                <Border Grid.Row="1" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,0,0,1" Padding="20,14">
                     <Grid>
-                        <TextBlock Text="📊 Gelişmiş Soru Analizi" 
-                                   FontSize="26" 
-                                   FontWeight="Bold" 
-                                   Foreground="White"
-                                   VerticalAlignment="Center"/>
-                        <Button Command="{Binding CloseItemAnalysisCommand}"
-                                HorizontalAlignment="Right" 
-                                VerticalAlignment="Center"
-                                Background="#20FFFFFF" 
-                                BorderThickness="0" 
-                                Foreground="White"
-                                Width="36" 
-                                Height="36"
-                                FontSize="18" 
-                                Padding="0"
-                                Cursor="Hand">
-                            <Button.Content>✕</Button.Content>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Width="38" Height="38" CornerRadius="9" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE9D2;" FontFamily="{StaticResource FluentIconFont}" FontSize="15.5" Foreground="{DynamicResource Accent}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Psikometrik Madde ve Çeldirici Analizi" FontSize="15.5" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
+                            <TextBlock Text="KR-20 güvenilirliği, madde ayırt edicilik indeksleri ve üst/alt %27 çeldirici dağılımı" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                        <Button Grid.Column="2" Command="{Binding CloseItemAnalysisCommand}" IsCancel="True" VerticalAlignment="Top" Width="28" Height="28" Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" 
-                                            CornerRadius="18"
-                                            BorderThickness="0">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
+                                    <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="6">
+                                        <TextBlock Text="&#xE711;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="bd" Property="Background" Value="{DynamicResource HoverBg}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
                     </Grid>
                 </Border>
 
-                <!-- Reliability Stats Cards -->
-                <Grid Grid.Row="1" Margin="24,20,24,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="16"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="16"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <!-- KR-20 Card -->
-                    <Border Grid.Column="0" 
-                            CornerRadius="16" 
-                            Padding="20,16"
-                            BorderThickness="1">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="{DynamicResource WarningBgLight}"/>
-                                <Setter Property="BorderBrush" Value="{DynamicResource WarningBgLight}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                        <Setter Property="Background" Value="{DynamicResource Warning}"/>
-                                        <Setter Property="BorderBrush" Value="{DynamicResource Warning}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="KR-20 Güvenirlik" 
-                                       FontSize="12" 
-                                       Margin="0,0,0,8">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{DynamicResource Warning}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="{DynamicResource WarningBgLight}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                            <TextBlock Text="{Binding ReliabilityStats.KR20, StringFormat={}{0:F3}}" 
-                                       FontSize="28" 
-                                       FontWeight="Bold">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{DynamicResource AccentOrange}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="{DynamicResource WarningBgLight}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                <!-- 2. Güvenirlik Özet Kartları -->
+                <views:ResponsiveUniformGrid Grid.Row="2" MaxColumns="3" MinColumns="1" MinColumnWidth="200" Margin="16,12,16,6">
+                    <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="14,10" Margin="4">
+                        <StackPanel>
+                            <TextBlock Text="KR-20 GÜVENİRLİK" FontSize="9.5" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
+                            <TextBlock Text="{Binding ReliabilityStats.KR20, StringFormat={}{0:F3}}" FontSize="22" FontWeight="ExtraBold" Foreground="{DynamicResource Accent}" Margin="0,3,0,0"/>
                         </StackPanel>
                     </Border>
-                    
-                    <!-- Cronbach's Alpha Card -->
-                    <Border Grid.Column="2" 
-                            CornerRadius="16" 
-                            Padding="20,16"
-                            BorderThickness="1">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="{DynamicResource AccentBgLight}"/>
-                                <Setter Property="BorderBrush" Value="{DynamicResource AccentBgLight}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                        <Setter Property="Background" Value="{DynamicResource Accent}"/>
-                                        <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="Cronbach's Alpha" 
-                                       FontSize="12" 
-                                       Margin="0,0,0,8">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="{DynamicResource AccentBgLight}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                            <TextBlock Text="{Binding ReliabilityStats.CronbachAlpha, StringFormat={}{0:F3}}" 
-                                       FontSize="28" 
-                                       FontWeight="Bold">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{DynamicResource AccentHover}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="{DynamicResource AccentBgLight}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                    <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="14,10" Margin="4">
+                        <StackPanel>
+                            <TextBlock Text="CRONBACH ALFA" FontSize="9.5" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
+                            <TextBlock Text="{Binding ReliabilityStats.CronbachAlpha, StringFormat={}{0:F3}}" FontSize="22" FontWeight="ExtraBold" Foreground="{DynamicResource AccentViolet}" Margin="0,3,0,0"/>
                         </StackPanel>
                     </Border>
-                    
-                    <!-- Question Count Card -->
-                    <Border Grid.Column="4" 
-                            CornerRadius="16" 
-                            Padding="20,16"
-                            BorderThickness="1">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
-                                <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                        <Setter Property="Background" Value="{DynamicResource Border}"/>
-                                        <Setter Property="BorderBrush" Value="{DynamicResource TextMuted}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="Soru Sayısı" 
-                                       FontSize="12" 
-                                       Margin="0,0,0,8">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                            <TextBlock Text="{Binding ReliabilityStats.QuestionCount}" 
-                                       FontSize="28" 
-                                       FontWeight="Bold">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                    <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="14,10" Margin="4">
+                        <StackPanel>
+                            <TextBlock Text="ANALİZ EDİLEN SORU" FontSize="9.5" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
+                            <TextBlock Text="{Binding ReliabilityStats.QuestionCount}" FontSize="22" FontWeight="ExtraBold" Foreground="{DynamicResource TextMain}" Margin="0,3,0,0"/>
                         </StackPanel>
                     </Border>
-                </Grid>
-                               <!-- Content Area: TabControl -->
-                <TabControl Grid.Row="2" Background="Transparent" BorderThickness="0" Margin="0,0,0,8">
+                </views:ResponsiveUniformGrid>
+
+                <!-- 3. Sekmeli İçerik -->
+                <TabControl Grid.Row="3" Background="Transparent" BorderThickness="0" Margin="20,4,20,12">
                     <TabControl.Resources>
                         <Style TargetType="TabItem">
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="TabItem">
-                                        <Border Name="Border" Padding="18,8" Margin="0,0,8,0" CornerRadius="10,10,0,0" BorderThickness="0,0,0,3" BorderBrush="Transparent" Background="Transparent" Cursor="Hand">
-                                            <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header"/>
+                                        <Border Name="Border" Padding="14,8" Margin="0,0,6,0" CornerRadius="8,8,0,0" BorderThickness="0,0,0,2" BorderBrush="Transparent" Background="Transparent" Cursor="Hand">
+                                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header"/>
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsSelected" Value="True">
-                                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Warning}"/>
-                                                <Setter TargetName="Border" Property="Background" Value="#15F59E0B"/>
-                                                <Setter Property="TextElement.Foreground" Value="{DynamicResource AccentOrange}"/>
+                                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Accent}"/>
+                                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource HeaderBg}"/>
+                                                <Setter Property="TextElement.Foreground" Value="{DynamicResource Accent}"/>
                                                 <Setter Property="TextElement.FontWeight" Value="Bold"/>
                                             </Trigger>
                                             <Trigger Property="IsSelected" Value="False">
                                                 <Setter Property="TextElement.Foreground" Value="{DynamicResource TextMuted}"/>
                                                 <Setter Property="TextElement.FontWeight" Value="SemiBold"/>
-                                            </Trigger>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="TextElement.Foreground" Value="{DynamicResource AccentOrange}"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
@@ -267,325 +114,113 @@
                         </Style>
                     </TabControl.Resources>
 
-                    <!-- TAB 1: Soru İstatistikleri & Anomaliler -->
-                    <TabItem Header="📋 Madde Analizi &amp; Anomaliler">
+                    <!-- TAB 1: Madde Analizi & Anomaliler -->
+                    <TabItem Header="Madde İstatistikleri ve Anomaliler">
                         <Grid Margin="0,10,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="0.44*" MinWidth="210" MaxWidth="320"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Question Stats DataGrid -->
-                            <Border Grid.Column="0" 
-                                    CornerRadius="16" 
-                                    Padding="16"
-                                    Margin="0,0,16,0"
-                                    BorderThickness="1">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
-                                        <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Background" Value="{DynamicResource Border}"/>
-                                                <Setter Property="BorderBrush" Value="{DynamicResource TextMuted}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-                                <DataGrid ItemsSource="{Binding QuestionStats}"
-                                          AutoGenerateColumns="False"
-                                          IsReadOnly="True"
-                                          GridLinesVisibility="None"
-                                          HeadersVisibility="Column"
-                                          Background="Transparent"
-                                          BorderThickness="0">
-                                    <DataGrid.ColumnHeaderStyle>
-                                        <Style TargetType="DataGridColumnHeader">
-                                            <Setter Property="Background" Value="Transparent"/>
-                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                            <Setter Property="FontWeight" Value="SemiBold"/>
-                                            <Setter Property="Padding" Value="8,4"/>
-                                            <Setter Property="BorderThickness" Value="0"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGrid.ColumnHeaderStyle>
+                            <Border Grid.Column="0" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Margin="0,0,12,0" ClipToBounds="True">
+                                <DataGrid ItemsSource="{Binding QuestionStats}" AutoGenerateColumns="False" IsReadOnly="True"
+                                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                          GridLinesVisibility="None" HeadersVisibility="Column" Background="Transparent" BorderThickness="0" RowHeight="34">
                                     <DataGrid.RowStyle>
-                                        <Style TargetType="DataGridRow">
-                                            <Setter Property="Background" Value="Transparent"/>
-                                            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+                                        <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsProblematic}" Value="True">
-                                                    <Setter Property="Background" Value="#30EF4444"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+                                                    <Setter Property="Background" Value="{DynamicResource ErrorBgLight}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </DataGrid.RowStyle>
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Soru" 
-                                                            Binding="{Binding QuestionNumber}" 
-                                                            Width="50"/>
-                                        <DataGridTextColumn Header="Zorluk" 
-                                                            Binding="{Binding Difficulty, StringFormat={}{0:P0}}" 
-                                                            Width="70"/>
-                                        <DataGridTextColumn Header="Ayırt." 
-                                                            Binding="{Binding Discrimination, StringFormat={}{0:F2}}" 
-                                                            Width="70"/>
-                                        <DataGridTextColumn Header="Doğru" 
-                                                            Binding="{Binding CorrectRate, StringFormat={}{0:P0}}" 
-                                                            Width="70"/>
-                                        <DataGridTextColumn Header="Boş" 
-                                                            Binding="{Binding EmptyRate, StringFormat={}{0:P0}}" 
-                                                            Width="60"/>
-                                        <DataGridTextColumn Header="PB Korel." 
-                                                            Binding="{Binding PointBiserialCorrelation, StringFormat={}{0:F2}}" 
-                                                            Width="80"/>
-                                        <DataGridTextColumn Header="Durum" 
-                                                            Binding="{Binding Recommendation}" 
-                                                            Width="150"/>
+                                        <DataGridTextColumn Header="SORU" Binding="{Binding QuestionNumber}" Width="55"/>
+                                        <DataGridTextColumn Header="ZORLUK" Binding="{Binding Difficulty, StringFormat={}{0:P0}}" Width="72"/>
+                                        <DataGridTextColumn Header="AYIRT." Binding="{Binding Discrimination, StringFormat={}{0:F2}}" Width="72"/>
+                                        <DataGridTextColumn Header="DOĞRU" Binding="{Binding CorrectRate, StringFormat={}{0:P0}}" Width="70"/>
+                                        <DataGridTextColumn Header="BOŞ" Binding="{Binding EmptyRate, StringFormat={}{0:P0}}" Width="60"/>
+                                        <DataGridTextColumn Header="PB KOREL." Binding="{Binding PointBiserialCorrelation, StringFormat={}{0:F2}}" Width="85"/>
+                                        <DataGridTextColumn Header="DEĞERLENDİRME" Binding="{Binding Recommendation}" Width="*" MinWidth="130"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Border>
 
-                            <!-- Anomalies Panel -->
-                            <Border Grid.Column="1" 
-                                    CornerRadius="16" 
-                                    Padding="16"
-                                    BorderThickness="1">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Background" Value="{DynamicResource ErrorBgLight}"/>
-                                        <Setter Property="BorderBrush" Value="{DynamicResource ErrorBgLight}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Background" Value="{DynamicResource Error}"/>
-                                                <Setter Property="BorderBrush" Value="{DynamicResource Error}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
+                            <Border Grid.Column="1" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="14">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
-                                    
-                                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,14">
-                                        <Border Width="32" 
-                                                Height="32" 
-                                                CornerRadius="8"
-                                                Background="{DynamicResource Error}"
-                                                Margin="0,0,10,0">
-                                            <TextBlock Text="⚠️" 
-                                                       FontSize="16" 
-                                                       HorizontalAlignment="Center" 
-                                                       VerticalAlignment="Center"/>
-                                        </Border>
-                                        <TextBlock Text="Tespit Edilen Anomaliler" 
-                                                   FontSize="15" 
-                                                   FontWeight="SemiBold"
-                                                   VerticalAlignment="Center">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Foreground" Value="{DynamicResource Error}"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                            <Setter Property="Foreground" Value="{DynamicResource ErrorBgLight}"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
+
+                                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                                        <TextBlock Text="&#xE7BA;" FontFamily="{StaticResource FluentIconFont}" FontSize="13.5" Foreground="{DynamicResource Error}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                        <TextBlock Text="Tespit Edilen Anomaliler" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center"/>
                                     </StackPanel>
-                                    
-                                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+
+                                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                         <ItemsControl ItemsSource="{Binding Anomalies}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Border CornerRadius="12" 
-                                                            Padding="14" 
-                                                            Margin="0,0,0,10"
-                                                            BorderThickness="1">
-                                                        <Border.Style>
-                                                            <Style TargetType="Border">
-                                                                <Setter Property="Background" Value="White"/>
-                                                                <Setter Property="BorderBrush" Value="{DynamicResource ErrorBgLight}"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
-                                                                        <Setter Property="Background" Value="{DynamicResource Error}"/>
-                                                                        <Setter Property="BorderBrush" Value="{DynamicResource Error}"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Border.Style>
-                                                        <Grid>
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition Height="Auto"/>
-                                                                <RowDefinition Height="Auto"/>
-                                                                <RowDefinition Height="Auto"/>
-                                                            </Grid.RowDefinitions>
-                                                            
-                                                            <TextBlock Grid.Row="0" 
-                                                                       Text="{Binding FullName}" 
-                                                                       FontWeight="SemiBold" 
-                                                                       FontSize="14">
-                                                                <TextBlock.Style>
-                                                                    <Style TargetType="TextBlock">
-                                                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
-                                                                                <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </TextBlock.Style>
-                                                            </TextBlock>
-                                                            <TextBlock Grid.Row="1" 
-                                                                       Text="{Binding StudentId}" 
-                                                                       FontSize="12" 
-                                                                       Margin="0,4">
-                                                                <TextBlock.Style>
-                                                                    <Style TargetType="TextBlock">
-                                                                        <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
-                                                                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </TextBlock.Style>
-                                                            </TextBlock>
-                                                            <TextBlock Grid.Row="2" 
-                                                                       Text="{Binding Description}" 
-                                                                       FontSize="12" 
-                                                                       TextWrapping="Wrap">
-                                                                <TextBlock.Style>
-                                                                    <Style TargetType="TextBlock">
-                                                                        <Setter Property="Foreground" Value="{DynamicResource Error}"/>
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
-                                                                                <Setter Property="Foreground" Value="{DynamicResource ErrorBgLight}"/>
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </TextBlock.Style>
-                                                            </TextBlock>
-                                                        </Grid>
+                                                    <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="8" Padding="11,9" Margin="0,0,0,8">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding FullName}" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource TextMain}"/>
+                                                            <TextBlock Text="{Binding StudentId}" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,2"/>
+                                                            <TextBlock Text="{Binding Description}" FontSize="11.5" Foreground="{DynamicResource Error}" TextWrapping="Wrap"/>
+                                                        </StackPanel>
                                                     </Border>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
                                     </ScrollViewer>
-                                    
-                                    <TextBlock Grid.Row="1" 
-                                               Text="Anomali tespit edilmedi. Tüm sorular normal görünüyor." 
-                                               HorizontalAlignment="Center" 
-                                               VerticalAlignment="Center"
-                                               FontSize="13">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                        <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                        <TextBlock.Visibility>
-                                            <Binding Path="Anomalies.Count" Converter="{StaticResource CountToVisConverter}"/>
-                                        </TextBlock.Visibility>
-                                    </TextBlock>
+
+                                    <TextBlock Grid.Row="1" Text="Anomali tespit edilmedi." HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               FontSize="12" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" TextAlignment="Center"
+                                               Visibility="{Binding Anomalies.Count, Converter={StaticResource CountToVisConverter}}"/>
                                 </Grid>
                             </Border>
                         </Grid>
                     </TabItem>
 
-                    <!-- TAB 2: Çeldirici & Seçenek Analizi -->
-                    <TabItem Header="🎯 Çeldirici Analizi (Üst/Alt %27)">
+                    <!-- TAB 2: Çeldirici Analizi -->
+                    <TabItem Header="Çeldirici Analizi (Üst / Alt %27)">
                         <Grid Margin="0,10,0,0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.35*" MinWidth="175" MaxWidth="260"/>
+                                <ColumnDefinition Width="0.35*" MinWidth="175" MaxWidth="250"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Question List -->
-                            <Border Grid.Column="0" 
-                                    CornerRadius="16" 
-                                    Padding="12"
-                                    Margin="0,0,14,0"
-                                    BorderThickness="1">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
-                                        <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Background" Value="{DynamicResource Border}"/>
-                                                <Setter Property="BorderBrush" Value="{DynamicResource TextMuted}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
+                            <Border Grid.Column="0" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="10" Margin="0,0,12,0">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Text="Soru Listesi" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource TextMuted}" Margin="6,0,0,8"/>
-                                    <ListBox Grid.Row="1" 
-                                             ItemsSource="{Binding DistractorStats}"
-                                             SelectedItem="{Binding SelectedDistractorQuestion}"
-                                             Background="Transparent"
-                                             BorderThickness="0"
-                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                    <TextBlock Grid.Row="0" Text="Soru Listesi" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource TextMuted}" Margin="4,0,0,8"/>
+                                    <ListBox Grid.Row="1" ItemsSource="{Binding DistractorStats}" SelectedItem="{Binding SelectedDistractorQuestion}"
+                                             Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
-                                                <Border CornerRadius="8" Padding="10,6" Margin="0,2" BorderThickness="1" BorderBrush="{DynamicResource TextMuted}">
-                                                    <Border.Style>
-                                                        <Style TargetType="Border">
-                                                            <Setter Property="Background" Value="White"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding HasMisleadingDistractor}" Value="True">
-                                                                    <Setter Property="Background" Value="{DynamicResource ErrorBgLight}"/>
-                                                                    <Setter Property="BorderBrush" Value="{DynamicResource ErrorBgLight}"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                                                    <Setter Property="Background" Value="{DynamicResource CardBg}"/>
-                                                                    <Setter Property="BorderBrush" Value="{DynamicResource TextMuted}"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Border.Style>
+                                                <Border CornerRadius="7" Padding="9,6" Margin="0,2" BorderThickness="1" BorderBrush="{DynamicResource Border}" Background="{DynamicResource CardBg}">
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*"/>
                                                             <ColumnDefinition Width="Auto"/>
                                                         </Grid.ColumnDefinitions>
                                                         <StackPanel Grid.Column="0">
-                                                            <TextBlock FontWeight="Bold" FontSize="13" Foreground="{DynamicResource TextMain}">
+                                                            <TextBlock FontWeight="Bold" FontSize="12" Foreground="{DynamicResource TextMain}">
                                                                 <Run Text="Soru "/>
                                                                 <Run Text="{Binding QuestionNumber, Mode=OneWay}"/>
                                                             </TextBlock>
-                                                            <TextBlock FontSize="11" Foreground="{DynamicResource TextMuted}">
-                                                                <Run Text="Doğru: "/>
+                                                            <TextBlock FontSize="10.5" Foreground="{DynamicResource TextMuted}">
+                                                                <Run Text="Anahtar: "/>
                                                                 <Run Text="{Binding CorrectAnswer, Mode=OneWay}" FontWeight="Bold"/>
                                                             </TextBlock>
                                                         </StackPanel>
-                                                        <Border Grid.Column="1" 
-                                                                Visibility="{Binding HasMisleadingDistractor, Converter={StaticResource BoolToVis}}"
-                                                                Background="{DynamicResource Error}" 
-                                                                CornerRadius="6" 
-                                                                Padding="6,2" 
-                                                                VerticalAlignment="Center">
-                                                            <TextBlock Text="⚠️ Ters Çeldirici" FontSize="10" FontWeight="Bold" Foreground="White"/>
+                                                        <Border Grid.Column="1" Visibility="{Binding HasMisleadingDistractor, Converter={StaticResource BoolToVis}}"
+                                                                Background="{DynamicResource ErrorBgLight}" CornerRadius="5" Padding="6,2" VerticalAlignment="Center">
+                                                            <TextBlock Text="Ters Çeldirici" FontSize="9.5" FontWeight="Bold" Foreground="{DynamicResource Error}"/>
                                                         </Border>
                                                     </Grid>
                                                 </Border>
@@ -595,7 +230,6 @@
                                 </Grid>
                             </Border>
 
-                            <!-- Option Breakdown Detail Table -->
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -603,57 +237,36 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <!-- Header info for selected question -->
-                                <Border Grid.Row="0" CornerRadius="12" Padding="14,10" Margin="0,0,0,10" Background="{DynamicResource WarningBgLight}" BorderBrush="{DynamicResource WarningBgLight}" BorderThickness="1">
+                                <Border Grid.Row="0" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="14,9" Margin="0,0,0,8">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                            <TextBlock Text="🎯 " FontSize="16" VerticalAlignment="Center"/>
-                                            <TextBlock FontWeight="Bold" FontSize="15" Foreground="{DynamicResource Warning}" VerticalAlignment="Center">
-                                                <Run Text="Soru "/>
-                                                <Run Text="{Binding SelectedDistractorQuestion.QuestionNumber, Mode=OneWay}"/>
-                                                <Run Text=" — Seçenek ve Çeldirici Dağılımı"/>
-                                            </TextBlock>
-                                        </StackPanel>
-                                        <Border Grid.Column="1" Background="{DynamicResource Warning}" CornerRadius="8" Padding="10,4">
-                                            <TextBlock Foreground="White" FontWeight="Bold" FontSize="12">
-                                                <Run Text="Doğru Yanıt: "/>
+                                        <TextBlock Grid.Column="0" FontWeight="Bold" FontSize="13.5" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center">
+                                            <Run Text="Soru "/>
+                                            <Run Text="{Binding SelectedDistractorQuestion.QuestionNumber, Mode=OneWay}"/>
+                                            <Run Text=" — Seçenek ve Çeldirici Dağılımı"/>
+                                        </TextBlock>
+                                        <Border Grid.Column="1" Background="{DynamicResource AccentBgLight}" CornerRadius="6" Padding="10,3">
+                                            <TextBlock Foreground="{DynamicResource Accent}" FontWeight="Bold" FontSize="11.5">
+                                                <Run Text="Doğru Şık: "/>
                                                 <Run Text="{Binding SelectedDistractorQuestion.CorrectAnswer, Mode=OneWay}"/>
                                             </TextBlock>
                                         </Border>
                                     </Grid>
                                 </Border>
 
-                                <!-- DataGrid for Options -->
-                                <Border Grid.Row="1" CornerRadius="14" Padding="8" BorderThickness="1">
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Setter Property="Background" Value="White"/>
-                                            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Background" Value="{DynamicResource CardBg}"/>
-                                                    <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-                                    <DataGrid ItemsSource="{Binding SelectedDistractorQuestion.Options}"
-                                              AutoGenerateColumns="False"
-                                              IsReadOnly="True"
-                                              GridLinesVisibility="Horizontal"
-                                              HeadersVisibility="Column"
-                                              Background="Transparent"
-                                              BorderThickness="0">
+                                <Border Grid.Row="1" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" ClipToBounds="True">
+                                    <DataGrid ItemsSource="{Binding SelectedDistractorQuestion.Options}" AutoGenerateColumns="False" IsReadOnly="True"
+                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                              GridLinesVisibility="Horizontal" HeadersVisibility="Column" Background="Transparent" BorderThickness="0" RowHeight="34">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Seçenek" Binding="{Binding Option}" FontWeight="Bold" Width="60"/>
-                                            <DataGridTemplateColumn Header="Tür" Width="90">
+                                            <DataGridTextColumn Header="ŞIK" Binding="{Binding Option}" FontWeight="Bold" Width="55"/>
+                                            <DataGridTemplateColumn Header="TÜR" Width="85">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <Border CornerRadius="6" Padding="6,2" HorizontalAlignment="Left">
+                                                        <Border CornerRadius="5" Padding="6,2" HorizontalAlignment="Left">
                                                             <Border.Style>
                                                                 <Style TargetType="Border">
                                                                     <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
@@ -664,14 +277,14 @@
                                                                     </Style.Triggers>
                                                                 </Style>
                                                             </Border.Style>
-                                                            <TextBlock FontSize="11" FontWeight="Bold">
+                                                            <TextBlock FontSize="10.5" FontWeight="Bold">
                                                                 <TextBlock.Style>
                                                                     <Style TargetType="TextBlock">
                                                                         <Setter Property="Text" Value="Çeldirici"/>
                                                                         <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                                                         <Style.Triggers>
                                                                             <DataTrigger Binding="{Binding IsCorrect}" Value="True">
-                                                                                <Setter Property="Text" Value="✅ Doğru"/>
+                                                                                <Setter Property="Text" Value="Doğru Şık"/>
                                                                                 <Setter Property="Foreground" Value="{DynamicResource Success}"/>
                                                                             </DataTrigger>
                                                                         </Style.Triggers>
@@ -682,16 +295,16 @@
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
-                                            <DataGridTextColumn Header="Üst %27 (Kişi)" Width="85" Binding="{Binding TopCount, StringFormat={}{0} kişi}"/>
-                                            <DataGridTextColumn Header="Üst %27 (%)" Width="85" Binding="{Binding TopPercent, StringFormat={}{0:F1}%}"/>
-                                            <DataGridTextColumn Header="Alt %27 (Kişi)" Width="85" Binding="{Binding BottomCount, StringFormat={}{0} kişi}"/>
-                                            <DataGridTextColumn Header="Alt %27 (%)" Width="85" Binding="{Binding BottomPercent, StringFormat={}{0:F1}%}"/>
-                                            <DataGridTextColumn Header="Toplam" Width="65" Binding="{Binding TotalCount}"/>
-                                            <DataGridTextColumn Header="Genel Oran" Width="80" Binding="{Binding TotalPercent, StringFormat={}{0:F1}%}"/>
-                                            <DataGridTemplateColumn Header="Değerlendirme" Width="*">
+                                            <DataGridTextColumn Header="Üst %27 (Kişi)" Width="88" Binding="{Binding TopCount, StringFormat={}{0} kişi}"/>
+                                            <DataGridTextColumn Header="Üst %27 (%)" Width="82" Binding="{Binding TopPercent, StringFormat={}{0:F1}%}"/>
+                                            <DataGridTextColumn Header="Alt %27 (Kişi)" Width="88" Binding="{Binding BottomCount, StringFormat={}{0} kişi}"/>
+                                            <DataGridTextColumn Header="Alt %27 (%)" Width="82" Binding="{Binding BottomPercent, StringFormat={}{0:F1}%}"/>
+                                            <DataGridTextColumn Header="Toplam" Width="62" Binding="{Binding TotalCount}"/>
+                                            <DataGridTextColumn Header="Genel %" Width="75" Binding="{Binding TotalPercent, StringFormat={}{0:F1}%}"/>
+                                            <DataGridTemplateColumn Header="DEĞERLENDİRME" Width="*" MinWidth="130">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <Border CornerRadius="6" Padding="8,3" HorizontalAlignment="Left">
+                                                        <Border CornerRadius="5" Padding="7,2" HorizontalAlignment="Left">
                                                             <Border.Style>
                                                                 <Style TargetType="Border">
                                                                     <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
@@ -708,16 +321,16 @@
                                                                     </Style.Triggers>
                                                                 </Style>
                                                             </Border.Style>
-                                                            <TextBlock Text="{Binding EvaluationMessage}" FontSize="11" FontWeight="SemiBold">
+                                                            <TextBlock Text="{Binding EvaluationMessage}" FontSize="10.5" FontWeight="SemiBold">
                                                                 <TextBlock.Style>
                                                                     <Style TargetType="TextBlock">
                                                                         <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                                                         <Style.Triggers>
                                                                             <DataTrigger Binding="{Binding Quality}" Value="MisleadingDistractor">
-                                                                                <Setter Property="Foreground" Value="{DynamicResource AccentRed}"/>
+                                                                                <Setter Property="Foreground" Value="{DynamicResource Error}"/>
                                                                             </DataTrigger>
                                                                             <DataTrigger Binding="{Binding Quality}" Value="GoodDistractor">
-                                                                                <Setter Property="Foreground" Value="{DynamicResource AccentViolet}"/>
+                                                                                <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                                                             </DataTrigger>
                                                                             <DataTrigger Binding="{Binding IsCorrect}" Value="True">
                                                                                 <Setter Property="Foreground" Value="{DynamicResource Success}"/>
@@ -734,9 +347,8 @@
                                     </DataGrid>
                                 </Border>
 
-                                <!-- Educational Note Footer -->
-                                <Border Grid.Row="2" Margin="0,8,0,0" Padding="12,8" Background="{DynamicResource AppBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10">
-                                    <TextBlock Text="💡 Rehber: İyi bir çeldiricide alt başarı grubundaki oran üst gruptan yüksek olmalıdır. Üst grubun alt gruptan daha fazla işaretlediği çeldiriciler 'Ters Çeldirici ⚠️' olarak işaretlenir (soru kökünde veya şıkta çelişki işareti)." 
+                                <Border Grid.Row="2" Margin="0,8,0,0" Padding="11,7" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="8">
+                                    <TextBlock Text="Sağlıklı bir çeldirici şıkkı alt %27'lik grup tarafından üst %27'lik gruba göre daha yüksek oranda işaretlenmelidir. Üst grubun yoğun yöneldiği yanlış şıklar 'Ters Çeldirici' olarak raporlanır."
                                                FontSize="11" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap"/>
                                 </Border>
                             </Grid>
@@ -744,69 +356,17 @@
                     </TabItem>
                 </TabControl>
 
-                <!-- Premium Footer -->
-                <Border Grid.Row="3" 
-                        CornerRadius="0,0,24,24" 
-                        Padding="24,20"
-                        Margin="-24,16,-24,-24"
-                        BorderThickness="0,1,0,0">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
+                <!-- 4. Alt Çubuk -->
+                <Border Grid.Row="4" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" Padding="20,12">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="🔄 Yeniden Analiz Et" 
-                                Command="{Binding RunItemAnalysisCommand}"
-                                Padding="18,10"
-                                Background="Transparent"
-                                BorderBrush="{DynamicResource Warning}"
-                                BorderThickness="2"
-                                Foreground="{DynamicResource Warning}"
-                                FontSize="13"
-                                FontWeight="SemiBold"
-                                Margin="0,0,12,0"
-                                Cursor="Hand">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" 
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            CornerRadius="10"
-                                            Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
+                        <Button Command="{Binding RunItemAnalysisCommand}" Style="{StaticResource OutlineButton}" Padding="14,7" FontSize="12" Margin="0,0,8,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE72C;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Yeniden Hesapla" VerticalAlignment="Center"/>
+                            </StackPanel>
                         </Button>
-                        <Button Content="Kapat" 
-                                Command="{Binding CloseItemAnalysisCommand}"
-                                Padding="28,10"
-                                Background="{DynamicResource Warning}"
-                                Foreground="White"
-                                FontSize="13"
-                                FontWeight="SemiBold"
-                                BorderThickness="0"
-                                Cursor="Hand">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" 
-                                            CornerRadius="10"
-                                            Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
+                        <Button Content="Kapat" Command="{Binding CloseItemAnalysisCommand}" IsDefault="True"
+                                Background="{DynamicResource Accent}" Foreground="White" Padding="24,7" FontSize="12" FontWeight="SemiBold"/>
                     </StackPanel>
                 </Border>
             </Grid>

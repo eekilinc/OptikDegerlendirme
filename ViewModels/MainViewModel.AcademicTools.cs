@@ -164,6 +164,7 @@ namespace OptikFormApp.ViewModels
             set { _isKpiCollapsed = value; OnPropertyChanged(); }
         }
         public ICommand ToggleKpiCommand { get; private set; } = null!;
+        public ICommand CopyStudentSummaryCommand { get; private set; } = null!;
 
         private bool _isLogDrawerOpen = false;
         public bool IsLogDrawerOpen
@@ -466,6 +467,21 @@ namespace OptikFormApp.ViewModels
             ToggleSidebarCommand = new RelayCommand(_ => IsSidebarCollapsed = !IsSidebarCollapsed);
             ToggleKpiCommand = new RelayCommand(_ => IsKpiCollapsed = !IsKpiCollapsed);
             ToggleLogDrawerCommand = new RelayCommand(_ => IsLogDrawerOpen = !IsLogDrawerOpen);
+            CopyStudentSummaryCommand = new RelayCommand(p =>
+            {
+                if (p is StudentResult s)
+                {
+                    try
+                    {
+                        Clipboard.SetText($"{s.StudentId}\t{s.FullName}\t{s.Score:F2}");
+                        ShowToastSuccess($"{s.StudentId} — {s.FullName} ({s.Score:F2}) panoya kopyalandı.");
+                    }
+                    catch (Exception ex)
+                    {
+                        ShowToastError($"Panoya kopyalanamadı: {ex.Message}");
+                    }
+                }
+            });
 
             // Sessiz arka plan sürüm kontrolü
             _ = CheckForUpdatesSilentlyAsync();

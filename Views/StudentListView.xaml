@@ -111,6 +111,27 @@
                   RowBackground="{DynamicResource CardBg}"
                   AlternatingRowBackground="{DynamicResource AltRowBg}"
                   BorderThickness="0">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                    <Setter Property="Tag" Value="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem Header="Öğrenci Detayı ve Cevapları Düzenle"
+                                          Command="{Binding Data.OpenStudentDetailCommand, Source={StaticResource Proxy}}"
+                                          CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                <MenuItem Header="Bireysel PDF Sınav Karnesi Oluştur (.pdf)"
+                                          Command="{Binding Data.ExportSinglePdfCommand, Source={StaticResource Proxy}}"
+                                          CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                <Separator/>
+                                <MenuItem Header="Öğrenci No ve Puanı Kopyala"
+                                          Command="{Binding Data.CopyStudentSummaryCommand, Source={StaticResource Proxy}}"
+                                          CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
                     <Setter Property="Padding" Value="{Binding DataContext.GridCellPadding, RelativeSource={RelativeSource AncestorType=Window}}"/>

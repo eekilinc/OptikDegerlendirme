@@ -53,7 +53,8 @@
         </Grid.RowDefinitions>
 
         <!-- 1. AKADEMİK RAPOR ÜST BAŞLIK BANDI (Responsive) -->
-        <Border Grid.Row="0" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="13" Padding="15,11" Margin="0,0,0,10">
+        <Border Grid.Row="0" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="13" Padding="15,11" Margin="0,0,0,10"
+                Visibility="{Binding Students.Count, Converter={StaticResource DataToVisConverter}}">
             <Border.Effect>
                 <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.035" BlurRadius="12" ShadowDepth="2"/>
             </Border.Effect>
@@ -109,7 +110,8 @@
         </Border>
 
         <!-- 2. ÜST AKADEMİK KPI ŞERİDİ (5 -> 3 -> 2 sütun adaptif) -->
-        <local:ResponsiveUniformGrid Grid.Row="1" MaxColumns="5" MinColumns="2" MinColumnWidth="160" Margin="-4,0,-4,6">
+        <local:ResponsiveUniformGrid Grid.Row="1" MaxColumns="5" MinColumns="2" MinColumnWidth="160" Margin="-4,0,-4,6"
+                                     Visibility="{Binding Students.Count, Converter={StaticResource DataToVisConverter}}">
             <Border Style="{StaticResource AcademicKpiCard}">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -185,7 +187,8 @@
         </local:ResponsiveUniformGrid>
 
         <!-- 3. DETAYLI AKADEMİK ANALİZ SEKMELERİ (Yatay Kaydırma Korumalı) -->
-        <TabControl Grid.Row="2" Background="Transparent" BorderThickness="0">
+        <TabControl Grid.Row="2" Background="Transparent" BorderThickness="0"
+                    Visibility="{Binding Students.Count, Converter={StaticResource DataToVisConverter}}">
             <TabControl.Template>
                 <ControlTemplate TargetType="TabControl">
                     <Grid ClipToBounds="True" SnapsToDevicePixels="True">
@@ -661,5 +664,25 @@
                 </ScrollViewer>
             </TabItem>
         </TabControl>
+
+        <!-- KURUMSAL BOŞ DURUM (EMPTY STATE) -->
+        <Border Grid.Row="2" Visibility="{Binding Students.Count, Converter={StaticResource CountToVisConverter}}"
+                VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="520" Padding="24">
+            <StackPanel>
+                <Border Width="64" Height="64" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="15" Margin="0,0,0,14" HorizontalAlignment="Center">
+                    <TextBlock Text="&#xE8A5;" FontFamily="{StaticResource FluentIconFont}" FontSize="26" Foreground="{DynamicResource Accent}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Border>
+                <TextBlock Text="Akademik İstatistik Raporu Hazır Değil" FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextMain}" HorizontalAlignment="Center"/>
+                <TextBlock Text="Merkezi eğilim ölçüleri, KR-20 güvenilirlik katsayısı, kitapçık adaleti ve pedagojik analiz raporunu görüntülemek için önce optik veri yükleyip değerlendirme yapın."
+                           FontSize="12" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,8,0,18" TextAlignment="Center" TextWrapping="Wrap" LineHeight="18"/>
+                <Button Command="{Binding LoadTxtCommand}" Style="{StaticResource PipelineButton}"
+                        Background="{DynamicResource Accent}" BorderBrush="{DynamicResource Accent}" Foreground="White" Padding="20,9" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE8E5;" FontFamily="{StaticResource FluentIconFont}" FontSize="12.5" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Optik Veri Dosyası Seç (Ctrl+O)" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

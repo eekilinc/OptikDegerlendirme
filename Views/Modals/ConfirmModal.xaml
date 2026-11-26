@@ -4,47 +4,42 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="260" d:DesignWidth="440">
+             d:DesignHeight="260" d:DesignWidth="430">
     <Grid Visibility="{Binding IsConfirmModalOpen, Converter={StaticResource BoolToVis}}" Background="{DynamicResource ModalBackdrop}">
-        <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="16" MaxWidth="430" Margin="20,16" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="26">
+        <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="14" MaxWidth="420" Margin="20,16" VerticalAlignment="Center" HorizontalAlignment="Stretch" ClipToBounds="True">
             <Border.Effect>
-                <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.2" BlurRadius="40" ShadowDepth="10"/>
+                <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.22" BlurRadius="40" ShadowDepth="10"/>
             </Border.Effect>
-            <StackPanel>
-                <!-- Warning Icon Circle -->
-                <Border Width="56" Height="56" CornerRadius="28" Background="{DynamicResource WarningBgLight}" HorizontalAlignment="Center" Margin="0,0,0,16">
-                    <TextBlock Text="⚠️" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="{DynamicResource Error}"/>
+
+                <StackPanel Grid.Row="1" Margin="24,20,24,18">
+                    <Border Width="48" Height="48" CornerRadius="24" Background="{DynamicResource ErrorBgLight}" HorizontalAlignment="Center" Margin="0,0,0,12">
+                        <TextBlock Text="&#xE7BA;" FontFamily="{StaticResource FluentIconFont}" FontSize="20" Foreground="{DynamicResource Error}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <TextBlock Text="{Binding ConfirmModalTitle}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding ConfirmModalMessage}" FontSize="12.5" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" TextAlignment="Center" LineHeight="19"/>
+                </StackPanel>
+
+                <Border Grid.Row="2" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" Padding="20,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Vazgeç (Esc)" IsCancel="True" Command="{Binding CancelConfirmCommand}" Style="{StaticResource OutlineButton}" Padding="14,7" FontSize="12"/>
+                        <Button Grid.Column="2" Content="{Binding ConfirmButtonText}" IsDefault="True" Command="{Binding ConfirmActionCommand}" Background="{DynamicResource Error}" Foreground="White" FontWeight="SemiBold" Padding="14,7" FontSize="12"/>
+                    </Grid>
                 </Border>
-                
-                <!-- Title -->
-                <TextBlock Text="{Binding ConfirmModalTitle}" FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,8" HorizontalAlignment="Center"/>
-                
-                <!-- Message -->
-                <TextBlock Text="{Binding ConfirmModalMessage}" FontSize="13" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,22" TextWrapping="Wrap" TextAlignment="Center" LineHeight="20"/>
-                
-                <!-- Buttons -->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Content="İptal (Esc)" IsCancel="True" Command="{Binding CancelConfirmCommand}" Style="{StaticResource OutlineButton}" Padding="16,8" Margin="0,0,6,0" HorizontalAlignment="Stretch"/>
-                    <Button Grid.Column="1" Content="{Binding ConfirmButtonText}" IsDefault="True" Command="{Binding ConfirmActionCommand}" Background="{DynamicResource Error}" Foreground="White" FontWeight="Bold" Padding="16,8" Margin="6,0,0,0" HorizontalAlignment="Stretch">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="bd" Property="Opacity" Value="0.9"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                </Grid>
-            </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

@@ -4,169 +4,140 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="700" d:DesignWidth="700">
+             d:DesignHeight="620" d:DesignWidth="640">
+
     <Grid Visibility="{Binding IsBookletMappingOpen, Converter={StaticResource BoolToVis}}" 
           Background="{DynamicResource ModalBackdrop}">
-        
+
         <Border MaxWidth="640"
-                MaxHeight="660"
-                VerticalAlignment="Stretch" 
+                MaxHeight="640"
+                VerticalAlignment="Center"
                 HorizontalAlignment="Stretch"
                 Margin="20,16"
-                CornerRadius="24"
-                Padding="0">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
+                CornerRadius="14"
+                Background="{DynamicResource CardBg}"
+                BorderBrush="{DynamicResource Border}"
+                BorderThickness="1"
+                ClipToBounds="True">
             <Border.Effect>
-                <DropShadowEffect Color="Black" Opacity="0.3" BlurRadius="60" ShadowDepth="20"/>
+                <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.22" BlurRadius="40" ShadowDepth="10"/>
             </Border.Effect>
 
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="3"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Header (Indigo Gradient) -->
-                <Border Grid.Row="0" Height="90" CornerRadius="24,24,0,0" Padding="28,20">
-                    <Border.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="{DynamicResource AccentPurpleColor}" Offset="0"/>
-                            <GradientStop Color="{DynamicResource AccentPurpleColor}" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
+                <Border Grid.Row="0" Background="{DynamicResource Accent}"/>
+
+                <!-- Başlık -->
+                <Border Grid.Row="1" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,0,0,1" Padding="20,14">
                     <Grid>
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="🔄 Kitapçık Eşleme Matrisi" FontSize="22" FontWeight="Bold" Foreground="White"/>
-                            <TextBlock Text="Kaynak kitapçıktan hedef kitapçığı otomatik türetin" FontSize="12" Foreground="{DynamicResource AccentBgLight}" Margin="0,4,0,0"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Width="38" Height="38" CornerRadius="9" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE8AB;" FontFamily="{StaticResource FluentIconFont}" FontSize="15.5" Foreground="{DynamicResource Accent}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Kitapçık Eşleme Matrisi" FontSize="15.5" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
+                            <TextBlock Text="Kaynak kitapçık cevap anahtarından hedef kitapçığı otomatik türetin" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,2,0,0"/>
                         </StackPanel>
-                        <Button Command="{Binding CloseBookletMappingCommand}"
-                                HorizontalAlignment="Right" VerticalAlignment="Top"
-                                Background="#20FFFFFF" BorderThickness="0" Foreground="White"
-                                Width="34" Height="34" FontSize="16" Cursor="Hand">
-                            <Button.Content>✕</Button.Content>
+                        <Button Grid.Column="2" Command="{Binding CloseBookletMappingCommand}" IsCancel="True" VerticalAlignment="Top" Width="28" Height="28" Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="17">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="6">
+                                        <TextBlock Text="&#xE711;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="bd" Property="Background" Value="{DynamicResource HoverBg}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
                     </Grid>
                 </Border>
 
-                <!-- Body -->
-                <StackPanel Grid.Row="1" Margin="24">
-                    <!-- Config Row -->
-                    <Grid Margin="0,0,0,16">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                <!-- İçerik -->
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="20,16">
+                        <Grid Margin="0,0,0,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <!-- Source Booklet -->
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Kaynak Kitapçık" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
-                            <ComboBox ItemsSource="{Binding AnswerKeys}" DisplayMemberPath="BookletName" 
-                                      SelectedItem="{Binding SelectedSourceAnswerKey, UpdateSourceTrigger=PropertyChanged}"
-                                      Padding="10,8" MinHeight="38"/>
-                        </StackPanel>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Kaynak Kitapçık" FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,5"/>
+                                <ComboBox ItemsSource="{Binding AnswerKeys}" DisplayMemberPath="BookletName"
+                                          SelectedItem="{Binding SelectedSourceAnswerKey, UpdateSourceTrigger=PropertyChanged}" Padding="10,8"/>
+                            </StackPanel>
 
-                        <!-- Target Booklet Name -->
-                        <StackPanel Grid.Column="2">
-                            <TextBlock Text="Türetilecek Kitapçık Adı" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
-                            <TextBox Text="{Binding TargetBookletName, UpdateSourceTrigger=PropertyChanged}"
-                                     Padding="10,8" MinHeight="38" FontWeight="Bold" FontSize="14" HorizontalContentAlignment="Center"/>
-                        </StackPanel>
-                    </Grid>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Türetilecek Kitapçık Adı" FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,5"/>
+                                <TextBox Text="{Binding TargetBookletName, UpdateSourceTrigger=PropertyChanged}"
+                                         Padding="10,8" FontWeight="Bold" FontSize="13.5" HorizontalContentAlignment="Center" CharacterCasing="Upper"/>
+                            </StackPanel>
+                        </Grid>
 
-                    <!-- Instruction Box -->
-                    <Border Background="{DynamicResource AccentBgLight}" CornerRadius="10" Padding="12,10" Margin="0,0,0,14" BorderBrush="{DynamicResource AccentBgLight}" BorderThickness="1">
-                        <StackPanel>
-                            <TextBlock Text="ℹ️ Eşleme Formatı Kılavuzu" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource AccentViolet}" Margin="0,0,0,4"/>
-                            <TextBlock Text="• Ok formatı: 1->5, 2->1, 3->4 (Hedefin 1. sorusu Kaynağın 5. sorusudur)&#x0a;• Liste formatı: 5, 1, 4, 2, 3 (Hedefin sırasıyla kaynak soru numaraları)&#x0a;• Excel'den 2 sütun kopyalayabilirsiniz." 
-                                       FontSize="11" Foreground="{DynamicResource AccentViolet}" LineHeight="16"/>
-                        </StackPanel>
-                    </Border>
+                        <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="8" Padding="12,9" Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="Eşleme Formatı Kılavuzu" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource Accent}" Margin="0,0,0,3"/>
+                                <TextBlock Text="• Ok biçimi: 1-&gt;5, 2-&gt;1, 3-&gt;4 (Hedefin 1. sorusu kaynağın 5. sorusudur)&#x0a;• Sıralı liste biçimi: 5, 1, 4, 2, 3 veya Excel'den iki sütun kopyalama"
+                                           FontSize="11" Foreground="{DynamicResource TextMuted}" LineHeight="16" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
 
-                    <!-- Input Area -->
-                    <TextBlock Text="Eşleme Listesi / Matris Metni" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,6"/>
-                    <TextBox Text="{Binding MappingInputText, UpdateSourceTrigger=PropertyChanged}"
-                             FontFamily="Consolas" FontSize="13" AcceptsReturn="True" 
-                             VerticalScrollBarVisibility="Auto" Height="140" Padding="10"
-                             Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1"/>
+                        <TextBlock Text="Eşleme Listesi / Matris Metni" FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding MappingInputText, UpdateSourceTrigger=PropertyChanged}"
+                                 FontFamily="Consolas, Cascadia Mono" FontSize="13" AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Auto" Height="130" Padding="10"/>
 
-                    <!-- Live Preview / Validation Box -->
-                    <Border CornerRadius="10" Padding="12,10" Margin="0,14,0,0" BorderThickness="1">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="{DynamicResource SuccessBgLight}"/>
-                                <Setter Property="BorderBrush" Value="{DynamicResource SuccessBgLight}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsMappingValid}" Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource ErrorBgLight}"/>
-                                        <Setter Property="BorderBrush" Value="{DynamicResource ErrorBgLight}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <StackPanel>
-                            <TextBlock Text="{Binding MappingStatusHeader}" FontSize="12" FontWeight="Bold">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{DynamicResource Success}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMappingValid}" Value="False">
-                                                <Setter Property="Foreground" Value="{DynamicResource AccentRed}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                            <TextBlock Text="{Binding MappingPreviewOrErrorMessage}" FontSize="11" TextWrapping="Wrap" Margin="0,4,0,0">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{DynamicResource Success}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMappingValid}" Value="False">
-                                                <Setter Property="Foreground" Value="{DynamicResource Error}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
+                        <Border CornerRadius="8" Padding="12,9" Margin="0,12,0,0" BorderThickness="1">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="{DynamicResource SuccessBgLight}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMappingValid}" Value="False">
+                                            <Setter Property="Background" Value="{DynamicResource ErrorBgLight}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <StackPanel>
+                                <TextBlock Text="{Binding MappingStatusHeader}" FontSize="11.5" FontWeight="Bold">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="{DynamicResource Success}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsMappingValid}" Value="False">
+                                                    <Setter Property="Foreground" Value="{DynamicResource Error}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBlock Text="{Binding MappingPreviewOrErrorMessage}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0" Foreground="{DynamicResource TextMain}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
 
-                <!-- Footer -->
-                <Border Grid.Row="2" CornerRadius="0,0,24,24" Padding="24,16" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Border}">
+                <!-- Alt Çubuk -->
+                <Border Grid.Row="3" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" Padding="20,12">
                     <Grid>
-                        <Button Content="Vazgeç" Command="{Binding CloseBookletMappingCommand}"
-                                HorizontalAlignment="Left" Style="{StaticResource OutlineButton}" Padding="18,10"/>
-                        
-                        <Button Content="⚡ Anahtarı Türet ve Ekle" Command="{Binding ApplyBookletMappingCommand}"
-                                HorizontalAlignment="Right" Background="{DynamicResource AccentPurple}" Foreground="White"
-                                FontWeight="SemiBold" Padding="20,10" Cursor="Hand" BorderThickness="0">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
+                        <Button Content="Vazgeç (Esc)" Command="{Binding CloseBookletMappingCommand}" HorizontalAlignment="Left" Style="{StaticResource OutlineButton}" Padding="16,7" FontSize="12"/>
+                        <Button Content="Anahtarı Türet ve Ekle" Command="{Binding ApplyBookletMappingCommand}" HorizontalAlignment="Right"
+                                Background="{DynamicResource Accent}" Foreground="White" FontWeight="SemiBold" Padding="20,7" FontSize="12"/>
                     </Grid>
                 </Border>
             </Grid>

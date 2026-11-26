@@ -98,6 +98,12 @@ namespace OptikFormApp.Tests
                         vm.IsLogDrawerOpen = false;
                         window.UpdateLayout();
 
+                        // Koyu ve açık tema geçişlerini doğrula
+                        vm.ThemeIndex = 1;
+                        window.UpdateLayout();
+                        vm.ThemeIndex = 0;
+                        window.UpdateLayout();
+
                         // Tüm modal pencereleri tek tek görünür hale getirerek gizli XAML / Binding hatalarını denetle
                         Action[] modalToggles =
                         {

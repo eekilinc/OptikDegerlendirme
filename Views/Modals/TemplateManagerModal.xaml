@@ -4,382 +4,118 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="650">
-    
+             d:DesignHeight="580" d:DesignWidth="620">
+
     <Grid Visibility="{Binding IsTemplateManagerOpen, Converter={StaticResource BoolToVis}}" 
           Background="{DynamicResource ModalBackdrop}">
-        
-        <!-- Premium Modal -->
+
         <Border MaxWidth="620"
                 MaxHeight="600"
-                VerticalAlignment="Center" 
+                VerticalAlignment="Center"
                 HorizontalAlignment="Stretch"
                 Margin="20,16"
-                CornerRadius="24"
-                Padding="0">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource CardBg}"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
+                CornerRadius="14"
+                Background="{DynamicResource CardBg}"
+                BorderBrush="{DynamicResource Border}"
+                BorderThickness="1"
+                ClipToBounds="True">
             <Border.Effect>
-                <DropShadowEffect Color="Black" Opacity="0.25" BlurRadius="60" ShadowDepth="20"/>
+                <DropShadowEffect Color="{DynamicResource ShadowColorValue}" Opacity="0.22" BlurRadius="40" ShadowDepth="10"/>
             </Border.Effect>
-            
+
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="3"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                
-                <!-- Premium Indigo Header -->
-                <Border Grid.Row="0" 
-                        Height="100"
-                        CornerRadius="24,24,0,0" 
-                        Padding="28,24">
-                    <Border.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="{DynamicResource AccentPurpleColor}" Offset="0"/>
-                            <GradientStop Color="{DynamicResource AccentPurpleColor}" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    
+
+                <Border Grid.Row="0" Background="{DynamicResource Accent}"/>
+
+                <!-- Başlık -->
+                <Border Grid.Row="1" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,0,0,1" Padding="20,14">
                     <Grid>
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="📋 Sınav Şablonları" 
-                                       FontSize="26" 
-                                       FontWeight="Bold"
-                                       Foreground="White"/>
-                            <TextBlock Text="Kaydedilmiş ayarlarınızı şablon olarak kullanın" 
-                                       FontSize="13" 
-                                       Foreground="{DynamicResource AccentBgLight}"
-                                       Margin="0,6,0,0"
-                                       Opacity="0.9"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Width="38" Height="38" CornerRadius="9" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE8F1;" FontFamily="{StaticResource FluentIconFont}" FontSize="15.5" Foreground="{DynamicResource Accent}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Sınav Şablonları Yönetimi" FontSize="15.5" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
+                            <TextBlock Text="Sık kullandığınız puanlama ve anahtar yapılarını şablon olarak saklayın" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,2,0,0"/>
                         </StackPanel>
-                        
-                        <Button Command="{Binding CloseTemplateManagerCommand}"
-                                HorizontalAlignment="Right" 
-                                VerticalAlignment="Top"
-                                Background="#20FFFFFF" 
-                                BorderThickness="0" 
-                                Foreground="White"
-                                Width="36" 
-                                Height="36"
-                                FontSize="16" 
-                                Padding="0"
-                                Cursor="Hand">
-                            <Button.Content>✕</Button.Content>
+                        <Button Grid.Column="2" Command="{Binding CloseTemplateManagerCommand}" IsCancel="True" VerticalAlignment="Top" Width="28" Height="28" Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" 
-                                            CornerRadius="18"
-                                            BorderThickness="0">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
+                                    <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="6">
+                                        <TextBlock Text="&#xE711;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="bd" Property="Background" Value="{DynamicResource HoverBg}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
                     </Grid>
                 </Border>
-                
-                <!-- Content -->
-                <ScrollViewer Grid.Row="1" 
-                              VerticalScrollBarVisibility="Auto" 
-                              MaxHeight="450"
-                              PanningMode="VerticalOnly">
-                    <StackPanel Margin="28,24,28,20">
-                        
-                        <!-- Save Current as Template Card -->
-                        <Border CornerRadius="16" 
-                                Padding="20,18" 
-                                Margin="0,0,0,20"
-                                BorderThickness="1">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Background" Value="{DynamicResource AccentBgLight}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource AccentBgLight}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource AccentViolet}"/>
-                                            <Setter Property="BorderBrush" Value="{DynamicResource AccentViolet}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
+
+                <!-- İçerik -->
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="20,16">
+                        <!-- Yeni Şablon Kartı -->
+                        <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="15,13" Margin="0,0,0,16">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
-                                    <Border Width="40" 
-                                            Height="40" 
-                                            CornerRadius="10"
-                                            Background="{DynamicResource AccentPurple}"
-                                            Margin="0,0,12,0">
-                                        <TextBlock Text="💾" 
-                                                   FontSize="20" 
-                                                   HorizontalAlignment="Center" 
-                                                   VerticalAlignment="Center"/>
-                                    </Border>
-                                    <TextBlock Text="Yeni Şablon Oluştur" 
-                                               FontSize="16" 
-                                               FontWeight="SemiBold"
-                                               VerticalAlignment="Center">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Foreground" Value="{DynamicResource AccentViolet}"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                        <Setter Property="Foreground" Value="{DynamicResource AccentBgLight}"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </StackPanel>
-                                
-                                <TextBlock Text="Şablon Adı" 
-                                           FontSize="12" 
-                                           Margin="0,0,0,6">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBox Text="{Binding NewTemplateName}" 
-                                         Padding="12,10"
-                                         FontSize="14"
-                                         BorderThickness="1"
-                                         Margin="0,0,0,12"
-                                         BorderBrush="{DynamicResource AccentBgLight}">
-                                    <TextBox.Style>
-                                        <Style TargetType="TextBox">
-                                            <Setter Property="Background" Value="White"/>
-                                            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                                    <Setter Property="BorderBrush" Value="{DynamicResource AccentViolet}"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBox.Style>
-                                </TextBox>
-                                
-                                <TextBlock Text="Açıklama (isteğe bağlı)" 
-                                           FontSize="12" 
-                                           Margin="0,0,0,6">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBox Text="{Binding NewTemplateDescription}" 
-                                         Padding="12,10"
-                                         FontSize="14"
-                                         BorderThickness="1"
-                                         Margin="0,0,0,16"
-                                         BorderBrush="{DynamicResource AccentBgLight}">
-                                    <TextBox.Style>
-                                        <Style TargetType="TextBox">
-                                            <Setter Property="Background" Value="White"/>
-                                            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                                    <Setter Property="BorderBrush" Value="{DynamicResource AccentViolet}"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBox.Style>
-                                </TextBox>
-                                
-                                <Button Content="✨ Şablon Olarak Kaydet" 
-                                        Command="{Binding SaveAsTemplateCommand}"
-                                        Background="{DynamicResource AccentPurple}" 
-                                        Foreground="White"
-                                        Padding="20,10" 
-                                        FontSize="13"
-                                        FontWeight="SemiBold"
-                                        BorderThickness="0"
-                                        HorizontalAlignment="Left"
-                                        Cursor="Hand">
-                                    <Button.Template>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border Background="{TemplateBinding Background}" 
-                                                    CornerRadius="10"
-                                                    Padding="{TemplateBinding Padding}">
-                                                <ContentPresenter HorizontalAlignment="Center" 
-                                                                  VerticalAlignment="Center"/>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Button.Template>
+                                <TextBlock Text="Mevcut Ayarlardan Yeni Şablon Oluştur" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="0,0,0,10"/>
+
+                                <TextBlock Text="Şablon Adı" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding NewTemplateName, UpdateSourceTrigger=PropertyChanged}" Padding="10,8" FontSize="12.5" Margin="0,0,0,10"/>
+
+                                <TextBlock Text="Açıklama (İsteğe Bağlı)" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding NewTemplateDescription, UpdateSourceTrigger=PropertyChanged}" Padding="10,8" FontSize="12.5" Margin="0,0,0,12"/>
+
+                                <Button Command="{Binding SaveAsTemplateCommand}" Background="{DynamicResource Accent}" Foreground="White" Padding="16,7" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Left">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE74E;" FontFamily="{StaticResource FluentIconFont}" FontSize="11.5" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Şablon Olarak Kaydet" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </Button>
                             </StackPanel>
                         </Border>
-                        
-                        <!-- Templates List Header -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                            <Border Width="36" 
-                                    Height="36" 
-                                    CornerRadius="8"
-                                    Background="{DynamicResource AccentBgLight}"
-                                    Margin="0,0,10,0">
-                                <TextBlock Text="📂" 
-                                           FontSize="18" 
-                                           HorizontalAlignment="Center" 
-                                           VerticalAlignment="Center"/>
-                            </Border>
-                            <TextBlock Text="Kayıtlı Şablonlar" 
-                                       FontSize="16" 
-                                       FontWeight="SemiBold"
-                                       VerticalAlignment="Center">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </StackPanel>
-                        
-                        <!-- Templates List -->
+
+                        <!-- Kayıtlı Şablonlar -->
+                        <TextBlock Text="Kayıtlı Şablonlar" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextMain}" Margin="2,0,0,8"/>
+
                         <ItemsControl ItemsSource="{Binding Templates}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border CornerRadius="14" 
-                                            Padding="18"
-                                            Margin="0,0,0,10"
-                                            BorderThickness="1">
-                                        <Border.Style>
-                                            <Style TargetType="Border">
-                                                <Setter Property="Background" Value="{DynamicResource HeaderBg}"/>
-                                                <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
-                                                        <Setter Property="Background" Value="{DynamicResource Border}"/>
-                                                        <Setter Property="BorderBrush" Value="{DynamicResource TextMuted}"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Border.Style>
+                                    <Border Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="14,11" Margin="0,0,0,8">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            
                                             <StackPanel Grid.Column="0">
-                                                <TextBlock Text="{Binding Name}" 
-                                                           FontSize="15" 
-                                                           FontWeight="SemiBold">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
-                                                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-                                                <TextBlock Text="{Binding Description}" 
-                                                           FontSize="12" 
-                                                           TextWrapping="Wrap"
-                                                           Margin="0,4,0,0" 
-                                                           Visibility="{Binding Description, Converter={StaticResource NullToVis}}">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
-                                                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-                                                <TextBlock Text="{Binding UpdatedAt, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}" 
-                                                           FontSize="11" 
-                                                           Margin="0,6,0,0">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding DataContext.IsDarkTheme, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
-                                                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
+                                                <TextBlock Text="{Binding Name}" FontSize="13.5" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
+                                                <TextBlock Text="{Binding Description}" FontSize="11.5" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" Margin="0,2,0,0" Visibility="{Binding Description, Converter={StaticResource NullToVis}}"/>
+                                                <TextBlock Text="{Binding UpdatedAt, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}" FontSize="10.5" Foreground="{DynamicResource TextMuted}" Margin="0,4,0,0"/>
                                             </StackPanel>
-                                            
-                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                <Button Content="📂 Yükle" 
-                                                        Command="{Binding DataContext.LoadTemplateCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                        CommandParameter="{Binding Id}"
-                                                        Background="{DynamicResource AccentPurple}" 
-                                                        Foreground="White"
-                                                        Padding="14,8" 
-                                                        Margin="0,0,8,0"
-                                                        FontSize="12"
-                                                        FontWeight="SemiBold"
-                                                        BorderThickness="0"
-                                                        Cursor="Hand">
-                                                    <Button.Template>
-                                                        <ControlTemplate TargetType="Button">
-                                                            <Border Background="{TemplateBinding Background}" 
-                                                                    CornerRadius="8"
-                                                                    Padding="{TemplateBinding Padding}">
-                                                                <ContentPresenter HorizontalAlignment="Center" 
-                                                                                  VerticalAlignment="Center"/>
-                                                            </Border>
-                                                        </ControlTemplate>
-                                                    </Button.Template>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Button Command="{Binding DataContext.LoadTemplateCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding Id}" Background="{DynamicResource Accent}" Foreground="White" Padding="12,6" Margin="0,0,6,0" FontSize="11.5">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="&#xE8E5;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="Uygula" VerticalAlignment="Center"/>
+                                                    </StackPanel>
                                                 </Button>
-                                                <Button Content="🗑️" 
-                                                        Command="{Binding DataContext.DeleteTemplateCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                        CommandParameter="{Binding Id}"
-                                                        Background="{DynamicResource Error}" 
-                                                        Foreground="White"
-                                                        Padding="12,8"
-                                                        FontSize="12"
-                                                        BorderThickness="0"
-                                                        Cursor="Hand">
-                                                    <Button.Template>
-                                                        <ControlTemplate TargetType="Button">
-                                                            <Border Background="{TemplateBinding Background}" 
-                                                                    CornerRadius="8"
-                                                                    Padding="{TemplateBinding Padding}">
-                                                                <ContentPresenter HorizontalAlignment="Center" 
-                                                                                  VerticalAlignment="Center"/>
-                                                            </Border>
-                                                        </ControlTemplate>
-                                                    </Button.Template>
+                                                <Button Command="{Binding DataContext.DeleteTemplateCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding Id}" Style="{StaticResource OutlineButton}" BorderBrush="{DynamicResource Error}" Foreground="{DynamicResource Error}" Padding="9,6" FontSize="11.5" ToolTip="Şablonu Sil">
+                                                    <TextBlock Text="&#xE74D;" FontFamily="{StaticResource FluentIconFont}" FontSize="11"/>
                                                 </Button>
                                             </StackPanel>
                                         </Grid>
@@ -387,100 +123,32 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        
-                        <TextBlock Text="Henüz kaydedilmiş şablon yok." 
-                                   FontSize="13" 
-                                   HorizontalAlignment="Center" 
-                                   Margin="0,24"
-                                   Visibility="{Binding Templates.Count, Converter={StaticResource CountToVisConverter}}">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+
+                        <TextBlock Text="Henüz kaydedilmiş şablon bulunmuyor." FontSize="12" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,16"
+                                   Visibility="{Binding Templates.Count, Converter={StaticResource CountToVisConverter}}"/>
                     </StackPanel>
                 </ScrollViewer>
-                
-                <!-- Premium Footer -->
-                <Border Grid.Row="2" 
-                        CornerRadius="0,0,24,24" 
-                        Padding="24,18"
-                        BorderThickness="0,1,0,0">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource AppBg}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Content="📤 Dışa Aktar" 
-                                Command="{Binding ExportTemplateCommand}"
-                                Background="{DynamicResource CardBg}"
-                                Foreground="{DynamicResource TextMain}"
-                                BorderBrush="{DynamicResource Border}"
-                                BorderThickness="1"
-                                Padding="18,10" 
-                                Margin="0,0,10,0"
-                                FontSize="13"
-                                FontWeight="SemiBold"
-                                Cursor="Hand">
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsDarkTheme}" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource Border}"/>
-                                            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                            <Setter Property="BorderBrush" Value="{DynamicResource TextMuted}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" 
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            CornerRadius="10"
-                                            Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        <Button Content="📥 İçe Aktar" 
-                                Command="{Binding ImportTemplateCommand}"
-                                Background="{DynamicResource AccentPurple}"
-                                Foreground="White"
-                                Padding="18,10"
-                                FontSize="13"
-                                FontWeight="SemiBold"
-                                BorderThickness="0"
-                                Cursor="Hand">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" 
-                                            CornerRadius="10"
-                                            Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                    </StackPanel>
+
+                <!-- Alt Çubuk -->
+                <Border Grid.Row="3" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" Padding="20,12">
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Button Command="{Binding ExportTemplateCommand}" Style="{StaticResource OutlineButton}" Padding="12,7" Margin="0,0,8,0" FontSize="11.5">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xEDE1;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Dışa Aktar" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Command="{Binding ImportTemplateCommand}" Style="{StaticResource OutlineButton}" Padding="12,7" FontSize="11.5">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE8B5;" FontFamily="{StaticResource FluentIconFont}" FontSize="11" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="İçe Aktar" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <Button Content="Kapat" Command="{Binding CloseTemplateManagerCommand}" IsDefault="True"
+                                HorizontalAlignment="Right" Background="{DynamicResource Accent}" Foreground="White" Padding="22,7" FontSize="12" FontWeight="SemiBold"/>
+                    </Grid>
                 </Border>
             </Grid>
         </Border>

@@ -19,7 +19,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Width="36" Height="36" CornerRadius="9" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource Border}" BorderThickness="1" Margin="0,0,10,0" Padding="4.5">
-                    <Image Source="/Assets/app_logo.png" Stretch="Uniform"/>
+                    <Image Source="pack://application:,,,/OptikFormApp;component/Assets/app_logo.png" Stretch="Uniform"/>
                 </Border>
                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
                     <TextBlock Text="BURDUR MEHMET AKİF ERSOY ÜNİVERSİTESİ" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" TextTrimming="CharacterEllipsis"/>

@@ -72,15 +72,15 @@
                         <WrapPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" Margin="0,12,0,0">
                             <TextBlock FontSize="12.5" Foreground="{DynamicResource TextMuted}">
                                 <Run Text="Doğru: "/>
-                                <Run Text="{Binding SelectedStudentDetail.CorrectCount}" FontWeight="Bold" Foreground="{DynamicResource Success}"/>
+                                <Run Text="{Binding SelectedStudentDetail.CorrectCount, Mode=OneWay}" FontWeight="Bold" Foreground="{DynamicResource Success}"/>
                                 <Run Text="  |  Yanlış: "/>
-                                <Run Text="{Binding SelectedStudentDetail.IncorrectCount}" FontWeight="Bold" Foreground="{DynamicResource Error}"/>
+                                <Run Text="{Binding SelectedStudentDetail.IncorrectCount, Mode=OneWay}" FontWeight="Bold" Foreground="{DynamicResource Error}"/>
                                 <Run Text="  |  Boş: "/>
-                                <Run Text="{Binding SelectedStudentDetail.EmptyCount}" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
+                                <Run Text="{Binding SelectedStudentDetail.EmptyCount, Mode=OneWay}" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
                                 <Run Text="  |  Net: "/>
-                                <Run Text="{Binding SelectedStudentDetail.NetCount, StringFormat={}{0:N2}}" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
+                                <Run Text="{Binding SelectedStudentDetail.NetCount, Mode=OneWay, StringFormat={}{0:N2}}" FontWeight="Bold" Foreground="{DynamicResource TextMain}"/>
                                 <Run Text="  |  Puan: "/>
-                                <Run Text="{Binding SelectedStudentDetail.Score, StringFormat={}{0:N2}}" FontWeight="Bold" FontSize="13.5" Foreground="{DynamicResource Accent}"/>
+                                <Run Text="{Binding SelectedStudentDetail.Score, Mode=OneWay, StringFormat={}{0:N2}}" FontWeight="Bold" FontSize="13.5" Foreground="{DynamicResource Accent}"/>
                             </TextBlock>
                         </WrapPanel>
                     </Grid>

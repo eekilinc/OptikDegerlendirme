@@ -57,7 +57,7 @@
                             <Border.Effect>
                                 <DropShadowEffect Color="Black" Opacity="0.15" BlurRadius="10" ShadowDepth="3"/>
                             </Border.Effect>
-                            <Image Source="/Assets/app_logo.png" Stretch="Uniform" Margin="6"/>
+                            <Image Source="pack://application:,,,/OptikFormApp;component/Assets/app_logo.png" Stretch="Uniform" Margin="6"/>
                         </Border>
                         
                         <!-- Header Text -->

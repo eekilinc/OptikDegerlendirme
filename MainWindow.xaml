@@ -5,7 +5,7 @@
         xmlns:views="clr-namespace:OptikFormApp.Views"
         xmlns:modals="clr-namespace:OptikFormApp.Views.Modals"
         Title="MAKÜ Ağlasun MYO — Optik Değerlendirme ve İstatistik Sistemi" Height="780" Width="1260" MinWidth="740" MinHeight="540"
-        Icon="/Assets/app_logo.png"
+        Icon="pack://application:,,,/OptikFormApp;component/Assets/app_logo.png"
         WindowStartupLocation="CenterScreen" Background="{DynamicResource AppBg}"
         FontFamily="Segoe UI Variable, Segoe UI, -apple-system, system-ui, sans-serif"
         AutomationProperties.Name="Optik Değerlendirme Ana Pencere"
@@ -228,7 +228,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="&#xE896;" FontFamily="{StaticResource FluentIconFont}" FontSize="13" Foreground="{DynamicResource Accent}" Margin="0,0,8,0" VerticalAlignment="Center"/>
                     <TextBlock Grid.Column="1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,12,0">
-                        <Run Text="{Binding LatestVersionTag, StringFormat='Yeni sürüm mevcut: {0}'}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource Accent}"/>
+                        <Run Text="{Binding LatestVersionTag, Mode=OneWay, StringFormat='Yeni sürüm mevcut: {0}'}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource Accent}"/>
                         <Run Text=" — Yeni özellikler ve iyileştirmeler için GitHub Release sayfasından indirebilirsiniz." FontSize="11.5" Foreground="{DynamicResource TextMain}"/>
                     </TextBlock>
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">

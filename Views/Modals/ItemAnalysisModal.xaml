@@ -572,11 +572,11 @@
                                                         <StackPanel Grid.Column="0">
                                                             <TextBlock FontWeight="Bold" FontSize="13" Foreground="{DynamicResource TextMain}">
                                                                 <Run Text="Soru "/>
-                                                                <Run Text="{Binding QuestionNumber}"/>
+                                                                <Run Text="{Binding QuestionNumber, Mode=OneWay}"/>
                                                             </TextBlock>
                                                             <TextBlock FontSize="11" Foreground="{DynamicResource TextMuted}">
                                                                 <Run Text="Doğru: "/>
-                                                                <Run Text="{Binding CorrectAnswer}" FontWeight="Bold"/>
+                                                                <Run Text="{Binding CorrectAnswer, Mode=OneWay}" FontWeight="Bold"/>
                                                             </TextBlock>
                                                         </StackPanel>
                                                         <Border Grid.Column="1" 
@@ -614,14 +614,14 @@
                                             <TextBlock Text="🎯 " FontSize="16" VerticalAlignment="Center"/>
                                             <TextBlock FontWeight="Bold" FontSize="15" Foreground="{DynamicResource Warning}" VerticalAlignment="Center">
                                                 <Run Text="Soru "/>
-                                                <Run Text="{Binding SelectedDistractorQuestion.QuestionNumber}"/>
+                                                <Run Text="{Binding SelectedDistractorQuestion.QuestionNumber, Mode=OneWay}"/>
                                                 <Run Text=" — Seçenek ve Çeldirici Dağılımı"/>
                                             </TextBlock>
                                         </StackPanel>
                                         <Border Grid.Column="1" Background="{DynamicResource Warning}" CornerRadius="8" Padding="10,4">
                                             <TextBlock Foreground="White" FontWeight="Bold" FontSize="12">
                                                 <Run Text="Doğru Yanıt: "/>
-                                                <Run Text="{Binding SelectedDistractorQuestion.CorrectAnswer}"/>
+                                                <Run Text="{Binding SelectedDistractorQuestion.CorrectAnswer, Mode=OneWay}"/>
                                             </TextBlock>
                                         </Border>
                                     </Grid>

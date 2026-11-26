@@ -19,7 +19,7 @@
                 <TextBlock Grid.Column="0" Text="&#xE7BA;" FontFamily="{StaticResource FluentIconFont}" FontSize="13.5" Foreground="{DynamicResource Error}" VerticalAlignment="Center" Margin="0,0,10,0"/>
                 
                 <TextBlock Grid.Column="1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,10,0">
-                    <Run Text="{Binding ValidationIssuesCount, StringFormat='{}{0} Adet Veri Doğrulama Uyarısı Tespit Edildi'}" FontWeight="Bold" Foreground="{DynamicResource Error}" FontSize="11.5"/>
+                    <Run Text="{Binding ValidationIssuesCount, Mode=OneWay, StringFormat='{}{0} Adet Veri Doğrulama Uyarısı Tespit Edildi'}" FontWeight="Bold" Foreground="{DynamicResource Error}" FontSize="11.5"/>
                     <Run Text=" — Eksik kodlama veya okuma anomalilerini inceleyin." FontSize="11" Foreground="{DynamicResource TextMain}"/>
                 </TextBlock>
 
